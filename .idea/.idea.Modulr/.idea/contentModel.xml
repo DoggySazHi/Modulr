@@ -11,6 +11,7 @@
       <e p="appsettings.json" t="Include" />
       <e p="bin" t="ExcludeRecursive" />
       <e p="Controllers" t="Include">
+        <e p="ErrorController.cs" t="Include" />
         <e p="HTMLController.cs" t="Include" />
         <e p="TestReceivedController.cs" t="Include" />
       </e>
@@ -33,7 +34,16 @@
       </e>
       <e p="Startup.cs" t="Include" />
       <e p="StaticViews" t="Include">
+        <e p="css" t="Include" />
+        <e p="Errors" t="Include">
+          <e p="error404.html" t="Include" />
+          <e p="error500.html" t="Include" />
+        </e>
+        <e p="img" t="Include">
+          <e p="modulr.svg" t="Include" />
+        </e>
         <e p="index.html" t="Include" />
+        <e p="js" t="Include" />
       </e>
     </e>
   </component>

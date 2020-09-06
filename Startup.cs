@@ -1,7 +1,9 @@
+using System.IO;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Hosting;
 
 namespace Modulr
@@ -28,7 +30,11 @@ namespace Modulr
             {
                 app.UseDeveloperExceptionPage();
             }
-            
+            else
+            {
+                app.UseStatusCodePagesWithReExecute("/Error", "?code={0}");
+            }
+
             app.UseRouting();
 
             app.UseAuthorization();

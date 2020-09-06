@@ -14,26 +14,16 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="359509d8-12b3-47c4-829a-24bd1e268319" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/.idea.Modulr/.idea/contentModel.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/.idea.Modulr/.idea/encodings.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/.idea.Modulr/.idea/indexLayout.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/.idea.Modulr/.idea/modules.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/.idea.Modulr/.idea/projectSettingsUpdater.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/.idea.Modulr/.idea/vcs.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/.idea.Modulr/.idea/workspace.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/config/applicationhost.config" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Controllers/HTMLController.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Controllers/TestReceivedController.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Models/Test.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Modulr.csproj" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Modulr.sln" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Program.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Properties/launchSettings.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Startup.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/StaticViews/index.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/appsettings.Development.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/appsettings.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Controllers/ErrorController.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/StaticViews/Errors/error404.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/StaticViews/Errors/error500.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/StaticViews/img/modulr.svg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/.idea.Modulr/.idea/contentModel.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Modulr/.idea/contentModel.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/.idea.Modulr/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Modulr/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Controllers/HTMLController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Controllers/HTMLController.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Modulr.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/Modulr.csproj" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Startup.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Startup.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/StaticViews/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/StaticViews/index.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -57,10 +47,13 @@
         <option value="$PROJECT_DIR$/Models/Test.cs" />
         <option value="$PROJECT_DIR$/Properties/launchSettings.json" />
         <option value="$PROJECT_DIR$/Program.cs" />
-        <option value="$PROJECT_DIR$/Startup.cs" />
         <option value="$PROJECT_DIR$/Controllers/TestReceivedController.cs" />
         <option value="$PROJECT_DIR$/Modulr.csproj" />
+        <option value="$PROJECT_DIR$/StaticViews/error404.html" />
         <option value="$PROJECT_DIR$/StaticViews/index.html" />
+        <option value="$PROJECT_DIR$/StaticViews/Errors/error500.html" />
+        <option value="$PROJECT_DIR$/Controllers/ErrorController.cs" />
+        <option value="$PROJECT_DIR$/Startup.cs" />
         <option value="$PROJECT_DIR$/Controllers/HTMLController.cs" />
       </list>
     </option>
@@ -72,6 +65,8 @@
     <option name="showLibraryContents" value="true" />
   </component>
   <component name="PropertiesComponent">
+    <property name="DebuggerViewTab_PTCS_FirstProportionKey" value="0.3496572" />
+    <property name="DebuggerViewTab_PTCS_LastProportionKey" value="0.29970616" />
     <property name="DefaultHtmlFileTemplate" value="HTML File" />
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
@@ -156,22 +151,86 @@
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
   </component>
   <component name="WindowStateProjectService">
-    <state width="1423" height="411" key="GridCell.Tab.0.bottom" timestamp="1598560077125">
+    <state width="1052" height="436" key="GridCell.Tab.0.bottom" timestamp="1599414917292">
       <screen x="0" y="0" width="2194" height="1194" />
     </state>
-    <state width="1423" height="411" key="GridCell.Tab.0.bottom/0.0.2194.1194@0.0.2194.1194" timestamp="1598560077125" />
-    <state width="1423" height="411" key="GridCell.Tab.0.center" timestamp="1598560077125">
+    <state width="1052" height="436" key="GridCell.Tab.0.bottom/0.0.2194.1194@0.0.2194.1194" timestamp="1599414917292" />
+    <state width="1052" height="436" key="GridCell.Tab.0.center" timestamp="1599414917292">
       <screen x="0" y="0" width="2194" height="1194" />
     </state>
-    <state width="1423" height="411" key="GridCell.Tab.0.center/0.0.2194.1194@0.0.2194.1194" timestamp="1598560077125" />
-    <state width="1423" height="411" key="GridCell.Tab.0.left" timestamp="1598560077125">
+    <state width="1052" height="436" key="GridCell.Tab.0.center/0.0.2194.1194@0.0.2194.1194" timestamp="1599414917292" />
+    <state width="1052" height="436" key="GridCell.Tab.0.left" timestamp="1599414917292">
       <screen x="0" y="0" width="2194" height="1194" />
     </state>
-    <state width="1423" height="411" key="GridCell.Tab.0.left/0.0.2194.1194@0.0.2194.1194" timestamp="1598560077125" />
-    <state width="1423" height="411" key="GridCell.Tab.0.right" timestamp="1598560077125">
+    <state width="1052" height="436" key="GridCell.Tab.0.left/0.0.2194.1194@0.0.2194.1194" timestamp="1599414917292" />
+    <state width="1052" height="436" key="GridCell.Tab.0.right" timestamp="1599414917292">
       <screen x="0" y="0" width="2194" height="1194" />
     </state>
-    <state width="1423" height="411" key="GridCell.Tab.0.right/0.0.2194.1194@0.0.2194.1194" timestamp="1598560077125" />
+    <state width="1052" height="436" key="GridCell.Tab.0.right/0.0.2194.1194@0.0.2194.1194" timestamp="1599414917292" />
+    <state width="1052" height="436" key="GridCell.Tab.1.bottom" timestamp="1599414917171">
+      <screen x="0" y="0" width="2194" height="1194" />
+    </state>
+    <state width="1052" height="436" key="GridCell.Tab.1.bottom/0.0.2194.1194@0.0.2194.1194" timestamp="1599414917171" />
+    <state width="1052" height="436" key="GridCell.Tab.1.center" timestamp="1599414917171">
+      <screen x="0" y="0" width="2194" height="1194" />
+    </state>
+    <state width="1052" height="436" key="GridCell.Tab.1.center/0.0.2194.1194@0.0.2194.1194" timestamp="1599414917171" />
+    <state width="1052" height="436" key="GridCell.Tab.1.left" timestamp="1599414917171">
+      <screen x="0" y="0" width="2194" height="1194" />
+    </state>
+    <state width="1052" height="436" key="GridCell.Tab.1.left/0.0.2194.1194@0.0.2194.1194" timestamp="1599414917171" />
+    <state width="1052" height="436" key="GridCell.Tab.1.right" timestamp="1599414917171">
+      <screen x="0" y="0" width="2194" height="1194" />
+    </state>
+    <state width="1052" height="436" key="GridCell.Tab.1.right/0.0.2194.1194@0.0.2194.1194" timestamp="1599414917171" />
+    <state width="1052" height="436" key="GridCell.Tab.2.bottom" timestamp="1599414917171">
+      <screen x="0" y="0" width="2194" height="1194" />
+    </state>
+    <state width="1052" height="436" key="GridCell.Tab.2.bottom/0.0.2194.1194@0.0.2194.1194" timestamp="1599414917171" />
+    <state width="1052" height="436" key="GridCell.Tab.2.center" timestamp="1599414917171">
+      <screen x="0" y="0" width="2194" height="1194" />
+    </state>
+    <state width="1052" height="436" key="GridCell.Tab.2.center/0.0.2194.1194@0.0.2194.1194" timestamp="1599414917171" />
+    <state width="1052" height="436" key="GridCell.Tab.2.left" timestamp="1599414917171">
+      <screen x="0" y="0" width="2194" height="1194" />
+    </state>
+    <state width="1052" height="436" key="GridCell.Tab.2.left/0.0.2194.1194@0.0.2194.1194" timestamp="1599414917171" />
+    <state width="1052" height="436" key="GridCell.Tab.2.right" timestamp="1599414917171">
+      <screen x="0" y="0" width="2194" height="1194" />
+    </state>
+    <state width="1052" height="436" key="GridCell.Tab.2.right/0.0.2194.1194@0.0.2194.1194" timestamp="1599414917171" />
+    <state width="1052" height="436" key="GridCell.Tab.3.bottom" timestamp="1599414917172">
+      <screen x="0" y="0" width="2194" height="1194" />
+    </state>
+    <state width="1052" height="436" key="GridCell.Tab.3.bottom/0.0.2194.1194@0.0.2194.1194" timestamp="1599414917172" />
+    <state width="1052" height="436" key="GridCell.Tab.3.center" timestamp="1599414917172">
+      <screen x="0" y="0" width="2194" height="1194" />
+    </state>
+    <state width="1052" height="436" key="GridCell.Tab.3.center/0.0.2194.1194@0.0.2194.1194" timestamp="1599414917172" />
+    <state width="1052" height="436" key="GridCell.Tab.3.left" timestamp="1599414917171">
+      <screen x="0" y="0" width="2194" height="1194" />
+    </state>
+    <state width="1052" height="436" key="GridCell.Tab.3.left/0.0.2194.1194@0.0.2194.1194" timestamp="1599414917171" />
+    <state width="1052" height="436" key="GridCell.Tab.3.right" timestamp="1599414917172">
+      <screen x="0" y="0" width="2194" height="1194" />
+    </state>
+    <state width="1052" height="436" key="GridCell.Tab.3.right/0.0.2194.1194@0.0.2194.1194" timestamp="1599414917172" />
+    <state width="1052" height="436" key="GridCell.Tab.4.bottom" timestamp="1599414917172">
+      <screen x="0" y="0" width="2194" height="1194" />
+    </state>
+    <state width="1052" height="436" key="GridCell.Tab.4.bottom/0.0.2194.1194@0.0.2194.1194" timestamp="1599414917172" />
+    <state width="1052" height="436" key="GridCell.Tab.4.center" timestamp="1599414917172">
+      <screen x="0" y="0" width="2194" height="1194" />
+    </state>
+    <state width="1052" height="436" key="GridCell.Tab.4.center/0.0.2194.1194@0.0.2194.1194" timestamp="1599414917172" />
+    <state width="1052" height="436" key="GridCell.Tab.4.left" timestamp="1599414917172">
+      <screen x="0" y="0" width="2194" height="1194" />
+    </state>
+    <state width="1052" height="436" key="GridCell.Tab.4.left/0.0.2194.1194@0.0.2194.1194" timestamp="1599414917172" />
+    <state width="1052" height="436" key="GridCell.Tab.4.right" timestamp="1599414917172">
+      <screen x="0" y="0" width="2194" height="1194" />
+    </state>
+    <state width="1052" height="436" key="GridCell.Tab.4.right/0.0.2194.1194@0.0.2194.1194" timestamp="1599414917172" />
     <state x="746" y="316" key="Rider.ProjectTemplateDialog.Size" timestamp="1598449822689">
       <screen x="0" y="0" width="2194" height="1194" />
     </state>

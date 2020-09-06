@@ -9,4 +9,9 @@
             <CopyToOutputDirectory>Always</CopyToOutputDirectory>
         </Content>
     </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="StaticViews\css" />
+      <Folder Include="StaticViews\js" />
+    </ItemGroup>
 </Project>
