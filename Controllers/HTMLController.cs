@@ -2,16 +2,14 @@
 using System.Collections.Generic;
 using System.IO;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.StaticFiles;
 using Microsoft.Extensions.Logging;
 
 namespace Modulr.Controllers
 {
     [ApiController]
-    [Route("/")]
-    [Route("/{page}")]
-    [Route("/css/{page}")]
-    [Route("/img/{page}")]
-    [Route("/js/{page}")]
+    
+    [Route("/{**page}")]
     public class HTMLController : ControllerBase
     {
         private readonly ILogger<HTMLController> _logger;
@@ -27,9 +25,20 @@ namespace Modulr.Controllers
             _router.Add("home", "StaticViews/index.html");
             
             // Image Routes
+            _router.Add("img/modulr.svg", "StaticViews/img/modulr.svg");
             _router.Add("modulr.svg", "StaticViews/img/modulr.svg");
             
+            // Holy crap icon stuff
+            _router.Add("favicon.ico", "StaticViews/img/favicon.ico");
+            _router.Add("android-chrome-192x192.png", "StaticViews/img/android-chrome-192x192.png");
+            _router.Add("android-chrome-512x512.png", "StaticViews/img/android-chrome-512x512.png");
+            _router.Add("apple-touch-icon.png", "StaticViews/img/apple-touch-icon.png");
+            _router.Add("favicon-16x16.png", "StaticViews/img/favicon-16x16.png");
+            _router.Add("favicon-32x32.png", "StaticViews/img/favicon-32x32.png");
+            _router.Add("site.webmanifest", "StaticViews/img/site.webmanifest");
+
             // JS Routes
+            _router.Add("js/main.js", "StaticViews/js/main.js");
             _router.Add("main.js", "StaticViews/js/main.js");
         }
 
@@ -44,7 +53,7 @@ namespace Modulr.Controllers
                 if (!found)
                     throw new FileNotFoundException();
                 using var reader = new StreamReader(file);
-                return base.Content(reader.ReadToEnd(), "text/html");
+                return base.Content(reader.ReadToEnd(), GetMIME(file));
             }
             catch (FileNotFoundException)
             {
@@ -52,6 +61,12 @@ namespace Modulr.Controllers
                 Response.StatusCode = 404;
                 return base.Content(reader.ReadToEnd(), "text/html");
             }
+        }
+
+        private string GetMIME(string file)
+        {
+            var provider = new FileExtensionContentTypeProvider();
+            return !provider.TryGetContentType(file, out var contentType) ? "application/octet-stream" : contentType;
         }
     }
 }

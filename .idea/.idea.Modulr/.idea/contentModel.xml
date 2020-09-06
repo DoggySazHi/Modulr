@@ -40,7 +40,15 @@
           <e p="error500.html" t="Include" />
         </e>
         <e p="img" t="Include">
+          <e p="android-chrome-192x192.png" t="Include" />
+          <e p="android-chrome-512x512.png" t="Include" />
+          <e p="apple-touch-icon.png" t="Include" />
+          <e p="favicon-16x16.png" t="Include" />
+          <e p="favicon-32x32.png" t="Include" />
+          <e p="favicon.ico" t="Include" />
+          <e p="modulr.png" t="Include" />
           <e p="modulr.svg" t="Include" />
+          <e p="site.webmanifest" t="Include" />
         </e>
         <e p="index.html" t="Include" />
         <e p="js" t="Include" />
