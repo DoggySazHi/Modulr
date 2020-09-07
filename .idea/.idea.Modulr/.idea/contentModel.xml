@@ -10,6 +10,8 @@
       <e p="appsettings.Development.json" t="Include" />
       <e p="appsettings.json" t="Include" />
       <e p="bin" t="ExcludeRecursive" />
+      <e p="config.json" t="Include" />
+      <e p="config.sample.json" t="Include" />
       <e p="Controllers" t="Include">
         <e p="ErrorController.cs" t="Include" />
         <e p="HTMLController.cs" t="Include" />
@@ -52,6 +54,9 @@
         </e>
         <e p="index.html" t="Include" />
         <e p="js" t="Include" />
+      </e>
+      <e p="Tester" t="Include">
+        <e p="JavaUtils.cs" t="Include" />
       </e>
     </e>
   </component>

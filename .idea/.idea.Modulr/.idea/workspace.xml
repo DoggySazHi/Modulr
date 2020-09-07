@@ -14,20 +14,13 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="359509d8-12b3-47c4-829a-24bd1e268319" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/StaticViews/img/android-chrome-192x192.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/StaticViews/img/android-chrome-512x512.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/StaticViews/img/apple-touch-icon.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/StaticViews/img/favicon-16x16.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/StaticViews/img/favicon-32x32.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/StaticViews/img/favicon.ico" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/StaticViews/img/modulr.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/StaticViews/img/site.webmanifest" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Tester/JavaUtils.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/config.sample.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.Modulr/.idea/contentModel.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Modulr/.idea/contentModel.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.Modulr/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Modulr/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Controllers/HTMLController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Controllers/HTMLController.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Modulr.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/Modulr.csproj" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/StaticViews/Errors/error404.html" beforeDir="false" afterPath="$PROJECT_DIR$/StaticViews/Errors/error404.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/StaticViews/Errors/error500.html" beforeDir="false" afterPath="$PROJECT_DIR$/StaticViews/Errors/error500.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Program.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Program.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Startup.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Startup.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -44,22 +37,29 @@
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
+  <component name="HighlightingSettingsPerFile">
+    <setting file="file://$PROJECT_DIR$/config.json" root0="FORCE_HIGHLIGHTING" />
+  </component>
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
         <option value="$PROJECT_DIR$/Controllers/WeatherForecastController.cs" />
         <option value="$PROJECT_DIR$/Models/Test.cs" />
         <option value="$PROJECT_DIR$/Properties/launchSettings.json" />
-        <option value="$PROJECT_DIR$/Program.cs" />
         <option value="$PROJECT_DIR$/Controllers/TestReceivedController.cs" />
         <option value="$PROJECT_DIR$/Modulr.csproj" />
         <option value="$PROJECT_DIR$/StaticViews/error404.html" />
         <option value="$PROJECT_DIR$/StaticViews/index.html" />
         <option value="$PROJECT_DIR$/Controllers/ErrorController.cs" />
-        <option value="$PROJECT_DIR$/Startup.cs" />
         <option value="$PROJECT_DIR$/Controllers/HTMLController.cs" />
         <option value="$PROJECT_DIR$/StaticViews/Errors/error500.html" />
         <option value="$PROJECT_DIR$/StaticViews/Errors/error404.html" />
+        <option value="$PROJECT_DIR$/Startup.cs" />
+        <option value="$PROJECT_DIR$/.gitignore" />
+        <option value="$PROJECT_DIR$/Program.cs" />
+        <option value="$PROJECT_DIR$/config.json" />
+        <option value="$PROJECT_DIR$/config.sample.json" />
+        <option value="$PROJECT_DIR$/Tester/JavaUtils.cs" />
       </list>
     </option>
   </component>
