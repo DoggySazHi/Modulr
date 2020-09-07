@@ -17,5 +17,10 @@ namespace Modulr.Tester
         {
             Config = JsonSerializer.Deserialize<TesterConfiguration>("config.json");
         }
+
+        public static string TestFiles()
+        {
+            
+        }
     }
 }

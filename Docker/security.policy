@@ -12,4 +12,5 @@ grant {
     permission java.lang.RuntimePermission "getenv.CLICOLOR_FORCE";
     permission java.lang.RuntimePermission "getenv.ConEmuANSI";
     permission java.util.PropertyPermission "java.class.path", "read";
+    permission java.lang.RuntimePermission "modifyThread";
 };

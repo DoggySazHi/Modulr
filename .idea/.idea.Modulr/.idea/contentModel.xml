@@ -17,6 +17,18 @@
         <e p="HTMLController.cs" t="Include" />
         <e p="TestReceivedController.cs" t="Include" />
       </e>
+      <e p="Docker" t="Include">
+        <e p=".Dockerignore" t="Include" />
+        <e p="CompileAndTest.sh" t="Include" />
+        <e p="Dockerfile" t="Include" />
+        <e p="junit-platform-console-standalone-1.6.2.jar" t="Include" />
+        <e p="rebuild.sh" t="Include" />
+        <e p="security.policy" t="Include" />
+        <e p="src" t="Include">
+          <e p="SetWithArray.java" t="Include" />
+          <e p="SetWithArrayTest.java" t="Include" />
+        </e>
+      </e>
       <e p="Models" t="Include">
         <e p="Test.cs" t="Include" />
       </e>

@@ -1,6 +1,8 @@
 import java.util.*;
 import org.junit.jupiter.api.*;
 
+import static java.time.Duration.ofSeconds;
+import static org.junit.jupiter.api.Assertions.assertTimeoutPreemptively;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
@@ -12,7 +14,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 public class SetWithArrayTest extends SetWithArray
 {
     @Test
-    @Timeout(1000)
     public void testSetWithArrayUnion00()
     {
         int[] a = {1, 2, 3, 4, 5};
@@ -28,7 +29,6 @@ public class SetWithArrayTest extends SetWithArray
     }
 
     @Test
-    @Timeout(1000)
     public void testSetWithArrayIntersection00()
     {
         int[] a = {1, 2, 3, 4, 5};
@@ -44,7 +44,6 @@ public class SetWithArrayTest extends SetWithArray
     }
 
     @Test
-    @Timeout(1000)
     public void testSetWithArrayDifference00()
     {
         int[] a = {1, 2, 3, 4, 5};
@@ -60,7 +59,6 @@ public class SetWithArrayTest extends SetWithArray
     }
 
     @Test
-    @Timeout(1000)
     public void testSetWithArrayIsSubSetOf00()
     {
         int[] a = {1, 2, 3, 4, 5};
@@ -73,7 +71,6 @@ public class SetWithArrayTest extends SetWithArray
     }
 
     @Test
-    @Timeout(1000)
     public void testSetWithArrayIsEqualTo00()
     {
         int[] a = {1, 2, 3, 4, 5};
@@ -86,7 +83,6 @@ public class SetWithArrayTest extends SetWithArray
     }
 
     @Test
-    @Timeout(1000)
     public void testSetWithArraySymmetricDifference00()
     {
         int[] a = {1, 2, 3, 4, 5};
@@ -105,7 +101,6 @@ public class SetWithArrayTest extends SetWithArray
     }
 
     @Test
-    @Timeout(1000)
     public void testSetWithArrayisPartition00()
     {
         int[] a = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15,
@@ -125,7 +120,6 @@ public class SetWithArrayTest extends SetWithArray
     }
 
     @Test
-    @Timeout(1000)
     public void testSetWithArrayisPartition01()
     {
         int[] a = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15,
@@ -149,5 +143,18 @@ public class SetWithArrayTest extends SetWithArray
         ans.add(f);
         assertEquals(false, swa.isPartition(ans));
         ans.remove(a);
+    }
+
+    @Test
+    public void testTimeOut()
+    {
+        assertTimeoutPreemptively(ofSeconds(1), () ->
+        {
+            int i = 0;
+            while(true)
+            {
+                i++;
+            }
+        });
     }
 }

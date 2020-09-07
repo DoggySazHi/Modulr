@@ -14,13 +14,11 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="359509d8-12b3-47c4-829a-24bd1e268319" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/Tester/JavaUtils.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/config.sample.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.Modulr/.idea/contentModel.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Modulr/.idea/contentModel.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.Modulr/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Modulr/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Program.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Program.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Startup.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Startup.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Docker/src/SetWithArrayTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/Docker/src/SetWithArrayTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Tester/JavaUtils.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Tester/JavaUtils.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/config.sample.json" beforeDir="false" afterPath="$PROJECT_DIR$/config.sample.json" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -57,9 +55,10 @@
         <option value="$PROJECT_DIR$/Startup.cs" />
         <option value="$PROJECT_DIR$/.gitignore" />
         <option value="$PROJECT_DIR$/Program.cs" />
+        <option value="$PROJECT_DIR$/Tester/JavaUtils.cs" />
         <option value="$PROJECT_DIR$/config.json" />
         <option value="$PROJECT_DIR$/config.sample.json" />
-        <option value="$PROJECT_DIR$/Tester/JavaUtils.cs" />
+        <option value="$PROJECT_DIR$/Docker/src/SetWithArrayTest.java" />
       </list>
     </option>
   </component>
@@ -135,6 +134,7 @@
       <workItem from="1598747505964" duration="4000" />
       <workItem from="1599093551490" duration="11000" />
       <workItem from="1599373831767" duration="374000" />
+      <workItem from="1599443326345" duration="877000" />
     </task>
     <servers />
   </component>
