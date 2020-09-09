@@ -1,5 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using Microsoft.AspNetCore.Http;
 
 namespace Modulr.Models
@@ -10,6 +12,7 @@ namespace Modulr.Models
         public List<string> FileNames { get; set; }
         public List<IFormFile> Files { get; set; }
         // If this is a file for JUnit (aka compile last)
+        // TODO actually sort the arrays if so
         public List<bool> IsTester { get; set; }
 
         public bool IsLikelyValid()

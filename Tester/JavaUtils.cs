@@ -17,21 +17,21 @@ namespace Modulr.Tester
     public static class JavaUtils
     {
         private static readonly TesterConfiguration Config;
-        private static readonly Random Rng;
+        private static readonly Random RNG;
         
         static JavaUtils()
         {
             using var sr = new StreamReader("config.json");
             var json = sr.ReadToEnd();
             Config = JsonSerializer.Deserialize<TesterConfiguration>(json);
-            Rng = new Random();
+            RNG = new Random();
             Clean();
         }
 
         private static void Clean()
         {
             if (Directory.Exists(Config.SaveLocation))
-                Directory.Delete(Config.SaveLocation);
+                Directory.Delete(Config.SaveLocation, true);
             Directory.CreateDirectory(Config.SaveLocation);
         }
 
@@ -58,16 +58,24 @@ namespace Modulr.Tester
         public static string GetDummyFolder()
         {
             string path;
-            var sb = new StringBuilder(TempDirLength);
             do
             {
-                sb.Clear();
-                for (var i = 0; i < TempDirLength; i++)
-                    sb.Append((char) Rng.Next('0', 'Z'));
-                path = Path.Join(Config.SaveLocation, sb.ToString());
+                path = Path.Join(Config.SaveLocation, GetRandomString());
             } while (Directory.Exists(path));
             Directory.CreateDirectory(path);
             return path;
+        }
+
+        private const string RNGChars = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
+
+        private static string GetRandomString()
+        {
+            var output = new char[TempDirLength];
+
+            for (var i = 0; i < output.Length; i++)
+                output[i] = RNGChars[RNG.Next(RNGChars.Length)];
+
+            return new string(output);
         }
 
         private static bool IsWindows()

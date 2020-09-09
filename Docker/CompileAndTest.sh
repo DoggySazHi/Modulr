@@ -8,7 +8,7 @@ cp -r /src/src/* .
 for var in "$@"
 do
     echo "$randomkey ========== BEGIN COMPILING $var =========="
-    cat $var
+#    cat $var
     javac -cp junit-platform-console-standalone-1.6.2.jar:. -Xlint:all -Xmaxwarns 100 $var
     if [ $? != 0 ];
     then
