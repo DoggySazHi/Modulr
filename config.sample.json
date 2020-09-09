@@ -1,5 +1,6 @@
-﻿{
+{
   "JDKPath": "/path/to/jdk/home",
   "UseDocker": false,
-  "DockerPath": "/usr/bin/docker"
+  "DockerPath": "/usr/bin/docker",
+  "SaveLocation": "TestingInput"
 }

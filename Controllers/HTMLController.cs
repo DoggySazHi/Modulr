@@ -17,12 +17,14 @@ namespace Modulr.Controllers
 
         public HTMLController(ILogger<HTMLController> logger)
         {
+            // TODO Generate a router by iterating through files...
             _logger = logger;
             
             // HTML Routes
             _router.Add("", "StaticViews/index.html");
             _router.Add("index.html", "StaticViews/index.html");
             _router.Add("home", "StaticViews/index.html");
+            _router.Add("testdemo", "StaticViews/tester.html");
             
             // Image Routes
             _router.Add("img/modulr.svg", "StaticViews/img/modulr.svg");
@@ -39,7 +41,7 @@ namespace Modulr.Controllers
 
             // JS Routes
             _router.Add("js/main.js", "StaticViews/js/main.js");
-            _router.Add("main.js", "StaticViews/js/main.js");
+            _router.Add("js/tester.js", "StaticViews/js/tester.js");
         }
 
         [HttpGet]

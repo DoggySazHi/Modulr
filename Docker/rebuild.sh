@@ -1,5 +1,5 @@
 #!/bin/bash
 
-docker build -t cmd .
+docker build -t modulrjail .
 
-docker run -v src:/src/files cmd SetWithArray.java SetWithArrayTest.java
+docker run --rm -v src:/src/files modulrjail SetWithArray.java SetWithArrayTest.java

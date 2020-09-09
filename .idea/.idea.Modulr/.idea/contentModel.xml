@@ -24,13 +24,9 @@
         <e p="junit-platform-console-standalone-1.6.2.jar" t="Include" />
         <e p="rebuild.sh" t="Include" />
         <e p="security.policy" t="Include" />
-        <e p="src" t="Include">
-          <e p="SetWithArray.java" t="Include" />
-          <e p="SetWithArrayTest.java" t="Include" />
-        </e>
       </e>
       <e p="Models" t="Include">
-        <e p="Test.cs" t="Include" />
+        <e p="TesterFiles.cs" t="Include" />
       </e>
       <e p="Modulr.csproj" t="IncludeRecursive" />
       <e p="Modulr.sln" t="IncludeFlat" />
@@ -65,10 +61,19 @@
           <e p="site.webmanifest" t="Include" />
         </e>
         <e p="index.html" t="Include" />
-        <e p="js" t="Include" />
+        <e p="js" t="Include">
+          <e p="tester.js" t="Include" />
+        </e>
+        <e p="tester.html" t="Include" />
       </e>
       <e p="Tester" t="Include">
         <e p="JavaUtils.cs" t="Include" />
+      </e>
+      <e p="TestingInput" t="Include">
+        <e p="616175745484" t="Include" />
+      </e>
+      <e p="TestingSource" t="Include">
+        <e p="SetWithArrayTest.java" t="Include" />
       </e>
     </e>
   </component>

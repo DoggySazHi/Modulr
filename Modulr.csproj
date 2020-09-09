@@ -12,7 +12,6 @@
 
     <ItemGroup>
       <Folder Include="StaticViews\css" />
-      <Folder Include="StaticViews\js" />
     </ItemGroup>
 
     <ItemGroup>
