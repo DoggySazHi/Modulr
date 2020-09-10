@@ -24,6 +24,7 @@ namespace Modulr.Tester
             using var sr = new StreamReader("config.json");
             var json = sr.ReadToEnd();
             Config = JsonSerializer.Deserialize<TesterConfiguration>(json);
+            ModulrJail.Config = Config;
             RNG = new Random();
             Clean();
         }
@@ -41,16 +42,11 @@ namespace Modulr.Tester
             // Mainly because it's created within Modulr.
             // Probably requires to be relative as well.
             
-            var message = Process.Start(
-                new ProcessStartInfo
-                {
-                    FileName = Config.DockerPath,
-                    Arguments = $"run --rm -v src:/src/files modulrjail {string.Join(' ', files)}",
-                    UseShellExecute = false,
-                    RedirectStandardOutput = true,
-                    WorkingDirectory = sourceFolder
-                })?.StandardOutput.ReadToEnd();
-            return message;
+            var jail = new ModulrJail(sourceFolder, files);
+            jail.Wait();
+            var output = jail.GetAllOutput();
+            jail.Dispose();
+            return output;
         }
 
         private const int TempDirLength = 6;

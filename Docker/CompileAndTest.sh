@@ -3,12 +3,10 @@
 success=true
 randomkey=$(tr -dc 'A-F0-9' < /dev/urandom | head -c6)
 
-cp -r /src/src/* .
+cp /src/files/*.java .
 
-for var in "$@"
-do
+for var in "$@" ; do
     echo "$randomkey ========== BEGIN COMPILING $var =========="
-#    cat $var
     javac -cp junit-platform-console-standalone-1.6.2.jar:. -Xlint:all -Xmaxwarns 100 $var
     if [ $? != 0 ];
     then

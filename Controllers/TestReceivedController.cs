@@ -30,7 +30,7 @@ namespace Modulr.Controllers
             if (input == null || !input.IsLikelyValid())
                 return ">:[ not nice";
             var path = JavaUtils.GetDummyFolder();
-            var srcPath = Path.Join(path, "src");
+            var srcPath = Path.Join(path, "source");
             Directory.CreateDirectory(srcPath);
             for (var i = 0; i < input.Files.Count; i++)
             {

@@ -20,10 +20,12 @@
       <e p="Docker" t="Include">
         <e p=".Dockerignore" t="Include" />
         <e p="CompileAndTest.sh" t="Include" />
+        <e p="CompileAndTest.sh.old" t="Include" />
         <e p="Dockerfile" t="Include" />
         <e p="junit-platform-console-standalone-1.6.2.jar" t="Include" />
         <e p="rebuild.sh" t="Include" />
         <e p="security.policy" t="Include" />
+        <e p="test.java" t="Include" />
       </e>
       <e p="Models" t="Include">
         <e p="TesterFiles.cs" t="Include" />
@@ -68,10 +70,11 @@
       </e>
       <e p="Tester" t="Include">
         <e p="JavaUtils.cs" t="Include" />
+        <e p="ModulrJail.cs" t="Include" />
       </e>
       <e p="TestingInput" t="Include">
-        <e p="AsnSaA" t="Include">
-          <e p="src" t="Include">
+        <e p="QpqcvK" t="Include">
+          <e p="source" t="Include">
             <e p="SetWithArray.java" t="Include" />
             <e p="SetWithArrayTest.java" t="Include" />
           </e>

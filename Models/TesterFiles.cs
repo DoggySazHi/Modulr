@@ -12,7 +12,6 @@ namespace Modulr.Models
         public List<string> FileNames { get; set; }
         public List<IFormFile> Files { get; set; }
         // If this is a file for JUnit (aka compile last)
-        // TODO actually sort the arrays if so
         public List<bool> IsTester { get; set; }
 
         public bool IsLikelyValid()
@@ -22,6 +21,19 @@ namespace Modulr.Models
                 return false;
             for (var i = 0; i < fileCount; i++)
                 FileNames[i] = Path.GetFileName(FileNames[i]);
+            var hasTester = IsTester.IndexOf(true);
+            while (hasTester >= 0)
+            {
+                IsTester.RemoveAt(hasTester);
+                var tempFile = Files[hasTester];
+                var tempFileName = FileNames[hasTester];
+                Files.RemoveAt(hasTester);
+                FileNames.RemoveAt(hasTester);
+                Files.Add(tempFile);
+                FileNames.Add(tempFileName);
+                IsTester.Add(false);
+                hasTester = IsTester.IndexOf(true);
+            }
             return true;
         }
     }
