@@ -16,8 +16,10 @@ namespace Modulr.Models
 
         public bool IsLikelyValid()
         {
+            if (FileNames == null || Files == null || IsTester == null)
+                return false;
             var fileCount = FileNames.Count;
-            if (Files.Count != fileCount || IsTester.Count != fileCount)
+            if (fileCount == 0 || Files.Count != fileCount || IsTester.Count != fileCount)
                 return false;
             for (var i = 0; i < fileCount; i++)
                 FileNames[i] = Path.GetFileName(FileNames[i]);

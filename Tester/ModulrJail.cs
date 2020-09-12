@@ -9,14 +9,13 @@ namespace Modulr.Tester
     public class ModulrJail : IDisposable
     {
         private readonly BlockingCollection<string> _logQueue = new BlockingCollection<string>();
-        private Process _process;
+        private readonly Process _process;
         
-        public static TesterConfiguration Config { private get; set; }
+        public static ModulrConfig Config { private get; set; }
         
         public ModulrJail(string sourceFolder, params string[] files)
         {
             var args = $"run --rm -v \"{Path.Join(Path.GetFullPath(sourceFolder), "/source").ToLower()}:/src/files\" modulrjail {string.Join(' ', files)}";
-            Console.WriteLine(args);
             _process = new Process
             {
                 StartInfo = new ProcessStartInfo

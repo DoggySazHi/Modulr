@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Modulr.Models;
 using Modulr.Tester;
+using Newtonsoft.Json;
 
 namespace Modulr.Controllers
 {
@@ -12,16 +13,21 @@ namespace Modulr.Controllers
     public class TestReceivedController : ControllerBase
     {
         private readonly ILogger<TestReceivedController> _logger;
+        private readonly JavaUtils _java;
+        private readonly MySqlTestQuery _query;
 
-        public TestReceivedController(ILogger<TestReceivedController> logger)
+        public TestReceivedController(ILogger<TestReceivedController> logger, JavaUtils java, MySqlTestQuery query)
         {
             _logger = logger;
+            _java = java;
+            _query = query;
         }
 
-        [HttpGet]
-        public string Get()
+        [HttpGet("GetTest")]
+        public async Task<string> Get(int id)
         {
-            return "Ohayo!";
+            var test = await _query.GetTest(id);
+            return test == null ? null : JsonConvert.SerializeObject(test);
         }
         
         [HttpPost("Upload")]
@@ -29,7 +35,7 @@ namespace Modulr.Controllers
         {
             if (input == null || !input.IsLikelyValid())
                 return ">:[ not nice";
-            var path = JavaUtils.GetDummyFolder();
+            var path = _java.GetDummyFolder();
             var srcPath = Path.Join(path, "source");
             Directory.CreateDirectory(srcPath);
             for (var i = 0; i < input.Files.Count; i++)
@@ -43,7 +49,7 @@ namespace Modulr.Controllers
             }
             System.IO.File.Copy("TestingSource/SetWithArrayTest.java", Path.Join(srcPath, "SetWithArrayTest.java"));
             input.FileNames.Add("SetWithArrayTest.java");
-            var output = JavaUtils.DockerTest(path, input.FileNames.ToArray());
+            var output = _java.DockerTest(path, input.FileNames.ToArray());
             return $">:] nice. found {input.Files.Count} files\n{output}";
         }
     }

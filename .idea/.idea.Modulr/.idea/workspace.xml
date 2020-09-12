@@ -14,16 +14,28 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="359509d8-12b3-47c4-829a-24bd1e268319" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/Tester/ModulrJail.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/.idea.Modulr/.idea/codeStyles/codeStyleConfig.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Controllers/MySqlTestQuery.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/CreateDatabase.sql" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Models/Stipulatable.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/StaticViews/css/main.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/StaticViews/img/modulrtp.svg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Tester/ModulrConfig.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.Modulr/.idea/contentModel.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Modulr/.idea/contentModel.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.Modulr/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Modulr/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Controllers/HTMLController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Controllers/HTMLController.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Controllers/TestReceivedController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Controllers/TestReceivedController.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Docker/CompileAndTest.sh" beforeDir="false" afterPath="$PROJECT_DIR$/Docker/CompileAndTest.sh" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Docker/Dockerfile" beforeDir="false" afterPath="$PROJECT_DIR$/Docker/Dockerfile" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Docker/rebuild.sh" beforeDir="false" afterPath="$PROJECT_DIR$/Docker/rebuild.sh" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Models/TesterFiles.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Models/TesterFiles.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/StaticViews/tester.html" beforeDir="false" afterPath="$PROJECT_DIR$/StaticViews/tester.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Modulr.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/Modulr.csproj" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Startup.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Startup.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/StaticViews/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/StaticViews/views/index.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/StaticViews/js/tester.js" beforeDir="false" afterPath="$PROJECT_DIR$/StaticViews/js/tester.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/StaticViews/tester.html" beforeDir="false" afterPath="$PROJECT_DIR$/StaticViews/views/tester.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Tester/JavaUtils.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Tester/JavaUtils.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Tester/ModulrJail.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Tester/ModulrJail.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/config.sample.json" beforeDir="false" afterPath="$PROJECT_DIR$/config.sample.json" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -42,8 +54,11 @@
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="HighlightingSettingsPerFile">
+    <setting file="mock:///Dummy.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/9CD23B5E-3B0C-4F80-A807-33BCFD1D82E1/135/Monitor.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/config.json" root0="FORCE_HIGHLIGHTING" />
+    <setting file="mock:///Dummy.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///Dummy.cs" root0="SKIP_HIGHLIGHTING" />
   </component>
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
@@ -56,22 +71,33 @@
         <option value="$PROJECT_DIR$/Controllers/ErrorController.cs" />
         <option value="$PROJECT_DIR$/StaticViews/Errors/error500.html" />
         <option value="$PROJECT_DIR$/StaticViews/Errors/error404.html" />
-        <option value="$PROJECT_DIR$/Startup.cs" />
         <option value="$PROJECT_DIR$/Program.cs" />
         <option value="$PROJECT_DIR$/Docker/src/SetWithArrayTest.java" />
-        <option value="$PROJECT_DIR$/config.sample.json" />
         <option value="$PROJECT_DIR$/StaticViews/js/main.js" />
-        <option value="$PROJECT_DIR$/Controllers/HTMLController.cs" />
         <option value="$PROJECT_DIR$/Models/Test.cs" />
-        <option value="$PROJECT_DIR$/StaticViews/js/tester.js" />
-        <option value="$PROJECT_DIR$/config.json" />
-        <option value="$PROJECT_DIR$/.gitignore" />
         <option value="$PROJECT_DIR$/Docker/CompileAndTest.sh" />
-        <option value="$PROJECT_DIR$/Models/TesterFiles.cs" />
+        <option value="$PROJECT_DIR$/Controllers/TestHub.cs" />
+        <option value="$PROJECT_DIR$/Models/ITestUpdate.cs" />
         <option value="$PROJECT_DIR$/Tester/JavaUtils.cs" />
+        <option value="$PROJECT_DIR$/Tester/ModulrJail.cs" />
+        <option value="$PROJECT_DIR$/Startup.cs" />
+        <option value="$PROJECT_DIR$/.gitignore" />
+        <option value="$PROJECT_DIR$/config.sample.json" />
+        <option value="$PROJECT_DIR$/config.json" />
+        <option value="$PROJECT_DIR$/Models/ServerTest.cs" />
         <option value="$PROJECT_DIR$/StaticViews/tester.html" />
         <option value="$PROJECT_DIR$/Controllers/TestReceivedController.cs" />
-        <option value="$PROJECT_DIR$/Tester/ModulrJail.cs" />
+        <option value="$PROJECT_DIR$/Models/Stipulatable.cs" />
+        <option value="$PROJECT_DIR$/Controllers/MySqlTestQuery.cs" />
+        <option value="$PROJECT_DIR$/StaticViews/views.cs" />
+        <option value="$PROJECT_DIR$/Tester/ModulrConfig.cs" />
+        <option value="$PROJECT_DIR$/Models/TesterFiles.cs" />
+        <option value="$PROJECT_DIR$/Controllers/HTMLController.cs" />
+        <option value="$PROJECT_DIR$/StaticViews/js/tester.js" />
+        <option value="$PROJECT_DIR$/StaticViews/img/modulr.svg" />
+        <option value="$PROJECT_DIR$/StaticViews/views/tester.html" />
+        <option value="$PROJECT_DIR$/StaticViews/css/main.css" />
+        <option value="$PROJECT_DIR$/TestingSource/SetWithArrayTest.java" />
       </list>
     </option>
   </component>
@@ -85,8 +111,8 @@
   </component>
   <component name="PropertiesComponent">
     <property name="ASKED_ADD_EXTERNAL_FILES" value="true" />
-    <property name="DebuggerViewTab_PTCS_FirstProportionKey" value="0.3496572" />
-    <property name="DebuggerViewTab_PTCS_LastProportionKey" value="0.29970616" />
+    <property name="DebuggerViewTab_PTCS_FirstProportionKey" value="0.34995112" />
+    <property name="DebuggerViewTab_PTCS_LastProportionKey" value="0.30009776" />
     <property name="DefaultHtmlFileTemplate" value="HTML File" />
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
@@ -97,6 +123,7 @@
     <property name="node.js.selected.package.eslint" value="(autodetect)" />
     <property name="node.js.selected.package.tslint" value="(autodetect)" />
     <property name="restartRequiresConfirmation" value="false" />
+    <property name="vue.rearranger.settings.migration" value="true" />
   </component>
   <component name="RunManager" selected=".NET Launch Settings Profile.Modulr">
     <configuration name="Modulr" type="LaunchSettings" factoryName=".NET Launch Settings Profile">
@@ -152,7 +179,11 @@
       <workItem from="1599614808502" duration="7000" />
       <workItem from="1599626045705" duration="2228000" />
       <workItem from="1599659268566" duration="2442000" />
-      <workItem from="1599666204633" duration="5546000" />
+      <workItem from="1599666204633" duration="5844000" />
+      <workItem from="1599709659417" duration="3374000" />
+      <workItem from="1599745587790" duration="7422000" />
+      <workItem from="1599779873816" duration="4000" />
+      <workItem from="1599795189286" duration="28346000" />
     </task>
     <servers />
   </component>
@@ -178,136 +209,125 @@
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
   </component>
   <component name="WindowStateProjectService">
-    <state x="1401" y="300" key="#xdebugger.evaluate" timestamp="1599627172592">
+    <state x="1238" y="256" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1599766376411">
       <screen x="0" y="0" width="2194" height="1194" />
     </state>
-    <state x="1401" y="300" key="#xdebugger.evaluate/0.0.2194.1194@0.0.2194.1194" timestamp="1599627172592" />
-    <state width="412" height="466" key="DebuggerActiveHint" timestamp="1599627884550">
+    <state x="1238" y="256" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.2194.1194@0.0.2194.1194" timestamp="1599766376411" />
+    <state x="1154" y="382" key="#xdebugger.evaluate" timestamp="1599888142441">
       <screen x="0" y="0" width="2194" height="1194" />
     </state>
-    <state width="412" height="466" key="DebuggerActiveHint/0.0.2194.1194@0.0.2194.1194" timestamp="1599627884550" />
-    <state width="1052" height="430" key="GridCell.Tab.0.bottom" timestamp="1599704283497">
+    <state x="1154" y="382" key="#xdebugger.evaluate/0.0.2194.1194@0.0.2194.1194" timestamp="1599888142441" />
+    <state width="416" height="466" key="DebuggerActiveHint" timestamp="1599889740620">
       <screen x="0" y="0" width="2194" height="1194" />
     </state>
-    <state width="1052" height="430" key="GridCell.Tab.0.bottom/0.0.2194.1194@0.0.2194.1194" timestamp="1599704283497" />
-    <state width="1052" height="430" key="GridCell.Tab.0.center" timestamp="1599704283496">
+    <state width="416" height="466" key="DebuggerActiveHint/0.0.2194.1194@0.0.2194.1194" timestamp="1599889740620" />
+    <state width="1054" height="432" key="GridCell.Tab.0.bottom" timestamp="1599935340851">
       <screen x="0" y="0" width="2194" height="1194" />
     </state>
-    <state width="1052" height="430" key="GridCell.Tab.0.center/0.0.2194.1194@0.0.2194.1194" timestamp="1599704283496" />
-    <state width="1052" height="430" key="GridCell.Tab.0.left" timestamp="1599704283496">
+    <state width="1054" height="432" key="GridCell.Tab.0.bottom/0.0.2194.1194@0.0.2194.1194" timestamp="1599935340851" />
+    <state width="1054" height="432" key="GridCell.Tab.0.center" timestamp="1599935340851">
       <screen x="0" y="0" width="2194" height="1194" />
     </state>
-    <state width="1052" height="430" key="GridCell.Tab.0.left/0.0.2194.1194@0.0.2194.1194" timestamp="1599704283496" />
-    <state width="1052" height="430" key="GridCell.Tab.0.right" timestamp="1599704283496">
+    <state width="1054" height="432" key="GridCell.Tab.0.center/0.0.2194.1194@0.0.2194.1194" timestamp="1599935340851" />
+    <state width="1054" height="432" key="GridCell.Tab.0.left" timestamp="1599935340851">
       <screen x="0" y="0" width="2194" height="1194" />
     </state>
-    <state width="1052" height="430" key="GridCell.Tab.0.right/0.0.2194.1194@0.0.2194.1194" timestamp="1599704283496" />
-    <state width="1052" height="430" key="GridCell.Tab.1.bottom" timestamp="1599704291316">
+    <state width="1054" height="432" key="GridCell.Tab.0.left/0.0.2194.1194@0.0.2194.1194" timestamp="1599935340851" />
+    <state width="1054" height="432" key="GridCell.Tab.0.right" timestamp="1599935340851">
       <screen x="0" y="0" width="2194" height="1194" />
     </state>
-    <state width="1052" height="430" key="GridCell.Tab.1.bottom/0.0.2194.1194@0.0.2194.1194" timestamp="1599704291316" />
-    <state width="1052" height="430" key="GridCell.Tab.1.center" timestamp="1599704291316">
+    <state width="1054" height="432" key="GridCell.Tab.0.right/0.0.2194.1194@0.0.2194.1194" timestamp="1599935340851" />
+    <state width="1054" height="432" key="GridCell.Tab.1.bottom" timestamp="1599935340636">
       <screen x="0" y="0" width="2194" height="1194" />
     </state>
-    <state width="1052" height="430" key="GridCell.Tab.1.center/0.0.2194.1194@0.0.2194.1194" timestamp="1599704291316" />
-    <state width="1052" height="430" key="GridCell.Tab.1.left" timestamp="1599704291316">
+    <state width="1054" height="432" key="GridCell.Tab.1.bottom/0.0.2194.1194@0.0.2194.1194" timestamp="1599935340636" />
+    <state width="1054" height="432" key="GridCell.Tab.1.center" timestamp="1599935340635">
       <screen x="0" y="0" width="2194" height="1194" />
     </state>
-    <state width="1052" height="430" key="GridCell.Tab.1.left/0.0.2194.1194@0.0.2194.1194" timestamp="1599704291316" />
-    <state width="1052" height="430" key="GridCell.Tab.1.right" timestamp="1599704291316">
+    <state width="1054" height="432" key="GridCell.Tab.1.center/0.0.2194.1194@0.0.2194.1194" timestamp="1599935340635" />
+    <state width="1054" height="432" key="GridCell.Tab.1.left" timestamp="1599935340635">
       <screen x="0" y="0" width="2194" height="1194" />
     </state>
-    <state width="1052" height="430" key="GridCell.Tab.1.right/0.0.2194.1194@0.0.2194.1194" timestamp="1599704291316" />
-    <state width="1052" height="430" key="GridCell.Tab.2.bottom" timestamp="1599704283349">
+    <state width="1054" height="432" key="GridCell.Tab.1.left/0.0.2194.1194@0.0.2194.1194" timestamp="1599935340635" />
+    <state width="1054" height="432" key="GridCell.Tab.1.right" timestamp="1599935340636">
       <screen x="0" y="0" width="2194" height="1194" />
     </state>
-    <state width="1052" height="430" key="GridCell.Tab.2.bottom/0.0.2194.1194@0.0.2194.1194" timestamp="1599704283349" />
-    <state width="1052" height="430" key="GridCell.Tab.2.center" timestamp="1599704283349">
+    <state width="1054" height="432" key="GridCell.Tab.1.right/0.0.2194.1194@0.0.2194.1194" timestamp="1599935340636" />
+    <state width="1054" height="432" key="GridCell.Tab.2.bottom" timestamp="1599935340636">
       <screen x="0" y="0" width="2194" height="1194" />
     </state>
-    <state width="1052" height="430" key="GridCell.Tab.2.center/0.0.2194.1194@0.0.2194.1194" timestamp="1599704283349" />
-    <state width="1052" height="430" key="GridCell.Tab.2.left" timestamp="1599704283349">
+    <state width="1054" height="432" key="GridCell.Tab.2.bottom/0.0.2194.1194@0.0.2194.1194" timestamp="1599935340636" />
+    <state width="1054" height="432" key="GridCell.Tab.2.center" timestamp="1599935340636">
       <screen x="0" y="0" width="2194" height="1194" />
     </state>
-    <state width="1052" height="430" key="GridCell.Tab.2.left/0.0.2194.1194@0.0.2194.1194" timestamp="1599704283349" />
-    <state width="1052" height="430" key="GridCell.Tab.2.right" timestamp="1599704283349">
+    <state width="1054" height="432" key="GridCell.Tab.2.center/0.0.2194.1194@0.0.2194.1194" timestamp="1599935340636" />
+    <state width="1054" height="432" key="GridCell.Tab.2.left" timestamp="1599935340636">
       <screen x="0" y="0" width="2194" height="1194" />
     </state>
-    <state width="1052" height="430" key="GridCell.Tab.2.right/0.0.2194.1194@0.0.2194.1194" timestamp="1599704283349" />
-    <state width="1052" height="430" key="GridCell.Tab.3.bottom" timestamp="1599704283349">
+    <state width="1054" height="432" key="GridCell.Tab.2.left/0.0.2194.1194@0.0.2194.1194" timestamp="1599935340636" />
+    <state width="1054" height="432" key="GridCell.Tab.2.right" timestamp="1599935340636">
       <screen x="0" y="0" width="2194" height="1194" />
     </state>
-    <state width="1052" height="430" key="GridCell.Tab.3.bottom/0.0.2194.1194@0.0.2194.1194" timestamp="1599704283349" />
-    <state width="1052" height="430" key="GridCell.Tab.3.center" timestamp="1599704283349">
+    <state width="1054" height="432" key="GridCell.Tab.2.right/0.0.2194.1194@0.0.2194.1194" timestamp="1599935340636" />
+    <state width="1054" height="432" key="GridCell.Tab.3.bottom" timestamp="1599935340636">
       <screen x="0" y="0" width="2194" height="1194" />
     </state>
-    <state width="1052" height="430" key="GridCell.Tab.3.center/0.0.2194.1194@0.0.2194.1194" timestamp="1599704283349" />
-    <state width="1052" height="430" key="GridCell.Tab.3.left" timestamp="1599704283349">
+    <state width="1054" height="432" key="GridCell.Tab.3.bottom/0.0.2194.1194@0.0.2194.1194" timestamp="1599935340636" />
+    <state width="1054" height="432" key="GridCell.Tab.3.center" timestamp="1599935340636">
       <screen x="0" y="0" width="2194" height="1194" />
     </state>
-    <state width="1052" height="430" key="GridCell.Tab.3.left/0.0.2194.1194@0.0.2194.1194" timestamp="1599704283349" />
-    <state width="1052" height="430" key="GridCell.Tab.3.right" timestamp="1599704283349">
+    <state width="1054" height="432" key="GridCell.Tab.3.center/0.0.2194.1194@0.0.2194.1194" timestamp="1599935340636" />
+    <state width="1054" height="432" key="GridCell.Tab.3.left" timestamp="1599935340636">
       <screen x="0" y="0" width="2194" height="1194" />
     </state>
-    <state width="1052" height="430" key="GridCell.Tab.3.right/0.0.2194.1194@0.0.2194.1194" timestamp="1599704283349" />
-    <state width="1052" height="430" key="GridCell.Tab.4.bottom" timestamp="1599704283349">
+    <state width="1054" height="432" key="GridCell.Tab.3.left/0.0.2194.1194@0.0.2194.1194" timestamp="1599935340636" />
+    <state width="1054" height="432" key="GridCell.Tab.3.right" timestamp="1599935340636">
       <screen x="0" y="0" width="2194" height="1194" />
     </state>
-    <state width="1052" height="430" key="GridCell.Tab.4.bottom/0.0.2194.1194@0.0.2194.1194" timestamp="1599704283349" />
-    <state width="1052" height="430" key="GridCell.Tab.4.center" timestamp="1599704283349">
+    <state width="1054" height="432" key="GridCell.Tab.3.right/0.0.2194.1194@0.0.2194.1194" timestamp="1599935340636" />
+    <state width="1054" height="432" key="GridCell.Tab.4.bottom" timestamp="1599935340636">
       <screen x="0" y="0" width="2194" height="1194" />
     </state>
-    <state width="1052" height="430" key="GridCell.Tab.4.center/0.0.2194.1194@0.0.2194.1194" timestamp="1599704283349" />
-    <state width="1052" height="430" key="GridCell.Tab.4.left" timestamp="1599704283349">
+    <state width="1054" height="432" key="GridCell.Tab.4.bottom/0.0.2194.1194@0.0.2194.1194" timestamp="1599935340636" />
+    <state width="1054" height="432" key="GridCell.Tab.4.center" timestamp="1599935340636">
       <screen x="0" y="0" width="2194" height="1194" />
     </state>
-    <state width="1052" height="430" key="GridCell.Tab.4.left/0.0.2194.1194@0.0.2194.1194" timestamp="1599704283349" />
-    <state width="1052" height="430" key="GridCell.Tab.4.right" timestamp="1599704283349">
+    <state width="1054" height="432" key="GridCell.Tab.4.center/0.0.2194.1194@0.0.2194.1194" timestamp="1599935340636" />
+    <state width="1054" height="432" key="GridCell.Tab.4.left" timestamp="1599935340636">
       <screen x="0" y="0" width="2194" height="1194" />
     </state>
-    <state width="1052" height="430" key="GridCell.Tab.4.right/0.0.2194.1194@0.0.2194.1194" timestamp="1599704283349" />
+    <state width="1054" height="432" key="GridCell.Tab.4.left/0.0.2194.1194@0.0.2194.1194" timestamp="1599935340636" />
+    <state width="1054" height="432" key="GridCell.Tab.4.right" timestamp="1599935340636">
+      <screen x="0" y="0" width="2194" height="1194" />
+    </state>
+    <state width="1054" height="432" key="GridCell.Tab.4.right/0.0.2194.1194@0.0.2194.1194" timestamp="1599935340636" />
     <state x="746" y="316" key="Rider.ProjectTemplateDialog.Size" timestamp="1598449822689">
       <screen x="0" y="0" width="2194" height="1194" />
     </state>
     <state x="746" y="316" key="Rider.ProjectTemplateDialog.Size/0.0.2194.1194@0.0.2194.1194" timestamp="1598449822689" />
-    <state x="1477" y="279" key="RiderGenerateDialog" timestamp="1599696229548">
+    <state x="1477" y="279" key="RiderGenerateDialog" timestamp="1599757779852">
       <screen x="0" y="0" width="2194" height="1194" />
     </state>
-    <state x="1477" y="279" key="RiderGenerateDialog/0.0.2194.1194@0.0.2194.1194" timestamp="1599696229548" />
-    <state width="556" height="597" key="XDebugger.FullValuePopup" timestamp="1599627476286">
+    <state x="1477" y="279" key="RiderGenerateDialog/0.0.2194.1194@0.0.2194.1194" timestamp="1599757779852" />
+    <state x="94" y="100" width="909" height="1000" key="VCS.FileHistoryDialog" timestamp="1599884997967">
       <screen x="0" y="0" width="2194" height="1194" />
     </state>
-    <state width="556" height="597" key="XDebugger.FullValuePopup/0.0.2194.1194@0.0.2194.1194" timestamp="1599627476286" />
+    <state x="94" y="100" width="909" height="1000" key="VCS.FileHistoryDialog/0.0.2194.1194@0.0.2194.1194" timestamp="1599884997967" />
+    <state width="556" height="597" key="XDebugger.FullValuePopup" timestamp="1599888069038">
+      <screen x="0" y="0" width="2194" height="1194" />
+    </state>
+    <state width="556" height="597" key="XDebugger.FullValuePopup/0.0.2194.1194@0.0.2194.1194" timestamp="1599888069038" />
     <state x="1087" y="230" width="783" height="743" key="dock-window-1" timestamp="1599416233581">
       <screen x="0" y="0" width="2194" height="1194" />
     </state>
     <state x="1087" y="230" width="783" height="743" key="dock-window-1/0.0.2194.1194@0.0.2194.1194" timestamp="1599416233581" />
-    <state x="1327" y="330" width="635" height="534" key="find.popup" timestamp="1599703672425">
+    <state x="1327" y="330" width="635" height="534" key="find.popup" timestamp="1599749878948">
       <screen x="0" y="0" width="2194" height="1194" />
     </state>
-    <state x="1327" y="330" width="635" height="534" key="find.popup/0.0.2194.1194@0.0.2194.1194" timestamp="1599703672425" />
+    <state x="1327" y="330" width="635" height="534" key="find.popup/0.0.2194.1194@0.0.2194.1194" timestamp="1599749878948" />
     <state width="600" height="428" key="javadoc.popup" timestamp="1599416520321">
       <screen x="0" y="0" width="2194" height="1194" />
     </state>
     <state width="600" height="428" key="javadoc.popup/0.0.2194.1194@0.0.2194.1194" timestamp="1599416520321" />
-  </component>
-  <component name="XDebuggerManager">
-    <breakpoint-manager>
-      <breakpoints>
-        <line-breakpoint enabled="true" type="DotNet Breakpoints">
-          <url>file://$PROJECT_DIR$/Tester/ModulrJail.cs</url>
-          <line>17</line>
-          <properties documentPath="C:\Users\William Le\Documents\Programming Projects\Modulr\Tester\ModulrJail.cs" initialLine="16">
-            <startOffsets>
-              <option value="501" />
-            </startOffsets>
-            <endOffsets>
-              <option value="644" />
-            </endOffsets>
-          </properties>
-          <option name="timeStamp" value="10" />
-        </line-breakpoint>
-      </breakpoints>
-    </breakpoint-manager>
   </component>
 </project>

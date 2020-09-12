@@ -1,9 +1,12 @@
 using System.IO;
+using System.Net.WebSockets;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Modulr.Controllers;
+using Modulr.Tester;
 
 namespace Modulr
 {
@@ -20,6 +23,9 @@ namespace Modulr
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
+            services.AddSingleton(ModulrConfig.Build());
+            services.AddSingleton<JavaUtils>();
+            services.AddScoped<MySqlTestQuery>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -37,8 +43,11 @@ namespace Modulr
             app.UseRouting();
 
             app.UseAuthorization();
-
-            app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
+            
+            app.UseEndpoints(endpoints =>
+            {
+                endpoints.MapControllers();
+            });
         }
     }
 }

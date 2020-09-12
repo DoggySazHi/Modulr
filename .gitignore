@@ -7,4 +7,3 @@ config.json
 Docker/*.java
 Docker/*.class
 TestingInput
-TestingSource

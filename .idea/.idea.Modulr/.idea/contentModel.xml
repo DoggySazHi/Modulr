@@ -15,19 +15,20 @@
       <e p="Controllers" t="Include">
         <e p="ErrorController.cs" t="Include" />
         <e p="HTMLController.cs" t="Include" />
+        <e p="MySqlTestQuery.cs" t="Include" />
         <e p="TestReceivedController.cs" t="Include" />
       </e>
+      <e p="CreateDatabase.sql" t="Include" />
       <e p="Docker" t="Include">
         <e p=".Dockerignore" t="Include" />
         <e p="CompileAndTest.sh" t="Include" />
-        <e p="CompileAndTest.sh.old" t="Include" />
         <e p="Dockerfile" t="Include" />
         <e p="junit-platform-console-standalone-1.6.2.jar" t="Include" />
         <e p="rebuild.sh" t="Include" />
         <e p="security.policy" t="Include" />
-        <e p="test.java" t="Include" />
       </e>
       <e p="Models" t="Include">
+        <e p="Stipulatable.cs" t="Include" />
         <e p="TesterFiles.cs" t="Include" />
       </e>
       <e p="Modulr.csproj" t="IncludeRecursive" />
@@ -46,7 +47,9 @@
       </e>
       <e p="Startup.cs" t="Include" />
       <e p="StaticViews" t="Include">
-        <e p="css" t="Include" />
+        <e p="css" t="Include">
+          <e p="main.css" t="Include" />
+        </e>
         <e p="Errors" t="Include">
           <e p="error404.html" t="Include" />
           <e p="error500.html" t="Include" />
@@ -60,20 +63,48 @@
           <e p="favicon.ico" t="Include" />
           <e p="modulr.png" t="Include" />
           <e p="modulr.svg" t="Include" />
+          <e p="modulrtp.svg" t="Include" />
           <e p="site.webmanifest" t="Include" />
         </e>
-        <e p="index.html" t="Include" />
         <e p="js" t="Include">
           <e p="tester.js" t="Include" />
         </e>
-        <e p="tester.html" t="Include" />
+        <e p="views" t="Include">
+          <e p="index.html" t="Include" />
+          <e p="tester.html" t="Include" />
+        </e>
       </e>
       <e p="Tester" t="Include">
         <e p="JavaUtils.cs" t="Include" />
+        <e p="ModulrConfig.cs" t="Include" />
         <e p="ModulrJail.cs" t="Include" />
       </e>
       <e p="TestingInput" t="Include">
-        <e p="QpqcvK" t="Include">
+        <e p="0GNea0" t="Include">
+          <e p="source" t="Include">
+            <e p="SetWithArray.java" t="Include" />
+            <e p="SetWithArrayTest.java" t="Include" />
+          </e>
+        </e>
+        <e p="7IaUZc" t="Include">
+          <e p="source" t="Include">
+            <e p="SetWithArray.java" t="Include" />
+            <e p="SetWithArrayTest.java" t="Include" />
+          </e>
+        </e>
+        <e p="a0QFMq" t="Include">
+          <e p="source" t="Include">
+            <e p="SetWithArray.java" t="Include" />
+            <e p="SetWithArrayTest.java" t="Include" />
+          </e>
+        </e>
+        <e p="UNmfrS" t="Include">
+          <e p="source" t="Include">
+            <e p="SetWithArray.java" t="Include" />
+            <e p="SetWithArrayTest.java" t="Include" />
+          </e>
+        </e>
+        <e p="WEvhgz" t="Include">
           <e p="source" t="Include">
             <e p="SetWithArray.java" t="Include" />
             <e p="SetWithArrayTest.java" t="Include" />

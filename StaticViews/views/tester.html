@@ -1,0 +1,42 @@
+﻿<!DOCTYPE html>
+<!-- It's been soooo long since I wrote web-based applications~ -->
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="icon" href="img/modulr.svg">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Code+Pro">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro">
+    <link rel="stylesheet" href="css/main.css">
+    <title>Tester Upload</title>
+</head>
+<body>
+    <nav>
+        <div class="nav-container">
+            <img class="nav-item nav-logo" src="img/modulrtp.svg" alt="Modulr Logo">
+            <span class="nav-item nav-focus">Modulr</span>
+            <span class="nav-item-right">Login</span>
+            <div><!-- Intended for splitting left and right --></div>
+        </div>
+    </nav>
+    <div class="nav-padding"></div>
+    
+    <div class="container">
+        <header>Tester Demo</header>
+
+        <label class="input normal form-control">
+            Test ID&nbsp;
+            <input type="number" id="testId">
+        </label>
+        
+        <label class="input normal form-control">
+            SetWithArray.java
+            <input type="file" name="SetWithArray.java">
+        </label>
+
+        <button id="submit" class="default form-control">Submit!</button>
+        <div id="result" class="output"></div>
+    </div>
+    
+    <script type="text/javascript" src="js/tester.js"></script>
+</body>
+</html>

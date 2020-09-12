@@ -11,10 +11,9 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="StaticViews\css" />
-    </ItemGroup>
-
-    <ItemGroup>
+      <PackageReference Include="Dapper" Version="2.0.35" />
       <PackageReference Include="Microsoft.AspNetCore.StaticFiles" Version="2.2.0" />
+      <PackageReference Include="MySql.Data" Version="8.0.21" />
+      <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
     </ItemGroup>
 </Project>
