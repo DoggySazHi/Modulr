@@ -1,7 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using Microsoft.AspNetCore.Http;
 
 namespace Modulr.Models
@@ -9,6 +7,7 @@ namespace Modulr.Models
     // We can't hold dictionaries, so we're trying this out instead...
     public class TesterFiles
     {
+        public int TestID { get; set; }
         public List<string> FileNames { get; set; }
         public List<IFormFile> Files { get; set; }
         // If this is a file for JUnit (aka compile last)

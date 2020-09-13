@@ -28,5 +28,5 @@ ulimit -t 20
 # time
 # ulimit -a
 echo "$randomkey ========== STARTING TEST =========="
-java -Djava.security.manager -Djava.security.policy=security.policy -Xmx64M -jar junit-platform-console-standalone-1.6.2.jar --disable-banner --include-engine=junit-jupiter --scan-class-path --class-path=. --details=tree --details-theme=ascii --disable-ansi-colors --fail-if-no-tests
+java -Djava.security.manager -Djava.security.policy=security.policy -Xmx64M -jar junit-platform-console-standalone-1.6.2.jar --disable-banner --include-engine=junit-jupiter --scan-class-path --class-path=. --details=tree --details-theme=ascii --disable-ansi-colors --fail-if-no-tests --include-classname '.*'
 exit 0

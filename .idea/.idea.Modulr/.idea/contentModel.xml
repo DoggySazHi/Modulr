@@ -55,16 +55,33 @@
           <e p="error500.html" t="Include" />
         </e>
         <e p="img" t="Include">
-          <e p="android-chrome-192x192.png" t="Include" />
-          <e p="android-chrome-512x512.png" t="Include" />
-          <e p="apple-touch-icon.png" t="Include" />
+          <e p="android-icon-144x144.png" t="Include" />
+          <e p="android-icon-192x192.png" t="Include" />
+          <e p="android-icon-36x36.png" t="Include" />
+          <e p="android-icon-48x48.png" t="Include" />
+          <e p="android-icon-72x72.png" t="Include" />
+          <e p="android-icon-96x96.png" t="Include" />
+          <e p="apple-icon-114x114.png" t="Include" />
+          <e p="apple-icon-120x120.png" t="Include" />
+          <e p="apple-icon-144x144.png" t="Include" />
+          <e p="apple-icon-152x152.png" t="Include" />
+          <e p="apple-icon-180x180.png" t="Include" />
+          <e p="apple-icon-57x57.png" t="Include" />
+          <e p="apple-icon-60x60.png" t="Include" />
+          <e p="apple-icon-72x72.png" t="Include" />
+          <e p="apple-icon-76x76.png" t="Include" />
+          <e p="apple-icon-precomposed.png" t="Include" />
+          <e p="apple-icon.png" t="Include" />
+          <e p="browserconfig.xml" t="Include" />
           <e p="favicon-16x16.png" t="Include" />
           <e p="favicon-32x32.png" t="Include" />
-          <e p="favicon.ico" t="Include" />
-          <e p="modulr.png" t="Include" />
+          <e p="favicon-96x96.png" t="Include" />
+          <e p="manifest.json" t="Include" />
           <e p="modulr.svg" t="Include" />
-          <e p="modulrtp.svg" t="Include" />
-          <e p="site.webmanifest" t="Include" />
+          <e p="ms-icon-144x144.png" t="Include" />
+          <e p="ms-icon-150x150.png" t="Include" />
+          <e p="ms-icon-310x310.png" t="Include" />
+          <e p="ms-icon-70x70.png" t="Include" />
         </e>
         <e p="js" t="Include">
           <e p="tester.js" t="Include" />
@@ -80,39 +97,100 @@
         <e p="ModulrJail.cs" t="Include" />
       </e>
       <e p="TestingInput" t="Include">
-        <e p="0GNea0" t="Include">
+        <e p="6yGdD0" t="Include">
           <e p="source" t="Include">
             <e p="SetWithArray.java" t="Include" />
             <e p="SetWithArrayTest.java" t="Include" />
           </e>
         </e>
-        <e p="7IaUZc" t="Include">
+        <e p="7xwRyK" t="Include">
           <e p="source" t="Include">
-            <e p="SetWithArray.java" t="Include" />
-            <e p="SetWithArrayTest.java" t="Include" />
+            <e p="DorasGreatMapAdventure.java" t="Include" />
+            <e p="DorasGreatMapAdventurePart2.java" t="Include" />
+            <e p="DorasPart2StudentTester.java" t="Include" />
           </e>
         </e>
-        <e p="a0QFMq" t="Include">
+        <e p="aARU4r" t="Include">
           <e p="source" t="Include">
-            <e p="SetWithArray.java" t="Include" />
-            <e p="SetWithArrayTest.java" t="Include" />
+            <e p="DorasGreatMapAdventure.java" t="Include" />
+            <e p="DorasGreatMapAdventurePart2.java" t="Include" />
+            <e p="DorasPart2StudentTester.java" t="Include" />
           </e>
         </e>
-        <e p="UNmfrS" t="Include">
+        <e p="CHkAko" t="Include">
           <e p="source" t="Include">
-            <e p="SetWithArray.java" t="Include" />
-            <e p="SetWithArrayTest.java" t="Include" />
+            <e p="AllenWittrySet.java" t="Include" />
+            <e p="StudentTester.java" t="Include" />
           </e>
         </e>
-        <e p="WEvhgz" t="Include">
+        <e p="cht88X" t="Include">
           <e p="source" t="Include">
-            <e p="SetWithArray.java" t="Include" />
-            <e p="SetWithArrayTest.java" t="Include" />
+            <e p="DorasGreatMapAdventure.java" t="Include" />
+            <e p="DorasGreatMapAdventurePart2.java" t="Include" />
+            <e p="DorasPart2StudentTester.java" t="Include" />
+          </e>
+        </e>
+        <e p="CkNRqc" t="Include">
+          <e p="source" t="Include">
+            <e p="DorasGreatMapAdventure.java" t="Include" />
+            <e p="DorasStudentTester.java" t="Include" />
+          </e>
+        </e>
+        <e p="CnbjpC" t="Include">
+          <e p="source" t="Include">
+            <e p="DorasGreatMapAdventure.java" t="Include" />
+            <e p="DorasStudentTester.java" t="Include" />
+          </e>
+        </e>
+        <e p="KAckPg" t="Include">
+          <e p="source" t="Include">
+            <e p="AllenWittrySet.java" t="Include" />
+            <e p="StudentTester.java" t="Include" />
+          </e>
+        </e>
+        <e p="kTSYpa" t="Include">
+          <e p="source" t="Include">
+            <e p="DorasGreatMapAdventure.java" t="Include" />
+            <e p="DorasStudentTester.java" t="Include" />
+          </e>
+        </e>
+        <e p="TVApDi" t="Include">
+          <e p="source" t="Include">
+            <e p="DorasGreatMapAdventure.java" t="Include" />
+            <e p="DorasStudentTester.java" t="Include" />
+          </e>
+        </e>
+        <e p="Un8xaO" t="Include">
+          <e p="source" t="Include">
+            <e p="DorasGreatMapAdventure.java" t="Include" />
+            <e p="DorasStudentTester.java" t="Include" />
+          </e>
+        </e>
+        <e p="Vj0lCV" t="Include">
+          <e p="source" t="Include">
+            <e p="CompileAndTest.sh" t="Include" />
+            <e p="DorasGreatMapAdventure.class" t="Include" />
+            <e p="DorasGreatMapAdventure.java" t="Include" />
+            <e p="DorasGreatMapAdventurePart2.class" t="Include" />
+            <e p="DorasGreatMapAdventurePart2.java" t="Include" />
+            <e p="DorasPart2StudentTester.class" t="Include" />
+            <e p="DorasPart2StudentTester.java" t="Include" />
+            <e p="junit-platform-console-standalone-1.6.2.jar" t="Include" />
+            <e p="security.policy" t="Include" />
+          </e>
+        </e>
+        <e p="zFgQVM" t="Include">
+          <e p="source" t="Include">
+            <e p="AllenWittrySet.java" t="Include" />
+            <e p="StudentTester.java" t="Include" />
           </e>
         </e>
       </e>
       <e p="TestingSource" t="Include">
+        <e p="DorasPart2StudentTester.java" t="Include" />
+        <e p="DorasStudentTester.java" t="Include" />
         <e p="SetWithArrayTest.java" t="Include" />
+        <e p="StudentTester.java" t="Include" />
       </e>
     </e>
   </component>

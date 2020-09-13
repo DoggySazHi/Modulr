@@ -20,7 +20,7 @@ namespace Modulr.Tester
         public int MySqlPort { get; private set; }
         [JsonProperty]
         public string MySqlPassword { get; private set; }
-        public string MySqlConnection => $"server={MySqlServer};user=modulr;database=Modulr;port={MySqlPort};password=${MySqlPassword}";
+        public string MySqlConnection => $"server={MySqlServer};user=modulr;database=Modulr;port={MySqlPort};password={MySqlPassword}";
 
         public static ModulrConfig Build(string file = "config.json")
         {
