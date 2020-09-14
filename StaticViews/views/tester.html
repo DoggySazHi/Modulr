@@ -33,7 +33,7 @@
         <div class="nav-container">
             <img class="nav-item nav-logo" src="img/modulr.svg" alt="Modulr Logo">
             <span class="nav-item nav-focus">Modulr</span>
-            <span class="nav-item-right">Login</span>
+            <span class="nav-item-right" id="googleSignIn"></span>
         </div>
     </nav>
     <div class="nav-padding"></div>
@@ -52,6 +52,8 @@
         <div id="result" class="output"></div>
     </div>
     
+    <!-- JavaScript libraries -->
     <script type="text/javascript" src="js/tester.js"></script>
+    <script src="https://apis.google.com/js/platform.js?onload=googleInit" async defer></script>
 </body>
 </html>

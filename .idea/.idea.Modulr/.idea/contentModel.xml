@@ -14,6 +14,7 @@
       <e p="config.sample.json" t="Include" />
       <e p="Controllers" t="Include">
         <e p="ErrorController.cs" t="Include" />
+        <e p="GoogleLoginController.cs" t="Include" />
         <e p="HTMLController.cs" t="Include" />
         <e p="MySqlTestQuery.cs" t="Include" />
         <e p="TestReceivedController.cs" t="Include" />
@@ -28,6 +29,7 @@
         <e p="security.policy" t="Include" />
       </e>
       <e p="Models" t="Include">
+        <e p="LoginMessage.cs" t="Include" />
         <e p="Stipulatable.cs" t="Include" />
         <e p="TesterFiles.cs" t="Include" />
       </e>

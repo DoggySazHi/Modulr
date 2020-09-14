@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.StaticFiles;
@@ -8,7 +7,6 @@ using Microsoft.Extensions.Logging;
 namespace Modulr.Controllers
 {
     [ApiController]
-    
     [Route("/{**page}")]
     public class HTMLController : ControllerBase
     {
@@ -33,14 +31,8 @@ namespace Modulr.Controllers
             _router.Add("testdemo", "StaticViews/views/tester.html");
 
             // Holy crap icon stuff
-            _router.Add("favicon.ico", "StaticViews/img/favicon.ico");
-            _router.Add("android-chrome-192x192.png", "StaticViews/img/android-chrome-192x192.png");
-            _router.Add("android-chrome-512x512.png", "StaticViews/img/android-chrome-512x512.png");
-            _router.Add("apple-touch-icon.png", "StaticViews/img/apple-touch-icon.png");
-            _router.Add("favicon-16x16.png", "StaticViews/img/favicon-16x16.png");
-            _router.Add("favicon-32x32.png", "StaticViews/img/favicon-32x32.png");
-            _router.Add("site.webmanifest", "StaticViews/img/site.webmanifest");
-            
+            AddFolderToRouter("", "StaticViews/img");
+
             // All other files
             AddFolderToRouter("", "StaticViews/views");
             AddFolderToRouter("img", "StaticViews/img");

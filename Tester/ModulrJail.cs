@@ -29,8 +29,8 @@ namespace Modulr.Tester
                 }
             };
 
-            _process.OutputDataReceived += (sender, args) => _logQueue.Add(args.Data);
-            _process.ErrorDataReceived += (sender, args) => _logQueue.Add(args.Data);
+            _process.OutputDataReceived += (sender, info) => _logQueue.Add(info.Data);
+            _process.ErrorDataReceived += (sender, info) => _logQueue.Add(info.Data);
 
             _process.Start();
             _process.BeginOutputReadLine();

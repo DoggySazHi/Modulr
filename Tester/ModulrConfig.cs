@@ -21,6 +21,12 @@ namespace Modulr.Tester
         [JsonProperty]
         public string MySqlPassword { get; private set; }
         public string MySqlConnection => $"server={MySqlServer};user=modulr;database=Modulr;port={MySqlPort};password={MySqlPassword}";
+        [JsonProperty]
+        public string GoogleClientKey { get; private set; }
+        [JsonProperty]
+        public string GoogleSecret { get; private set; }
+        [JsonProperty]
+        public string HostedDomain { get; private set; }
 
         public static ModulrConfig Build(string file = "config.json")
         {

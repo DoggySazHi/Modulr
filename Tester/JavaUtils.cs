@@ -60,8 +60,5 @@ namespace Modulr.Tester
 
             return new string(output);
         }
-
-        private bool IsWindows()
-            => Environment.OSVersion.Platform == PlatformID.Win32NT;
     }
 }

@@ -1,7 +1,6 @@
 ﻿using System.IO;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
 using Modulr.Models;
 using Modulr.Tester;
 using Newtonsoft.Json;
@@ -12,13 +11,11 @@ namespace Modulr.Controllers
     [Route("/Tester")]
     public class TestReceivedController : ControllerBase
     {
-        private readonly ILogger<TestReceivedController> _logger;
         private readonly JavaUtils _java;
         private readonly MySqlTestQuery _query;
 
-        public TestReceivedController(ILogger<TestReceivedController> logger, JavaUtils java, MySqlTestQuery query)
+        public TestReceivedController(JavaUtils java, MySqlTestQuery query)
         {
-            _logger = logger;
             _java = java;
             _query = query;
         }
