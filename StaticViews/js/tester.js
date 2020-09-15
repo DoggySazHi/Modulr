@@ -1,12 +1,11 @@
 ﻿'use strict';
 
-onInit();
+onInitTester();
 
-function onInit() {
+function onInitTester() {
     bindButtons();
     bindUploads();
-    fixNavbar();
-    console.log("Initialized main script!");
+    console.log("Initialized tester script!");
 }
 
 function bindButtons() {
@@ -28,72 +27,6 @@ function bindUploads() {
             else
                 e.target.parentNode.className = "input success";
         }, false);
-    });
-}
-
-function fixNavbar() {
-    let height = document.getElementsByTagName("nav")[0].offsetHeight;
-    document.getElementsByClassName("nav-padding")[0].style.height = height + "px";
-}
-
-function getUrl(urlLink, params) {
-    let url = new URL(window.location.origin + urlLink);
-    Object.keys(params).forEach(key => url.searchParams.append(key, params[key]));
-    return url;
-}
-
-// stupid IDE not detecting the Google script
-// noinspection JSUnusedGlobalSymbols
-async function googleInit() {
-    let result = await fetch("/Google/GetKey");
-    let key = await result.json();
-    
-    gapi.load('auth2', function() {
-        gapi.auth2.init(key).then(() => {
-            renderLogin();
-        });
-    });
-}
-
-function renderLogin() {
-    gapi.signin2.render('googleSignIn', {
-        'scope': 'profile email',
-        'width': 200,
-        'height': 40,
-        'longtitle': true,
-        'theme': 'dark',
-        'onsuccess': onSignIn,
-        'onfailure': onSignInError
-    });
-}
-
-function onSignIn(user)
-{
-    console.log('Logged in! User: ' + user.getBasicProfile().getName());
-    let token = user.getAuthResponse().id_token;
-    fetch("/Google/Login", {
-        method: "POST",
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(token)
-    })
-    .then((response) => response.json())
-    .then((message) => {
-        if (!message.success)
-            console.error("Server didn't like our Google login!\n" + message.error);
-    });
-}
-
-function onSignInError(error)
-{
-    console.error("Failed to sign-in with Google...\n" + error);
-}
-
-function signOut() {
-    var auth2 = gapi.auth2.getAuthInstance();
-    auth2.signOut().then(function () {
-        console.log('Logged out!');
     });
 }
 

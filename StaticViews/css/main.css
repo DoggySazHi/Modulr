@@ -56,7 +56,22 @@ button {
     display: inline-flex;
     cursor: pointer;
 
-    font-size: 18px;
+    font-size: 16px;
+    color: white;
+}
+
+.button-compact {
+    border: rgb(244, 244, 244);
+    border-radius: 3px;
+    padding: 4px;
+    margin: 4px 2px;
+
+    text-align: center;
+    text-decoration: none;
+    display: inline-flex;
+    cursor: pointer;
+
+    font-size: 14px;
     color: white;
 }
 
@@ -105,6 +120,129 @@ header {
     white-space: pre-line;
 }
 
+.blocker {
+    display: block;
+    z-index: 10;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+}
+
+.blocker-off {
+    animation: fade-out 0.5s;
+    animation-direction: normal;
+    animation-fill-mode: both;
+}
+
+.blocker-on {
+    animation: fade-in 0.5s;
+    animation-direction: normal;
+    animation-fill-mode: both;
+}
+
+.blocker-message {
+    display: block;
+    position: absolute;
+    left: 50%;
+    -webkit-transform: translateX(-50%);
+    transform: translateX(-50%);
+    width: 40vw;
+    border: rgb(244, 244, 244);
+    border-radius: 3px;
+    padding: 10px;
+    overflow-wrap: break-word;
+    background-color: rgb(114, 114, 114);
+}
+
+.blocker-message-off {
+    animation: slide-out 0.5s;
+    animation-direction: normal;
+    animation-fill-mode: both;
+}
+
+.blocker-message-on {
+    animation: slide-in 0.5s;
+    animation-direction: normal;
+    animation-fill-mode: both;
+}
+
+@keyframes fade-in {
+    0% {
+        visibility: hidden;
+        background-color: rgba(0, 0, 0, 0);
+        pointer-events: none;
+    }
+    100% {
+        visibility: visible;
+        background-color: rgba(0, 0, 0, 0.5);
+        pointer-events: all;
+    }
+}
+
+@keyframes fade-out {
+    0% {
+        visibility: visible;
+        background-color: rgba(0, 0, 0, 0.5);
+        pointer-events: all;
+    }
+    100% {
+        visibility: hidden;
+        background-color: rgba(0, 0, 0, 0);
+        pointer-events: none;
+    }
+}
+
+@keyframes slide-in {
+    0% {
+        top: -200px;
+        visibility: hidden;
+        pointer-events: none;
+    }
+    100% {
+        top: 20vw;
+        visibility: visible;
+        pointer-events: all;
+    }
+}
+
+@keyframes slide-out {
+    0% {
+        top: 20vw;
+        visibility: visible;
+        pointer-events: all;
+    }
+    100% {
+        top: -200px;
+        visibility: hidden;
+        pointer-events: none;
+    }
+}
+
+.blocker-header {
+    display: flex;
+    align-items: center;
+}
+
+.blocker-close {
+    margin-left: auto;
+    cursor: pointer;
+    font-size: 24px;
+}
+
+hr {
+    border: 1px solid white;
+    border-radius: 5px;
+    height: 2px;
+    color: white;
+    background-color: white;
+}
+
+.hidden {
+    display: none;
+}
+
 .normal {
     background-color: rgb(11, 144, 217);
 }
@@ -115,4 +253,8 @@ header {
 
 .success {
     background-color: rgb(52, 167, 35);
+}
+
+.danger {
+    background-color: rgb(214, 56, 56);
 }

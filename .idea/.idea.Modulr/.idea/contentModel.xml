@@ -52,10 +52,6 @@
         <e p="css" t="Include">
           <e p="main.css" t="Include" />
         </e>
-        <e p="Errors" t="Include">
-          <e p="error404.html" t="Include" />
-          <e p="error500.html" t="Include" />
-        </e>
         <e p="img" t="Include">
           <e p="android-icon-144x144.png" t="Include" />
           <e p="android-icon-192x192.png" t="Include" />
@@ -86,9 +82,15 @@
           <e p="ms-icon-70x70.png" t="Include" />
         </e>
         <e p="js" t="Include">
+          <e p="google.js" t="Include" />
+          <e p="main.js" t="Include" />
           <e p="tester.js" t="Include" />
         </e>
         <e p="views" t="Include">
+          <e p="error" t="Include">
+            <e p="404.html" t="Include" />
+            <e p="500.html" t="Include" />
+          </e>
           <e p="index.html" t="Include" />
           <e p="tester.html" t="Include" />
         </e>

@@ -29,6 +29,20 @@
     <title>Tester Upload</title>
 </head>
 <body>
+
+    <div class="blocker hidden">
+        <div class="blocker-message hidden">
+            <div class="blocker-header">
+                <span id="blocker-header">Mukyu~</span>
+                <span class="blocker-close" onclick="disablePopup()">
+                    ✖
+                </span>
+            </div>
+            <hr>
+            <span id="blocker-message"></span>
+        </div>
+    </div>
+    
     <nav>
         <div class="nav-container">
             <img class="nav-item nav-logo" src="img/modulr.svg" alt="Modulr Logo">
@@ -48,12 +62,16 @@
         
         <div id="fileInputs" class="form-control"></div>
 
+        <button class="normal form-control" onclick="triggerPopup('Test Header', 'Test Message')">Trigger Popup</button>
+        
         <button id="submit" class="default form-control">Submit!</button>
         <div id="result" class="output"></div>
     </div>
     
     <!-- JavaScript libraries -->
+    <script type="text/javascript" src="js/main.js"></script>
     <script type="text/javascript" src="js/tester.js"></script>
+    <script type="text/javascript" src="js/google.js"></script>
     <script src="https://apis.google.com/js/platform.js?onload=googleInit" async defer></script>
 </body>
 </html>

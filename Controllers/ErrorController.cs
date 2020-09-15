@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-using System.IO;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 
 namespace Modulr.Controllers
 {
@@ -8,32 +6,14 @@ namespace Modulr.Controllers
     [Route("/Error/{id:int}")]
     public class ErrorController : ControllerBase
     {
-        private readonly Dictionary<int, string> _router = new Dictionary<int, string>();
-
-        public ErrorController()
-        {
-            // HTML Routes
-            _router.Add(404, "StaticViews/Errors/error404.html");
-            _router.Add(500, "StaticViews/Errors/error500.html");
-        }
-
         [HttpGet]
         public ContentResult Get(int code)
         {
-            try
-            {
-                var found = _router.TryGetValue(code, out var file);
-                if (!found)
-                    throw new FileNotFoundException();
-                using var reader = new StreamReader(file);
-                return base.Content(reader.ReadToEnd(), "text/html");
-            }
-            catch (FileNotFoundException)
-            {
-                var file = _router[500];
-                using var reader = new StreamReader(file);
-                return base.Content(reader.ReadToEnd(), "text/html");
-            }
+            var file = $"StaticViews/views/error/{code}.html";
+            if (!System.IO.File.Exists(file))
+                file = $"StaticViews/views/error/500.html";
+            var data = System.IO.File.ReadAllText(file);
+            return base.Content(data, "text/html");
         }
     }
 }
