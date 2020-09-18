@@ -39,6 +39,7 @@ function onSignIn(user)
         .then((response) => response.json())
         .then((message) => {
             if (!message.success) {
+                triggerPopup("Mukyu~", "The server didn't let us login.\nMessage: " + message.error);
                 console.error("Server didn't like our Google login!\n" + message.error);
                 signOut();
             } else {
@@ -70,4 +71,8 @@ function signOut() {
         renderLogin();
     });
     document.getElementById("googleSignIn").innerHTML = "";
+}
+
+function getLoginToken() {
+    return gapi.auth2.getAuthInstance().currentUser.get().getAuthResponse().id_token;
 }

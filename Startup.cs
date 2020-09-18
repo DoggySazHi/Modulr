@@ -23,7 +23,8 @@ namespace Modulr
             services.AddControllers();
             services.AddSingleton(ModulrConfig.Build());
             services.AddSingleton<JavaUtils>();
-            services.AddScoped<MySqlTestQuery>();
+            services.AddScoped<MySqlQuery>();
+            services.AddScoped<GoogleAuth>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

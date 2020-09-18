@@ -71,7 +71,7 @@ namespace Modulr.Controllers
             }
             catch (FileNotFoundException)
             {
-                using var reader = new StreamReader("StaticViews/Errors/error404.html");
+                using var reader = new StreamReader("StaticViews/views/error/404.html");
                 Response.StatusCode = 404;
                 return base.Content(reader.ReadToEnd(), "text/html");
             }

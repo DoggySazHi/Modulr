@@ -14,10 +14,12 @@
       <e p="config.sample.json" t="Include" />
       <e p="Controllers" t="Include">
         <e p="ErrorController.cs" t="Include" />
+        <e p="GoogleAuth.cs" t="Include" />
         <e p="GoogleLoginController.cs" t="Include" />
         <e p="HTMLController.cs" t="Include" />
-        <e p="MySqlTestQuery.cs" t="Include" />
+        <e p="MySqlQuery.cs" t="Include" />
         <e p="TestReceivedController.cs" t="Include" />
+        <e p="UserController.cs" t="Include" />
       </e>
       <e p="CreateDatabase.sql" t="Include" />
       <e p="Docker" t="Include">
@@ -32,6 +34,8 @@
         <e p="LoginMessage.cs" t="Include" />
         <e p="Stipulatable.cs" t="Include" />
         <e p="TesterFiles.cs" t="Include" />
+        <e p="TestQuery.cs" t="Include" />
+        <e p="UserTimeout.cs" t="Include" />
       </e>
       <e p="Modulr.csproj" t="IncludeRecursive" />
       <e p="Modulr.sln" t="IncludeFlat" />
@@ -80,6 +84,7 @@
           <e p="ms-icon-150x150.png" t="Include" />
           <e p="ms-icon-310x310.png" t="Include" />
           <e p="ms-icon-70x70.png" t="Include" />
+          <e p="panel.png" t="Include" />
         </e>
         <e p="js" t="Include">
           <e p="google.js" t="Include" />
@@ -100,96 +105,7 @@
         <e p="ModulrConfig.cs" t="Include" />
         <e p="ModulrJail.cs" t="Include" />
       </e>
-      <e p="TestingInput" t="Include">
-        <e p="6yGdD0" t="Include">
-          <e p="source" t="Include">
-            <e p="SetWithArray.java" t="Include" />
-            <e p="SetWithArrayTest.java" t="Include" />
-          </e>
-        </e>
-        <e p="7xwRyK" t="Include">
-          <e p="source" t="Include">
-            <e p="DorasGreatMapAdventure.java" t="Include" />
-            <e p="DorasGreatMapAdventurePart2.java" t="Include" />
-            <e p="DorasPart2StudentTester.java" t="Include" />
-          </e>
-        </e>
-        <e p="aARU4r" t="Include">
-          <e p="source" t="Include">
-            <e p="DorasGreatMapAdventure.java" t="Include" />
-            <e p="DorasGreatMapAdventurePart2.java" t="Include" />
-            <e p="DorasPart2StudentTester.java" t="Include" />
-          </e>
-        </e>
-        <e p="CHkAko" t="Include">
-          <e p="source" t="Include">
-            <e p="AllenWittrySet.java" t="Include" />
-            <e p="StudentTester.java" t="Include" />
-          </e>
-        </e>
-        <e p="cht88X" t="Include">
-          <e p="source" t="Include">
-            <e p="DorasGreatMapAdventure.java" t="Include" />
-            <e p="DorasGreatMapAdventurePart2.java" t="Include" />
-            <e p="DorasPart2StudentTester.java" t="Include" />
-          </e>
-        </e>
-        <e p="CkNRqc" t="Include">
-          <e p="source" t="Include">
-            <e p="DorasGreatMapAdventure.java" t="Include" />
-            <e p="DorasStudentTester.java" t="Include" />
-          </e>
-        </e>
-        <e p="CnbjpC" t="Include">
-          <e p="source" t="Include">
-            <e p="DorasGreatMapAdventure.java" t="Include" />
-            <e p="DorasStudentTester.java" t="Include" />
-          </e>
-        </e>
-        <e p="KAckPg" t="Include">
-          <e p="source" t="Include">
-            <e p="AllenWittrySet.java" t="Include" />
-            <e p="StudentTester.java" t="Include" />
-          </e>
-        </e>
-        <e p="kTSYpa" t="Include">
-          <e p="source" t="Include">
-            <e p="DorasGreatMapAdventure.java" t="Include" />
-            <e p="DorasStudentTester.java" t="Include" />
-          </e>
-        </e>
-        <e p="TVApDi" t="Include">
-          <e p="source" t="Include">
-            <e p="DorasGreatMapAdventure.java" t="Include" />
-            <e p="DorasStudentTester.java" t="Include" />
-          </e>
-        </e>
-        <e p="Un8xaO" t="Include">
-          <e p="source" t="Include">
-            <e p="DorasGreatMapAdventure.java" t="Include" />
-            <e p="DorasStudentTester.java" t="Include" />
-          </e>
-        </e>
-        <e p="Vj0lCV" t="Include">
-          <e p="source" t="Include">
-            <e p="CompileAndTest.sh" t="Include" />
-            <e p="DorasGreatMapAdventure.class" t="Include" />
-            <e p="DorasGreatMapAdventure.java" t="Include" />
-            <e p="DorasGreatMapAdventurePart2.class" t="Include" />
-            <e p="DorasGreatMapAdventurePart2.java" t="Include" />
-            <e p="DorasPart2StudentTester.class" t="Include" />
-            <e p="DorasPart2StudentTester.java" t="Include" />
-            <e p="junit-platform-console-standalone-1.6.2.jar" t="Include" />
-            <e p="security.policy" t="Include" />
-          </e>
-        </e>
-        <e p="zFgQVM" t="Include">
-          <e p="source" t="Include">
-            <e p="AllenWittrySet.java" t="Include" />
-            <e p="StudentTester.java" t="Include" />
-          </e>
-        </e>
-      </e>
+      <e p="TestingInput" t="Include" />
       <e p="TestingSource" t="Include">
         <e p="DorasPart2StudentTester.java" t="Include" />
         <e p="DorasStudentTester.java" t="Include" />

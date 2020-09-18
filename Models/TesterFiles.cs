@@ -7,6 +7,7 @@ namespace Modulr.Models
     // We can't hold dictionaries, so we're trying this out instead...
     public class TesterFiles
     {
+        public string AuthToken { get; set; }
         public int TestID { get; set; }
         public List<string> FileNames { get; set; }
         public List<IFormFile> Files { get; set; }

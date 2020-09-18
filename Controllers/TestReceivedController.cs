@@ -12,29 +12,40 @@ namespace Modulr.Controllers
     public class TestReceivedController : ControllerBase
     {
         private readonly JavaUtils _java;
-        private readonly MySqlTestQuery _query;
+        private readonly MySqlQuery _query;
+        private readonly GoogleAuth _auth;
 
-        public TestReceivedController(JavaUtils java, MySqlTestQuery query)
+        public TestReceivedController(JavaUtils java, MySqlQuery query, GoogleAuth auth)
         {
             _java = java;
             _query = query;
+            _auth = auth;
         }
 
-        [HttpGet("GetTest")]
-        public async Task<string> Get(int id)
+        [HttpPost("GetTest")]
+        public async Task<Stipulatable> GetTest(TestQuery item)
         {
-            var test = await _query.GetTest(id);
+            if (await _auth.Verify(item.AuthToken) != GoogleAuth.LoginStatus.Success)
+            {
+                Response.StatusCode = 403;
+                return null;
+            }
+            var test = await _query.GetTest(item.TestID);
             if(test != null)
-                return JsonConvert.SerializeObject(test);
+                return test;
             Response.StatusCode = 404;
-            return "{}";
+            return null;
         }
         
         [HttpPost("Upload")]
-        public async Task<string> Post([FromForm] TesterFiles input)
+        public async Task<string> FileUpload([FromForm] TesterFiles input)
         {
             if (input == null || !input.IsLikelyValid())
                 return Fail(400, ">:[ not nice");
+
+            var loginStatus = await _auth.Verify(input.AuthToken);
+            if (loginStatus != GoogleAuth.LoginStatus.Success)
+                return Fail(403, "Login needed!");
 
             var test = await _query.GetTest(input.TestID);
             if (test == null)

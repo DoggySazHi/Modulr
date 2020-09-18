@@ -25,6 +25,12 @@
     <meta name="msapplication-TileColor" content="#34383a">
     <meta name="msapplication-TileImage" content="/ms-icon-144x144.png">
     <meta name="theme-color" content="#34383a">
+
+    <meta property="og:title" content="Modulr - An online Java Stipulator" />
+    <meta property="og:description" content="A server-based Java stipulator written in C#. Because why not." />
+    <meta property="og:image" content="https://modulr.williamle.com/img/panel.png" />
+    <meta property="og:site_name" content="Modulr">
+    <meta name="theme-color" content="#7289DA">
     
     <title>Tester Upload</title>
 </head>
@@ -34,9 +40,7 @@
         <div class="blocker-message hidden">
             <div class="blocker-header">
                 <span id="blocker-header">Mukyu~</span>
-                <span class="blocker-close" onclick="disablePopup()">
-                    ✖
-                </span>
+                <span class="blocker-close" onclick="disablePopup()">✖</span>
             </div>
             <hr>
             <span id="blocker-message"></span>
@@ -68,10 +72,15 @@
         <div id="result" class="output"></div>
     </div>
     
+    <footer class="footer">
+        Written by William Le - 
+        <a href="https://github.com/DoggySazHi/Modulr" target="_blank" rel="noopener noreferrer">View in GitHub</a>
+    </footer>
+    
     <!-- JavaScript libraries -->
     <script type="text/javascript" src="js/main.js"></script>
-    <script type="text/javascript" src="js/tester.js"></script>
     <script type="text/javascript" src="js/google.js"></script>
+    <script type="text/javascript" src="js/tester.js"></script>
     <script src="https://apis.google.com/js/platform.js?onload=googleInit" async defer></script>
 </body>
 </html>

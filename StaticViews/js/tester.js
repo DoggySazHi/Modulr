@@ -39,6 +39,7 @@ function submit() {
                 data.append('Files', input.files[i]);
             data.append('IsTester', JSON.stringify(false));
             data.append('TestID', JSON.stringify(parseInt(document.getElementById("testId").value, 10)))
+            data.append('AuthToken', getLoginToken())
         }
     );
 
@@ -58,7 +59,7 @@ function submit() {
     })
     .catch((error) => {
         console.error("We had an error... ", error);
-        document.getElementById("result").innerHTML = "There was an error. Of course there was.";
+        triggerPopup("Mukyu~", error);
     });
 }
 
@@ -74,9 +75,11 @@ function getTest(num) {
         return response.json()
     })
     .then((formatted) => {
-        if(!formatted.hasOwnProperty("RequiredFiles"))
+        if(!formatted.hasOwnProperty("requiredFiles")) {
+            console.error("Could not find the required files from tester!");
             return;
-        generateInputs(formatted.RequiredFiles);
+        }
+        generateInputs(formatted.requiredFiles);
         bindUploads();
     })
     .catch((error) => {

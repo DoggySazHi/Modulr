@@ -15,11 +15,13 @@ namespace Modulr.Controllers
     {
         private readonly ILogger<GoogleLoginController> _logger;
         private readonly ModulrConfig _config;
+        private readonly GoogleAuth _auth;
 
-        public GoogleLoginController(ILogger<GoogleLoginController> logger, ModulrConfig config)
+        public GoogleLoginController(ILogger<GoogleLoginController> logger, ModulrConfig config, GoogleAuth auth)
         {
             _logger = logger;
             _config = config;
+            _auth = auth;
         }
 
         [HttpGet("GetKey")]
@@ -35,23 +37,16 @@ namespace Modulr.Controllers
         [HttpPost("Login")]
         public async Task<LoginMessage> Login([FromBody] string token)
         {
-            if (token == null)
-                return LoginResult(400, "Invalid data!");
-            
-            var validation = await GoogleJsonWebSignature.ValidateAsync(token);
-
-            if (validation == null)
-                return LoginResult(403, "Could not verify login with Google!");
-            if (!validation.AudienceAsList.Contains(_config.GoogleClientKey))
-                return LoginResult(403, "Audience of key is invalid!");
-            if (validation.Issuer != "accounts.google.com" && validation.Issuer != "https://accounts.google.com")
-                return LoginResult(403, "Invalid issuer!");
-            if (validation.ExpirationTimeSeconds == null || validation.ExpirationTimeSeconds < DateTimeOffset.Now.ToUnixTimeSeconds())
-                return LoginResult(403, "Token is expired!");
-            if (!string.IsNullOrEmpty(_config.HostedDomain) && validation.HostedDomain != _config.HostedDomain)
-                return LoginResult(403, "Account is not of target GSuite domain!");
-            
-            return LoginResult(200);
+            var result = await _auth.Verify(token);
+            return result switch
+            {
+                GoogleAuth.LoginStatus.BadAudience => LoginResult(403, "Invalid audience!"),
+                GoogleAuth.LoginStatus.BadIssuer => LoginResult(403, "Invalid issuer!"),
+                GoogleAuth.LoginStatus.ExpiredToken => LoginResult(403, "Token is expired!"),
+                GoogleAuth.LoginStatus.BadDomain => LoginResult(403, "Invalid GSuite domain!"),
+                GoogleAuth.LoginStatus.Success => LoginResult(200),
+                _ => LoginResult(400, "Invalid data!")
+            };
         }
 
         private LoginMessage LoginResult(int status, string error = null)

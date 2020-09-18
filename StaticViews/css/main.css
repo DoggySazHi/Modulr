@@ -156,6 +156,10 @@ header {
     background-color: rgb(114, 114, 114);
 }
 
+#blocker-message {
+    white-space: pre-line;
+}
+
 .blocker-message-off {
     animation: slide-out 0.5s;
     animation-direction: normal;
@@ -237,6 +241,21 @@ hr {
     height: 2px;
     color: white;
     background-color: white;
+}
+
+footer {
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    width: 100vw;
+    background-color: rgb(42, 42, 42);
+    color: rgb(128, 128, 128);
+    padding: 10px;
+}
+
+footer a {
+    text-decoration: none;
+    color: rgb(128, 128, 128);
 }
 
 .hidden {
