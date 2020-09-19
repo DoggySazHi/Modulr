@@ -66,5 +66,16 @@ namespace Modulr.Controllers
                 new {GoogleID = googleID});
             return results;
         }
+        
+        public async Task<IEnumerable<Stipulatable>> GetAllTests()
+        {
+            const string command = "SELECT * FROM Modulr.Stipulatables";
+            return (await Connection.QueryAsync(command)).ToList().Select(o =>
+            {
+                var testers = JsonConvert.DeserializeObject<IEnumerable<string>>(o.testers);
+                var required = JsonConvert.DeserializeObject<IEnumerable<string>>(o.required);
+                return new Stipulatable(o.id, o.name, testers, required);
+            });
+        }
     }
 }

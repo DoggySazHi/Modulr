@@ -5,7 +5,7 @@ onInitTester();
 function onInitTester() {
     bindButtons();
     bindUploads();
-    console.log("Initialized tester script!");
+    console.info("Initialized tester script!");
 }
 
 function bindButtons() {
@@ -128,6 +128,46 @@ function getTest(num) {
     });
 }
 
+function getAllTests() {
+    clearInputs();
+    fetch("/Tester/GetAllTests", {
+        method: "POST",
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            "AuthToken": getLoginToken(),
+            "TestID": id
+        })
+    })
+        .then((response) => {
+            if (response.status >= 400 && response.status < 600)
+                throw new Error("HTTPERR" + response.status);
+            return response.json()
+        })
+        .then((formatted) => {
+            generateList(formatted);
+            bindUploads();
+        })
+        .catch((error) => {
+            if (error.message.startsWith("HTTPERR")) {
+                switch (parseInt(error.message.substr(7))) {
+                    case 403:
+                        error = "Login credentials failed, try logging out and logging back in!";
+                        break;
+                    case 404:
+                        error = "Could not fetch tests because none were found!";
+                        break;
+                    case 500:
+                        error = "The server decided that it wanted to die. Ask William about what the heck you did to kill it.";
+                        break;
+                }
+            }
+            console.error("We had an error... ", error);
+            triggerPopup("Mukyu~", error);
+        });
+}
+
 function clearInputs() {
     let inputArea = document.getElementById("fileInputs");
     inputArea.innerHTML = "";
@@ -147,4 +187,8 @@ function generateInputs(names) {
         inputArea.appendChild(label);
     }
     document.getElementById("submit").disabled = false;
+}
+
+function generateList() {
+    
 }

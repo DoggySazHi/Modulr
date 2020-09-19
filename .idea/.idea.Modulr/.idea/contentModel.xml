@@ -87,7 +87,9 @@
           <e p="panel.png" t="Include" />
         </e>
         <e p="js" t="Include">
+          <e p="forceauth.js" t="Include" />
           <e p="google.js" t="Include" />
+          <e p="index.js" t="Include" />
           <e p="main.js" t="Include" />
           <e p="tester.js" t="Include" />
         </e>
@@ -97,6 +99,7 @@
             <e p="500.html" t="Include" />
           </e>
           <e p="index.html" t="Include" />
+          <e p="student-test.html" t="Include" />
           <e p="tester.html" t="Include" />
         </e>
       </e>

@@ -1,5 +1,7 @@
 ﻿'use strict';
 
+let onLoginEvent = [];
+
 // stupid IDE not detecting the Google script
 // noinspection JSUnusedGlobalSymbols
 async function googleInit() {
@@ -9,6 +11,8 @@ async function googleInit() {
     gapi.load('auth2', function() {
         gapi.auth2.init(key).then(() => {
             renderLogin();
+            for (let f of onLoginEvent)
+                f(gapi.auth2.getAuthInstance().currentUser.get());
         });
     });
 }
@@ -27,7 +31,7 @@ function renderLogin() {
 
 function onSignIn(user)
 {
-    console.log('Logged in! User: ' + user.getBasicProfile().getName());
+    console.info('Logged in! User: ' + user.getBasicProfile().getName());
     let token = user.getAuthResponse().id_token;
     fetch("/Google/Login", {
         method: "POST",
@@ -36,16 +40,21 @@ function onSignIn(user)
         },
         body: JSON.stringify(token)
     })
-        .then((response) => response.json())
-        .then((message) => {
-            if (!message.success) {
-                triggerPopup("Mukyu~", "The server didn't let us login.\nMessage: " + message.error);
-                console.error("Server didn't like our Google login!\n" + message.error);
-                signOut();
-            } else {
-                createSignOut();
-            }
-        });
+    .then((response) => response.json())
+    .then((message) => {
+        if (!message.success) {
+            triggerPopup("Mukyu~", "The server didn't let us login.\nMessage: " + message.error);
+            console.error("Server didn't like our Google login!\n" + message.error);
+            signOut();
+        } else {
+            document.getElementById("username").innerHTML = "Hello " + user.getBasicProfile().getName() + "!";
+            createSignOut();
+        }
+    })
+    .finally(() => {
+        for (let f of onLoginEvent)
+            f(gapi.auth2.getAuthInstance().currentUser.get());
+    });
 }
 
 function onSignInError(error)
@@ -67,10 +76,12 @@ function createSignOut() {
 function signOut() {
     let google = gapi.auth2.getAuthInstance();
     google.signOut().then(function () {
-        console.log('Logged out!');
+        console.info('Logged out!');
         renderLogin();
+        window.location.replace(getUrl("/", {}));
     });
     document.getElementById("googleSignIn").innerHTML = "";
+    document.getElementById("username").innerHTML = "";
 }
 
 function getLoginToken() {

@@ -1,5 +1,4 @@
 ﻿<!DOCTYPE html>
-<!-- It's been soooo long since I wrote web-based applications~ -->
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -31,8 +30,8 @@
     <meta property="og:image" content="https://modulr.williamle.com/img/panel.png" />
     <meta property="og:site_name" content="Modulr">
     <meta name="theme-color" content="#7289DA">
-    
-    <title>Modulr ~ Home</title>
+
+    <title>Tester Upload</title>
 </head>
 <body>
 
@@ -40,9 +39,7 @@
     <div class="blocker-message hidden">
         <div class="blocker-header">
             <span id="blocker-header">Mukyu~</span>
-            <span class="blocker-close" onclick="disablePopup()">
-                    ✖
-                </span>
+            <span class="blocker-close" onclick="disablePopup()">✖</span>
         </div>
         <hr>
         <span id="blocker-message"></span>
@@ -60,9 +57,22 @@
 </nav>
 <div class="nav-padding"></div>
 
+<!-- Start Content -->
+
 <div class="container">
-    <header>Welcome to Modulr!</header>
-    Please login using your own GSuite account.
+    <header>Student Tester</header>
+
+    <form onsubmit="return false;">
+        <label class="input normal form-control">
+            Test ID&nbsp;
+            <input type="number" id="testId">
+        </label>
+
+        <div id="fileInputs" class="form-control"></div>
+
+        <button id="submit" class="default form-control" disabled>Submit!</button>
+        <div id="result" class="output"></div>
+    </form>
 </div>
 
 <footer class="footer">
@@ -71,9 +81,10 @@
 </footer>
 
 <!-- JavaScript libraries -->
+
 <script type="text/javascript" src="js/main.js"></script>
 <script type="text/javascript" src="js/google.js"></script>
-<script type="text/javascript" src="js/index.js"></script>
+<script type="text/javascript" src="js/tester.js"></script>
 <script src="https://apis.google.com/js/platform.js?onload=googleInit" async defer></script>
 </body>
 </html>

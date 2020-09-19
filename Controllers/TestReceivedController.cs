@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System.Collections.Generic;
+using System.IO;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Modulr.Models;
@@ -31,6 +32,21 @@ namespace Modulr.Controllers
                 return null;
             }
             var test = await _query.GetTest(item.TestID);
+            if(test != null)
+                return test;
+            Response.StatusCode = 404;
+            return null;
+        }
+        
+        [HttpPost("GetAllTests")]
+        public async Task<IEnumerable<Stipulatable>> GetAllTests([FromBody] TestQuery login)
+        {
+            if (await _auth.Verify(login.AuthToken) != GoogleAuth.LoginStatus.Success)
+            {
+                Response.StatusCode = 403;
+                return null;
+            }
+            var test = await _query.GetAllTests();
             if(test != null)
                 return test;
             Response.StatusCode = 404;

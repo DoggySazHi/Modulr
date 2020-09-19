@@ -29,6 +29,7 @@ namespace Modulr.Controllers
             Router.Add("", "StaticViews/views/index.html");
             Router.Add("home", "StaticViews/views/index.html");
             Router.Add("testdemo", "StaticViews/views/tester.html");
+            Router.Add("student-test", "StaticViews/views/student-test.html");
 
             // Holy crap icon stuff
             AddFolderToRouter("", "StaticViews/img");

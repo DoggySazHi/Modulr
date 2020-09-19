@@ -1,5 +1,4 @@
-﻿<!DOCTYPE html>
-<!-- It's been soooo long since I wrote web-based applications~ -->
+﻿﻿<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -36,51 +35,57 @@
 </head>
 <body>
 
-    <div class="blocker hidden">
-        <div class="blocker-message hidden">
-            <div class="blocker-header">
-                <span id="blocker-header">Mukyu~</span>
-                <span class="blocker-close" onclick="disablePopup()">✖</span>
-            </div>
-            <hr>
-            <span id="blocker-message"></span>
+<div class="blocker hidden">
+    <div class="blocker-message hidden">
+        <div class="blocker-header">
+            <span id="blocker-header">Mukyu~</span>
+            <span class="blocker-close" onclick="disablePopup()">✖</span>
         </div>
+        <hr>
+        <span id="blocker-message"></span>
     </div>
-    
-    <nav>
-        <div class="nav-container">
-            <img class="nav-item nav-logo" src="img/modulr.svg" alt="Modulr Logo">
-            <span class="nav-item nav-focus">Modulr</span>
-            <span class="nav-item-right" id="googleSignIn"></span>
-        </div>
-    </nav>
-    <div class="nav-padding"></div>
-    
-    <div class="container">
-        <header>Tester Demo</header>
+</div>
 
-        <form onsubmit="return false;">
-            <label class="input normal form-control">
-                Test ID&nbsp;
-                <input type="number" id="testId">
-            </label>
-            
-            <div id="fileInputs" class="form-control"></div>
-            
-            <button id="submit" class="default form-control" disabled>Submit!</button>
-            <div id="result" class="output"></div>
-        </form>
+<nav>
+    <div class="nav-container">
+        <img class="nav-item nav-logo" src="img/modulr.svg" alt="Modulr Logo">
+        <span class="nav-item nav-focus">Modulr</span>
+        <span class="nav-item-right"></span>
+        <span class="nav-item" id="username"></span>
+        <span class="nav-item" id="googleSignIn"></span>
     </div>
-    
-    <footer class="footer">
-        Written by William Le - 
-        <a href="https://github.com/DoggySazHi/Modulr" target="_blank" rel="noopener noreferrer">View in GitHub</a>
-    </footer>
-    
-    <!-- JavaScript libraries -->
-    <script type="text/javascript" src="js/main.js"></script>
-    <script type="text/javascript" src="js/google.js"></script>
-    <script type="text/javascript" src="js/tester.js"></script>
-    <script src="https://apis.google.com/js/platform.js?onload=googleInit" async defer></script>
+</nav>
+<div class="nav-padding"></div>
+
+<!-- Start Content -->
+
+<div class="container">
+    <header>Tester Demo</header>
+
+    <form onsubmit="return false;">
+        <label class="input normal form-control">
+            Test ID&nbsp;
+            <input type="number" id="testId">
+        </label>
+        
+        <div id="fileInputs" class="form-control"></div>
+        
+        <button id="submit" class="default form-control" disabled>Submit!</button>
+        <div id="result" class="output"></div>
+    </form>
+</div>
+
+<footer class="footer">
+    Written by William Le - 
+    <a href="https://github.com/DoggySazHi/Modulr" target="_blank" rel="noopener noreferrer">View in GitHub</a>
+</footer>
+
+<!-- JavaScript libraries -->
+
+<script type="text/javascript" src="js/main.js"></script>
+<script type="text/javascript" src="js/google.js"></script>
+<script type="text/javascript" src="js/forceauth.js"></script>
+<script type="text/javascript" src="js/tester.js"></script>
+<script src="https://apis.google.com/js/platform.js?onload=googleInit" async defer></script>
 </body>
 </html>

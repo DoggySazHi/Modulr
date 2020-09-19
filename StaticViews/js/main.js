@@ -4,7 +4,8 @@ onInit();
 
 function onInit() {
     fixNavbar();
-    console.log("Initialized main script!");
+    console.info("Initialized main script!");
+    readError();
 }
 
 function fixNavbar() {
@@ -30,4 +31,10 @@ function triggerPopup(header, message) {
 function disablePopup() {
     document.getElementsByClassName("blocker")[0].className = "blocker blocker-off";
     document.getElementsByClassName("blocker-message")[0].className = "blocker-message blocker-message-off";
+}
+
+function readError() {
+    let params = new URLSearchParams(window.location.search);
+    if (params.has("error"))
+        triggerPopup("Mukyu~", decodeURIComponent(params.get("error")))
 }
