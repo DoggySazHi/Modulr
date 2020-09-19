@@ -14,19 +14,12 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="359509d8-12b3-47c4-829a-24bd1e268319" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/StaticViews/js/forceauth.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/StaticViews/js/index.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/StaticViews/views/student-test.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.Modulr/.idea/contentModel.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Modulr/.idea/contentModel.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.Modulr/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Modulr/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Controllers/HTMLController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Controllers/HTMLController.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Controllers/MySqlQuery.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Controllers/MySqlQuery.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Controllers/TestReceivedController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Controllers/TestReceivedController.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/StaticViews/js/google.js" beforeDir="false" afterPath="$PROJECT_DIR$/StaticViews/js/google.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/StaticViews/js/main.js" beforeDir="false" afterPath="$PROJECT_DIR$/StaticViews/js/main.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/StaticViews/css/main.css" beforeDir="false" afterPath="$PROJECT_DIR$/StaticViews/css/main.css" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/StaticViews/js/tester.js" beforeDir="false" afterPath="$PROJECT_DIR$/StaticViews/js/tester.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/StaticViews/views/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/StaticViews/views/index.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/StaticViews/views/tester.html" beforeDir="false" afterPath="$PROJECT_DIR$/StaticViews/views/tester.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/StaticViews/views/student-test.html" beforeDir="false" afterPath="$PROJECT_DIR$/StaticViews/views/student-test.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/StaticViews/views/tester.html" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -89,7 +82,6 @@
         <option value="$PROJECT_DIR$/config.json" />
         <option value="$PROJECT_DIR$/Controllers/GoogleAuth.cs" />
         <option value="$PROJECT_DIR$/Controllers/ErrorController.cs" />
-        <option value="$PROJECT_DIR$/StaticViews/css/main.css" />
         <option value="$PROJECT_DIR$/StaticViews/views/template/header.html" />
         <option value="$PROJECT_DIR$/StaticViews/views/template/footer.html" />
         <option value="$PROJECT_DIR$/StaticViews/js/main.js" />
@@ -97,12 +89,13 @@
         <option value="$PROJECT_DIR$/StaticViews/js/forceauth.js" />
         <option value="$PROJECT_DIR$/Controllers/MySqlQuery.cs" />
         <option value="$PROJECT_DIR$/Controllers/TestReceivedController.cs" />
-        <option value="$PROJECT_DIR$/StaticViews/js/tester.js" />
         <option value="$PROJECT_DIR$/StaticViews/js/index.js" />
         <option value="$PROJECT_DIR$/StaticViews/views/index.html" />
-        <option value="$PROJECT_DIR$/StaticViews/views/student-test.html" />
         <option value="$PROJECT_DIR$/StaticViews/views/tester.html" />
         <option value="$PROJECT_DIR$/StaticViews/js/google.js" />
+        <option value="$PROJECT_DIR$/StaticViews/views/student-test.html" />
+        <option value="$PROJECT_DIR$/StaticViews/js/tester.js" />
+        <option value="$PROJECT_DIR$/StaticViews/css/main.css" />
       </list>
     </option>
   </component>
@@ -192,7 +185,7 @@
       <workItem from="1600268435805" duration="6503000" />
       <workItem from="1600440876756" duration="3169000" />
       <workItem from="1600475615721" duration="4028000" />
-      <workItem from="1600530027914" duration="9647000" />
+      <workItem from="1600530027914" duration="10001000" />
     </task>
     <servers />
   </component>

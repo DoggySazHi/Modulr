@@ -63,6 +63,7 @@ button {
 button[disabled], button[disabled]:hover, button[disabled]:focus, button[disabled]:active {
     filter: brightness(60%);
     -webkit-filter: brightness(60%);
+    cursor: not-allowed;
 }
 
 .button-compact {

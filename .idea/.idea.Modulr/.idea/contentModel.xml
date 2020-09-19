@@ -100,7 +100,6 @@
           </e>
           <e p="index.html" t="Include" />
           <e p="student-test.html" t="Include" />
-          <e p="tester.html" t="Include" />
         </e>
       </e>
       <e p="Tester" t="Include">
