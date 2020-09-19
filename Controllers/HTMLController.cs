@@ -11,12 +11,12 @@ namespace Modulr.Controllers
     public class HTMLController : ControllerBase
     {
         private readonly ILogger<HTMLController> _logger;
-        private static readonly Dictionary<string, string> _router = new Dictionary<string, string>();
+        private static readonly Dictionary<string, string> Router = new Dictionary<string, string>();
 
         public HTMLController(ILogger<HTMLController> logger)
         {
             _logger = logger;
-            if (_router.Count == 0)
+            if (Router.Count == 0)
                 SetupRouter();
         }
         
@@ -26,9 +26,9 @@ namespace Modulr.Controllers
             // Even though ASP.NET Core can do that too. Oh well.
             
             // HTML Routes
-            _router.Add("", "StaticViews/views/index.html");
-            _router.Add("home", "StaticViews/views/index.html");
-            _router.Add("testdemo", "StaticViews/views/tester.html");
+            Router.Add("", "StaticViews/views/index.html");
+            Router.Add("home", "StaticViews/views/index.html");
+            Router.Add("testdemo", "StaticViews/views/tester.html");
 
             // Holy crap icon stuff
             AddFolderToRouter("", "StaticViews/img");
@@ -47,9 +47,9 @@ namespace Modulr.Controllers
             {
                 var key = (string.IsNullOrWhiteSpace(root) ? "" : root + '/') + Path.GetFileName(file);
                 var value = $"{file}".Replace('\\', '/');
-                var success = _router.TryAdd(key, value);
+                var success = Router.TryAdd(key, value);
                 if (!success)
-                    _logger.LogWarning($"Router found a duplicate route for {key}:\n- Old: {_router[key]}\n- New: {value}");
+                    _logger.LogWarning($"Router found a duplicate route for {key}:\n- Old: {Router[key]}\n- New: {value}");
             }
             var directories = Directory.EnumerateDirectories(folder);
             foreach (var directory in directories)
@@ -63,7 +63,7 @@ namespace Modulr.Controllers
             page = page.ToLower();
             try
             {
-                var found = _router.TryGetValue(page, out var file);
+                var found = Router.TryGetValue(page, out var file);
                 if (!found)
                     throw new FileNotFoundException();
                 using var reader = new StreamReader(file);

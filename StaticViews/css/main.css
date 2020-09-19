@@ -60,6 +60,11 @@ button {
     color: white;
 }
 
+button[disabled], button[disabled]:hover, button[disabled]:focus, button[disabled]:active {
+    filter: brightness(60%);
+    -webkit-filter: brightness(60%);
+}
+
 .button-compact {
     border: rgb(244, 244, 244);
     border-radius: 3px;
@@ -105,9 +110,15 @@ input[type="file"] {
     margin: 5px 10px;
 }
 
-.form-control {
+form {
     /* ok wtf */
-    display: table;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.form-control {
+    
 }
 
 header {

@@ -44,22 +44,40 @@ function submit() {
     );
 
     document.getElementById("result").innerHTML = "Now loading...";
-    
+    document.getElementById("submit").disabled = true;
+
     fetch("/Tester/Upload", {
         method: "POST",
         body: data
     })
     .then((response) => {
         if (response.status >= 400 && response.status < 600)
-            throw new Error("HTTP Error " + response.status);
+            throw new Error("HTTPERR " + response.status);
         return response.text();
     })
     .then((formatted) => {
         document.getElementById("result").innerHTML = formatted;
     })
     .catch((error) => {
+        if (error.message.startsWith("HTTPERR")) {
+            switch (parseInt(error.message.substr(7))) {
+                case 403:
+                    error = "Login credentials failed, try logging out and logging back in!";
+                    break;
+                case 404:
+                    error = "Could not locate the uploader... try refreshing the page?";
+                    break;
+                case 500:
+                    error = "The server decided that it wanted to die. Ask William about what the heck you did to kill it.";
+                    break;
+            }
+        }
+        
         console.error("We had an error... ", error);
         triggerPopup("Mukyu~", error);
+    })
+    .finally(() => {
+        document.getElementById("submit").disabled = false;
     });
 }
 
@@ -68,10 +86,19 @@ function getTest(num) {
     if (isNaN(id))
         return;
     clearInputs();
-    fetch(getUrl("/Tester/GetTest", { id: id }))
+    fetch("/Tester/GetTest", {
+        method: "POST",
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            "AuthToken": getLoginToken(),
+            "TestID": id
+        })
+    })
     .then((response) => {
         if (response.status >= 400 && response.status < 600)
-            throw new Error("Server returned an HTTP Error: " + response.status);
+            throw new Error("HTTPERR" + response.status);
         return response.json()
     })
     .then((formatted) => {
@@ -83,14 +110,28 @@ function getTest(num) {
         bindUploads();
     })
     .catch((error) => {
+        if (error.message.startsWith("HTTPERR")) {
+            switch (parseInt(error.message.substr(7))) {
+                case 403:
+                    error = "Login credentials failed, try logging out and logging back in!";
+                    break;
+                case 404:
+                    error = "Could not locate test, please try another one!";
+                    break;
+                case 500:
+                    error = "The server decided that it wanted to die. Ask William about what the heck you did to kill it.";
+                    break;
+            }
+        }
         console.error("We had an error... ", error);
-        document.getElementById("result").innerHTML = error;
+        triggerPopup("Mukyu~", error);
     });
 }
 
 function clearInputs() {
     let inputArea = document.getElementById("fileInputs");
     inputArea.innerHTML = "";
+    document.getElementById("submit").disabled = true;
 }
 
 function generateInputs(names) {
@@ -105,4 +146,5 @@ function generateInputs(names) {
         label.appendChild(input);
         inputArea.appendChild(label);
     }
+    document.getElementById("submit").disabled = false;
 }

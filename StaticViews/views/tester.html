@@ -59,17 +59,17 @@
     <div class="container">
         <header>Tester Demo</header>
 
-        <label class="input normal form-control">
-            Test ID&nbsp;
-            <input type="number" id="testId">
-        </label>
-        
-        <div id="fileInputs" class="form-control"></div>
-
-        <button class="normal form-control" onclick="triggerPopup('Test Header', 'Test Message')">Trigger Popup</button>
-        
-        <button id="submit" class="default form-control">Submit!</button>
-        <div id="result" class="output"></div>
+        <form onsubmit="return false;">
+            <label class="input normal form-control">
+                Test ID&nbsp;
+                <input type="number" id="testId">
+            </label>
+            
+            <div id="fileInputs" class="form-control"></div>
+            
+            <button id="submit" class="default form-control" disabled>Submit!</button>
+            <div id="result" class="output"></div>
+        </form>
     </div>
     
     <footer class="footer">

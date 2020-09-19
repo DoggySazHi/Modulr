@@ -23,7 +23,7 @@ namespace Modulr.Controllers
         }
 
         [HttpPost("GetTest")]
-        public async Task<Stipulatable> GetTest(TestQuery item)
+        public async Task<Stipulatable> GetTest([FromBody] TestQuery item)
         {
             if (await _auth.Verify(item.AuthToken) != GoogleAuth.LoginStatus.Success)
             {
