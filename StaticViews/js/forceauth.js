@@ -3,7 +3,7 @@
 onInitAuth();
 
 function onInitAuth() {
-    onLoginEvent.push(onLoginForceAuth);
+    onGoogleReady.push(onLoginForceAuth);
     console.info("Waiting for Google to init...");
 }
 

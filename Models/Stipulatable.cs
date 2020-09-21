@@ -6,8 +6,8 @@ namespace Modulr.Models
 {
     public class Stipulatable
     {
-        public int ID;
-        public string Name;
+        public int ID { get; set; }
+        public string Name { get; set; }
         public IReadOnlyCollection<string> TesterFiles => _testerFiles;
         public IReadOnlyCollection<string> RequiredFiles => _requiredFiles;
         private readonly List<string> _testerFiles = new List<string>();

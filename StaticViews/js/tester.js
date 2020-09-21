@@ -1,5 +1,11 @@
 ﻿'use strict';
 
+/**
+ * Created by William Le.
+ * https://github.com/DoggySazHi/Modulr
+ * mukyu~
+ */
+
 onInitTester();
 
 let resetTime = new Date();
@@ -7,8 +13,8 @@ let resetTime = new Date();
 function onInitTester() {
     bindButtons();
     bindUploads();
-    onLoginEvent.push(getAllTests);
-    onLoginEvent.push(getAttemptsLeft);
+    onGoogleReady.push(getAllTests);
+    onGoogleReady.push(getAttemptsLeft);
     console.info("Initialized tester script!");
 }
 
@@ -16,10 +22,6 @@ function bindButtons() {
     document.getElementById("submit").addEventListener("click", (e) => {
         e.preventDefault();
         submit();
-    }, false);
-
-    document.getElementById("testId").addEventListener("change", (e) => {
-        getTest(e.target.value);
     }, false);
 }
 
@@ -66,7 +68,7 @@ function submit() {
         if (error.message.startsWith("HTTPERR")) {
             switch (parseInt(error.message.substr(7))) {
                 case 403:
-                    error = "Login credentials failed, try logging out and logging back in!";
+                    error = "Either you are on a cooldown, or your login credentials failed.\nIf the former isn't true, try logging out and logging back in!";
                     break;
                 case 404:
                     error = "Could not locate the uploader... try refreshing the page?";
@@ -218,7 +220,7 @@ function updateTimer() {
         document.getElementById("attempts").innerHTML = "Attempts Left: 3";
         return;
     }
-    output.innerHTML = "Reset in " + new Date().toISOString().substr(11, 8);
+    output.innerHTML = "Reset in " + new Date(difference).toISOString().substr(11, 8);
 }
 
 function clearInputs() {
@@ -249,7 +251,9 @@ function generateList(tests) {
         testBtn.className = "default form-control";
         testBtn.innerHTML = test.name;
         testBtn.name = test.id;
+        testBtn.addEventListener("click", (e) => {
+            getTest(e.target.name);
+        })
         list.appendChild(testBtn);
-        console.log(test);
     }
 }

@@ -1,6 +1,7 @@
 ﻿'use strict';
 
 let onLoginEvent = [];
+let onGoogleReady = [];
 
 // stupid IDE not detecting the Google script
 // noinspection JSUnusedGlobalSymbols
@@ -11,7 +12,7 @@ async function googleInit() {
     gapi.load('auth2', function() {
         gapi.auth2.init(key).then(() => {
             renderLogin();
-            for (let f of onLoginEvent)
+            for (let f of onGoogleReady)
                 f(gapi.auth2.getAuthInstance().currentUser.get());
         });
     });

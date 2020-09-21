@@ -70,15 +70,15 @@ namespace Modulr.Controllers
             return results;
         }
         
-        public async Task<IEnumerable<Stipulatable>> GetAllTests()
+        public async Task<List<Stipulatable>> GetAllTests()
         {
             const string command = "SELECT * FROM Modulr.Stipulatables";
             return (await Connection.QueryAsync(command)).ToList().Select(o =>
             {
-                var testers = JsonConvert.DeserializeObject<IEnumerable<string>>(o.testers);
-                var required = JsonConvert.DeserializeObject<IEnumerable<string>>(o.required);
+                var testers = JsonConvert.DeserializeObject<List<string>>(o.testers);
+                var required = JsonConvert.DeserializeObject<List<string>>(o.required);
                 return new Stipulatable(o.id, o.name, testers, required);
-            });
+            }).ToList();
         }
 
         private async Task UpdateUsers()
@@ -91,6 +91,7 @@ namespace Modulr.Controllers
         public async Task DecrementAttempts(string googleID)
         {
             const string command =
+                "UPDATE Modulr.Users SET tests_timeout = ADDTIME(CURRENT_TIMESTAMP(), '00:30:00') WHERE google_id = @GoogleID AND tests_remaining = 3;" +
                 "UPDATE Modulr.Users SET tests_remaining = tests_remaining - 1 WHERE google_id = @GoogleID;";
             await Connection.ExecuteAsync(command, new { GoogleID = googleID } );
         }
