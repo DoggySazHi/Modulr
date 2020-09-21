@@ -32,6 +32,7 @@
       </e>
       <e p="Models" t="Include">
         <e p="LoginMessage.cs" t="Include" />
+        <e p="Role.cs" t="Include" />
         <e p="Stipulatable.cs" t="Include" />
         <e p="TesterFiles.cs" t="Include" />
         <e p="TestQuery.cs" t="Include" />

@@ -1,7 +1,4 @@
-﻿using System;
-using System.Linq;
-using System.Threading.Tasks;
-using Google.Apis.Auth;
+﻿using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Modulr.Models;
@@ -38,7 +35,7 @@ namespace Modulr.Controllers
         public async Task<LoginMessage> Login([FromBody] string token)
         {
             var result = await _auth.Verify(token);
-            return result switch
+            return result.Status switch
             {
                 GoogleAuth.LoginStatus.BadAudience => LoginResult(403, "Invalid audience!"),
                 GoogleAuth.LoginStatus.BadIssuer => LoginResult(403, "Invalid issuer!"),

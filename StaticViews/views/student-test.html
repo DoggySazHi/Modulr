@@ -53,6 +53,7 @@
         <span class="nav-item-right"></span>
         <span class="nav-item" id="username"></span>
         <span class="nav-item" id="attempts"></span>
+        <span class="nav-item" id="time"></span>
         <span class="nav-item" id="googleSignIn"></span>
     </div>
 </nav>
@@ -62,18 +63,27 @@
 
 <div class="container">
     <header>Student Tester</header>
+    
+    <div class="row">
+        <div class="column">
+            <form onsubmit="return false;" id="tests-available">
+                
+            </form>
+        </div>
+        <div class="column">
+            <form onsubmit="return false;">
+                <label class="input normal form-control">
+                    Test ID&nbsp;
+                    <input type="number" id="testId">
+                </label>
 
-    <form onsubmit="return false;">
-        <label class="input normal form-control">
-            Test ID&nbsp;
-            <input type="number" id="testId">
-        </label>
+                <div id="fileInputs" class="form-control"></div>
 
-        <div id="fileInputs" class="form-control"></div>
-
-        <button id="submit" class="default form-control" disabled>Submit!</button>
-        <div id="result" class="output"></div>
-    </form>
+                <button id="submit" class="default form-control" disabled>Submit!</button>
+                <div id="result" class="output"></div>
+            </form>
+        </div>
+    </div>
 </div>
 
 <footer class="footer">

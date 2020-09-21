@@ -27,10 +27,10 @@ namespace Modulr.Controllers
             Success
         }
         
-        public async Task<LoginStatus> Verify(string token)
+        public async Task<(LoginStatus Status, GoogleJsonWebSignature.Payload User)> Verify(string token)
         {
             if (token == null)
-                return LoginStatus.Invalid;
+                return (LoginStatus.Invalid, null);
 
             GoogleJsonWebSignature.Payload validation;
             try
@@ -43,18 +43,18 @@ namespace Modulr.Controllers
             }
 
             if (validation == null)
-                return LoginStatus.Invalid;
+                return (LoginStatus.Invalid, null);
             if (!validation.AudienceAsList.Contains(_config.GoogleClientKey))
-                return LoginStatus.BadAudience;
+                return (LoginStatus.BadAudience, null);
             if (validation.Issuer != "accounts.google.com" && validation.Issuer != "https://accounts.google.com")
-                return LoginStatus.BadIssuer;
+                return (LoginStatus.BadIssuer, null);
             if (validation.ExpirationTimeSeconds == null ||
                 validation.ExpirationTimeSeconds < DateTimeOffset.Now.ToUnixTimeSeconds())
-                return LoginStatus.ExpiredToken;
+                return (LoginStatus.ExpiredToken, null);
             if (!string.IsNullOrEmpty(_config.HostedDomain) && validation.HostedDomain != _config.HostedDomain)
-                return LoginStatus.BadDomain;
+                return (LoginStatus.BadDomain, null);
             await _query.Register(validation.Subject, validation.Name, validation.Email);
-            return LoginStatus.Success;
+            return (LoginStatus.Success, validation);
         }
     }
 }

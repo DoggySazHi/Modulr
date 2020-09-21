@@ -4,7 +4,6 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Modulr.Models;
 using Modulr.Tester;
-using Newtonsoft.Json;
 
 namespace Modulr.Controllers
 {
@@ -26,7 +25,7 @@ namespace Modulr.Controllers
         [HttpPost("GetTest")]
         public async Task<Stipulatable> GetTest([FromBody] TestQuery item)
         {
-            if (await _auth.Verify(item.AuthToken) != GoogleAuth.LoginStatus.Success)
+            if ((await _auth.Verify(item.AuthToken)).Status != GoogleAuth.LoginStatus.Success)
             {
                 Response.StatusCode = 403;
                 return null;
@@ -41,7 +40,7 @@ namespace Modulr.Controllers
         [HttpPost("GetAllTests")]
         public async Task<IEnumerable<Stipulatable>> GetAllTests([FromBody] TestQuery login)
         {
-            if (await _auth.Verify(login.AuthToken) != GoogleAuth.LoginStatus.Success)
+            if ((await _auth.Verify(login.AuthToken)).Status != GoogleAuth.LoginStatus.Success)
             {
                 Response.StatusCode = 403;
                 return null;
@@ -59,9 +58,13 @@ namespace Modulr.Controllers
             if (input == null || !input.IsLikelyValid())
                 return Fail(400, ">:[ not nice");
 
-            var loginStatus = await _auth.Verify(input.AuthToken);
-            if (loginStatus != GoogleAuth.LoginStatus.Success)
+            var (status, user) = await _auth.Verify(input.AuthToken);
+            if (status != GoogleAuth.LoginStatus.Success)
                 return Fail(403, "Login needed!");
+
+            var attempts = await _query.GetTimeOut(user.Subject);
+            if (attempts.TestsRemaining <= 0)
+                return Fail(403, "You are on a cooldown!");
 
             var test = await _query.GetTest(input.TestID);
             if (test == null)
@@ -87,6 +90,7 @@ namespace Modulr.Controllers
             }
 
             var output = _java.DockerTest(path, input.FileNames.ToArray());
+            await _query.DecrementAttempts(user.Subject);
             return output;
         }
 

@@ -2,9 +2,13 @@
 
 onInitTester();
 
+let resetTime = new Date();
+
 function onInitTester() {
     bindButtons();
     bindUploads();
+    onLoginEvent.push(getAllTests);
+    onLoginEvent.push(getAttemptsLeft);
     console.info("Initialized tester script!");
 }
 
@@ -78,6 +82,7 @@ function submit() {
     })
     .finally(() => {
         document.getElementById("submit").disabled = false;
+        getAttemptsLeft();
     });
 }
 
@@ -136,8 +141,7 @@ function getAllTests() {
             'Content-Type': 'application/json'
         },
         body: JSON.stringify({
-            "AuthToken": getLoginToken(),
-            "TestID": id
+            "AuthToken": getLoginToken()
         })
     })
     .then((response) => {
@@ -169,15 +173,12 @@ function getAllTests() {
 }
 
 function getAttemptsLeft() {
-    fetch("/Tester/GetAllTests", {
+    fetch("/Users/GetTimeout", {
         method: "POST",
         headers: {
             'Content-Type': 'application/json'
         },
-        body: JSON.stringify({
-            "AuthToken": getLoginToken(),
-            "TestID": id
-        })
+        body: JSON.stringify(getLoginToken())
     })
     .then((response) => {
         if (response.status >= 400 && response.status < 600)
@@ -185,7 +186,9 @@ function getAttemptsLeft() {
         return response.json();
     })
     .then((formatted) => {
+        resetTime = new Date(Date.now() + formatted.milliseconds);
         document.getElementById("attempts").innerHTML = "Attempts Left: " + formatted.testsRemaining;
+        setInterval(updateTimer, 1000);
     })
     .catch((error) => {
         if (error.message.startsWith("HTTPERR")) {
@@ -204,6 +207,18 @@ function getAttemptsLeft() {
         console.error("We had an error... ", error);
         triggerPopup("Mukyu~", error);
     });
+}
+
+function updateTimer() {
+    // Oh no, timezones!
+    let difference = resetTime - new Date();
+    let output = document.getElementById("time");
+    if (difference < 0) {
+        output.innerHTML = "";
+        document.getElementById("attempts").innerHTML = "Attempts Left: 3";
+        return;
+    }
+    output.innerHTML = "Reset in " + new Date().toISOString().substr(11, 8);
 }
 
 function clearInputs() {
@@ -227,6 +242,14 @@ function generateInputs(names) {
     document.getElementById("submit").disabled = false;
 }
 
-function generateList() {
-    
+function generateList(tests) {
+    let list = document.getElementById("tests-available");
+    for(let test of tests) {
+        let testBtn = document.createElement("button");
+        testBtn.className = "default form-control";
+        testBtn.innerHTML = test.name;
+        testBtn.name = test.id;
+        list.appendChild(testBtn);
+        console.log(test);
+    }
 }

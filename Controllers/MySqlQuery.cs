@@ -57,13 +57,16 @@ namespace Modulr.Controllers
             const string command = "INSERT INTO Modulr.Users (google_id, name, username, email) VALUES (@GoogleID, @Name, @Username, @Email) ON DUPLICATE KEY UPDATE google_id = @GoogleID, name = @Name, username = @Username, email = @Email";
             await Connection.ExecuteAsync(command,
                 new {GoogleID = googleID, Name = name, Username = username, Email = email});
+            await UpdateUsers();
         }
         
         public async Task<UserTimeout> GetTimeOut(string googleID)
         {
-            const string command = "SELECT tests_remaining, tests_timeout FROM Modulr.Stipulatables WHERE google_id = @GoogleID";
+            const string command = "SELECT tests_remaining, tests_timeout FROM Modulr.Users WHERE google_id = @GoogleID";
             var results = await Connection.QuerySingleOrDefaultAsync<UserTimeout>(command,
                 new {GoogleID = googleID});
+            if (results != null)
+                results.Milliseconds = (long) (results.TestsTimeout - DateTimeOffset.Now).TotalMilliseconds;
             return results;
         }
         
@@ -76,6 +79,20 @@ namespace Modulr.Controllers
                 var required = JsonConvert.DeserializeObject<IEnumerable<string>>(o.required);
                 return new Stipulatable(o.id, o.name, testers, required);
             });
+        }
+
+        private async Task UpdateUsers()
+        {
+            const string command =
+                "UPDATE Modulr.Users SET tests_remaining = 3 WHERE tests_timeout < CURRENT_TIMESTAMP();";
+            await Connection.ExecuteAsync(command);
+        }
+
+        public async Task DecrementAttempts(string googleID)
+        {
+            const string command =
+                "UPDATE Modulr.Users SET tests_remaining = tests_remaining - 1 WHERE google_id = @GoogleID;";
+            await Connection.ExecuteAsync(command, new { GoogleID = googleID } );
         }
     }
 }

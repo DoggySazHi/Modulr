@@ -1,11 +1,81 @@
 ﻿<!DOCTYPE html>
+<!-- It's been soooo long since I wrote web-based applications~ -->
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <link rel="icon" href="/img/modulr.svg">
-    <title>Mukyu~</title>
+    <link rel="icon" href="img/modulr.svg">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Code+Pro">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro">
+    <link rel="stylesheet" href="css/main.css">
+    <!-- The other icon stuff -->
+    <link rel="apple-touch-icon" sizes="57x57" href="/apple-icon-57x57.png">
+    <link rel="apple-touch-icon" sizes="60x60" href="/apple-icon-60x60.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="/apple-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="76x76" href="/apple-icon-76x76.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="/apple-icon-114x114.png">
+    <link rel="apple-touch-icon" sizes="120x120" href="/apple-icon-120x120.png">
+    <link rel="apple-touch-icon" sizes="144x144" href="/apple-icon-144x144.png">
+    <link rel="apple-touch-icon" sizes="152x152" href="/apple-icon-152x152.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-icon-180x180.png">
+    <link rel="icon" type="image/png" sizes="192x192"  href="/android-icon-192x192.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="96x96" href="/favicon-96x96.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+    <link rel="manifest" href="/manifest.json">
+    <meta name="msapplication-TileColor" content="#34383a">
+    <meta name="msapplication-TileImage" content="/ms-icon-144x144.png">
+    <meta name="theme-color" content="#34383a">
+
+    <meta property="og:title" content="Modulr - An online Java Stipulator" />
+    <meta property="og:description" content="A server-based Java stipulator written in C#. Because why not." />
+    <meta property="og:image" content="https://modulr.williamle.com/img/panel.png" />
+    <meta property="og:site_name" content="Modulr">
+    <meta name="theme-color" content="#7289DA">
+
+    <title>Modulr ~ Home</title>
 </head>
 <body>
-    Error 404! Cannot find page!
+
+<div class="blocker hidden">
+    <div class="blocker-message hidden">
+        <div class="blocker-header">
+            <span id="blocker-header">Mukyu~</span>
+            <span class="blocker-close" onclick="disablePopup()">
+                    ✖
+                </span>
+        </div>
+        <hr>
+        <span id="blocker-message"></span>
+    </div>
+</div>
+
+<nav>
+    <div class="nav-container">
+        <img class="nav-item nav-logo" src="img/modulr.svg" alt="Modulr Logo">
+        <span class="nav-item nav-focus">Modulr</span>
+        <span class="nav-item-right"></span>
+        <span class="nav-item" id="username"></span>
+        <span class="nav-item" id="googleSignIn"></span>
+    </div>
+</nav>
+<div class="nav-padding"></div>
+
+<div class="container">
+    <header>Error 404...</header>
+    <code>java.lang.NullPointerException</code>
+    <hr>
+    <div>We couldn't find what you were looking for.</div>
+    <div>Did you mis-type a link?</div>
+</div>
+
+<footer class="footer">
+    Written by William Le -
+    <a href="https://github.com/DoggySazHi/Modulr" target="_blank" rel="noopener noreferrer">View in GitHub</a>
+</footer>
+
+<!-- JavaScript libraries -->
+<script type="text/javascript" src="js/main.js"></script>
+<script type="text/javascript" src="js/google.js"></script>
+<script src="https://apis.google.com/js/platform.js?onload=googleInit" async defer></script>
 </body>
 </html>

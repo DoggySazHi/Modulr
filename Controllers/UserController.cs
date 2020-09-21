@@ -9,14 +9,22 @@ namespace Modulr.Controllers
     public class UserController : ControllerBase
     {
         private readonly MySqlQuery _query;
+        private readonly GoogleAuth _auth;
 
-        public UserController(MySqlQuery query)
+        public UserController(MySqlQuery query, GoogleAuth auth)
         {
             _query = query;
+            _auth = auth;
         }
 
-        [HttpGet("GetTimeout")]
-        public async Task<UserTimeout> GetTimeout(string token)
-            => await _query.GetTimeOut(token);
+        [HttpPost("GetTimeout")]
+        public async Task<UserTimeout> GetTimeout([FromBody] string token)
+        {
+            var (status, user) = await _auth.Verify(token);
+            if (status == GoogleAuth.LoginStatus.Success)
+                return await _query.GetTimeOut(user.Subject);
+            Response.StatusCode = 403;
+            return null;
+        }
     }
 }

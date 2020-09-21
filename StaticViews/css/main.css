@@ -274,6 +274,15 @@ footer a {
     display: none;
 }
 
+.row {
+    display: flex;
+}
+
+.column {
+    flex-direction: column;
+    flex: 1;
+}
+
 .normal {
     background-color: rgb(11, 144, 217);
 }
