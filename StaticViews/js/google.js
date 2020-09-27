@@ -76,11 +76,13 @@ function createSignOut() {
 
 function signOut() {
     let google = gapi.auth2.getAuthInstance();
-    google.signOut().then(function () {
-        console.info('Logged out!');
-        renderLogin();
-        window.location.replace(getUrl("/", {}));
-    });
+    fetch(getUrl("/Users/LogOut", {})).then(() => {
+        google.signOut().then(function () {
+            console.info('Logged out!');
+            renderLogin();
+            window.location.replace(getUrl("/", {}));
+        });
+    })
     document.getElementById("googleSignIn").innerHTML = "";
     document.getElementById("username").innerHTML = "";
 }

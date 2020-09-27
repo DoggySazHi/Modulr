@@ -14,15 +14,29 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="359509d8-12b3-47c4-829a-24bd1e268319" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/Controllers/RequireAuth.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Modulr.sln.DotSettings" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/StaticViews/restrictedviews/admin.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/StaticViews/views/error/403.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/.idea.Modulr/.idea/contentModel.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Modulr/.idea/contentModel.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.Modulr/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Modulr/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Controllers/GoogleLoginController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Controllers/GoogleLoginController.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Controllers/MySqlQuery.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Controllers/MySqlQuery.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Models/Stipulatable.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Models/Stipulatable.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/StaticViews/js/forceauth.js" beforeDir="false" afterPath="$PROJECT_DIR$/StaticViews/js/forceauth.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Controllers/UserController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Controllers/UserController.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Docker/CompileAndTest.sh" beforeDir="false" afterPath="$PROJECT_DIR$/Docker/CompileAndTest.sh" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Modulr.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/Modulr.csproj" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Program.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Program.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Startup.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Startup.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/StaticViews/css/main.css" beforeDir="false" afterPath="$PROJECT_DIR$/StaticViews/css/main.css" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/StaticViews/js/google.js" beforeDir="false" afterPath="$PROJECT_DIR$/StaticViews/js/google.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/StaticViews/js/main.js" beforeDir="false" afterPath="$PROJECT_DIR$/StaticViews/js/main.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/StaticViews/js/tester.js" beforeDir="false" afterPath="$PROJECT_DIR$/StaticViews/js/tester.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/StaticViews/views/error/404.html" beforeDir="false" afterPath="$PROJECT_DIR$/StaticViews/views/error/404.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/StaticViews/views/error/500.html" beforeDir="false" afterPath="$PROJECT_DIR$/StaticViews/views/error/500.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/StaticViews/views/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/StaticViews/views/index.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/StaticViews/views/student-test.html" beforeDir="false" afterPath="$PROJECT_DIR$/StaticViews/views/student-test.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Tester/ModulrConfig.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Tester/ModulrConfig.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Tester/ModulrJail.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Tester/ModulrJail.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -32,8 +46,8 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
-        <option value="HTML File" />
         <option value="JavaScript File" />
+        <option value="HTML File" />
       </list>
     </option>
   </component>
@@ -45,17 +59,13 @@
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/9CD23B5E-3B0C-4F80-A807-33BCFD1D82E1/E8/ValueTuple.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/9CD23B5E-3B0C-4F80-A807-33BCFD1D82E1/135/Monitor.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/config.json" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/1328EA85-1FA4-4D66-86F8-33AE66320398/3/HostBuilder.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Controllers/MySqlQuery.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/346AC160-1803-412E-B0A1-21046C4AC027/8/ServiceProvider.cs" root0="SKIP_HIGHLIGHTING" />
   </component>
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/StaticViews/error404.html" />
-        <option value="$PROJECT_DIR$/StaticViews/index.html" />
-        <option value="$PROJECT_DIR$/StaticViews/Errors/error500.html" />
-        <option value="$PROJECT_DIR$/StaticViews/Errors/error404.html" />
-        <option value="$PROJECT_DIR$/Program.cs" />
-        <option value="$PROJECT_DIR$/Docker/src/SetWithArrayTest.java" />
         <option value="$PROJECT_DIR$/Models/Test.cs" />
         <option value="$PROJECT_DIR$/Controllers/TestHub.cs" />
         <option value="$PROJECT_DIR$/Models/ITestUpdate.cs" />
@@ -66,41 +76,47 @@
         <option value="$PROJECT_DIR$/StaticViews/img/modulr.svg" />
         <option value="$PROJECT_DIR$/TestingSource/SetWithArrayTest.java" />
         <option value="$PROJECT_DIR$/Modulr.csproj" />
-        <option value="$PROJECT_DIR$/Tester/ModulrJail.cs" />
         <option value="$PROJECT_DIR$/Tester/JavaUtils.cs" />
         <option value="$PROJECT_DIR$/StaticViews/img/manifest.json" />
         <option value="$PROJECT_DIR$/Models/LoginMessage.cs" />
-        <option value="$PROJECT_DIR$/Tester/ModulrConfig.cs" />
         <option value="$PROJECT_DIR$/config.sample.json" />
-        <option value="$PROJECT_DIR$/Docker/CompileAndTest.sh" />
         <option value="$PROJECT_DIR$/Controllers/MySqlTestQuery.cs" />
         <option value="$PROJECT_DIR$/Models/TesterFiles.cs" />
-        <option value="$PROJECT_DIR$/Startup.cs" />
         <option value="$PROJECT_DIR$/Models/TestQuery.cs" />
         <option value="$PROJECT_DIR$/config.json" />
         <option value="$PROJECT_DIR$/Controllers/ErrorController.cs" />
         <option value="$PROJECT_DIR$/StaticViews/views/template/header.html" />
         <option value="$PROJECT_DIR$/StaticViews/views/template/footer.html" />
-        <option value="$PROJECT_DIR$/StaticViews/js/main.js" />
         <option value="$PROJECT_DIR$/Controllers/HTMLController.cs" />
         <option value="$PROJECT_DIR$/StaticViews/js/forceauth.js" />
-        <option value="$PROJECT_DIR$/StaticViews/views/index.html" />
         <option value="$PROJECT_DIR$/StaticViews/views/tester.html" />
         <option value="$PROJECT_DIR$/Models/Role.cs" />
         <option value="$PROJECT_DIR$/Controllers/GoogleAuth.cs" />
-        <option value="$PROJECT_DIR$/Controllers/UserController.cs" />
         <option value="$PROJECT_DIR$/Models/UserTimeout.cs" />
-        <option value="$PROJECT_DIR$/StaticViews/css/main.css" />
         <option value="$PROJECT_DIR$/Controllers/TestReceivedController.cs" />
-        <option value="$PROJECT_DIR$/Controllers/GoogleLoginController.cs" />
         <option value="$PROJECT_DIR$/Models/Stipulatable.cs" />
-        <option value="$PROJECT_DIR$/StaticViews/js/google.js" />
         <option value="$PROJECT_DIR$/StaticViews/js/index.js" />
+        <option value="$PROJECT_DIR$/StaticViews/views/admin.html.cs" />
+        <option value="$PROJECT_DIR$/StaticViews/views/admin.html" />
+        <option value="$PROJECT_DIR$/Controllers/GoogleLoginController.cs" />
+        <option value="$PROJECT_DIR$/Tester/ModulrConfig.cs" />
+        <option value="$PROJECT_DIR$/StaticViews/js/main.js" />
+        <option value="$PROJECT_DIR$/Docker/CompileAndTest.sh" />
+        <option value="$PROJECT_DIR$/Tester/ModulrJail.cs" />
+        <option value="$PROJECT_DIR$/Program.cs" />
+        <option value="$PROJECT_DIR$/Startup.cs" />
+        <option value="$PROJECT_DIR$/StaticViews/css/main.css" />
+        <option value="$PROJECT_DIR$/StaticViews/js/tester.js" />
+        <option value="$PROJECT_DIR$/Controllers/MySqlQuery.cs" />
+        <option value="$PROJECT_DIR$/Controllers/RequireAuth.cs" />
+        <option value="$PROJECT_DIR$/StaticViews/restrictedviews/admin.html" />
+        <option value="$PROJECT_DIR$/StaticViews/views/student-test.html" />
         <option value="$PROJECT_DIR$/StaticViews/views/error/404.html" />
         <option value="$PROJECT_DIR$/StaticViews/views/error/500.html" />
-        <option value="$PROJECT_DIR$/Controllers/MySqlQuery.cs" />
-        <option value="$PROJECT_DIR$/StaticViews/views/student-test.html" />
-        <option value="$PROJECT_DIR$/StaticViews/js/tester.js" />
+        <option value="$PROJECT_DIR$/StaticViews/views/index.html" />
+        <option value="$PROJECT_DIR$/Controllers/UserController.cs" />
+        <option value="$PROJECT_DIR$/StaticViews/js/google.js" />
+        <option value="$PROJECT_DIR$/StaticViews/views/error/403.html" />
       </list>
     </option>
   </component>
@@ -114,17 +130,19 @@
   </component>
   <component name="PropertiesComponent">
     <property name="ASKED_ADD_EXTERNAL_FILES" value="true" />
-    <property name="DebuggerViewTab_PTCS_FirstProportionKey" value="0.35127202" />
-    <property name="DebuggerViewTab_PTCS_LastProportionKey" value="0.30136988" />
+    <property name="DebuggerViewTab_PTCS_FirstProportionKey" value="0.35161605" />
+    <property name="DebuggerViewTab_PTCS_LastProportionKey" value="0.30166504" />
     <property name="DefaultHtmlFileTemplate" value="HTML File" />
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="last.edited.regexp" value="COMPILING mukyu.java hell" />
     <property name="node.js.detected.package.eslint" value="true" />
     <property name="node.js.detected.package.tslint" value="true" />
     <property name="node.js.path.for.package.eslint" value="project" />
     <property name="node.js.path.for.package.tslint" value="project" />
     <property name="node.js.selected.package.eslint" value="(autodetect)" />
     <property name="node.js.selected.package.tslint" value="(autodetect)" />
+    <property name="nodejs_package_manager_path" value="npm" />
     <property name="restartRequiresConfirmation" value="false" />
     <property name="vue.rearranger.settings.migration" value="true" />
   </component>
@@ -192,6 +210,13 @@
       <workItem from="1600475615721" duration="4028000" />
       <workItem from="1600530027914" duration="21541000" />
       <workItem from="1600698982467" duration="3353000" />
+      <workItem from="1600717231457" duration="3091000" />
+      <workItem from="1600740080635" duration="101000" />
+      <workItem from="1600782327452" duration="922000" />
+      <workItem from="1600802285236" duration="2411000" />
+      <workItem from="1600908301351" duration="4059000" />
+      <workItem from="1600960182918" duration="13786000" />
+      <workItem from="1601147206241" duration="8868000" />
     </task>
     <servers />
   </component>
@@ -221,94 +246,94 @@
       <screen x="0" y="0" width="2194" height="1194" />
     </state>
     <state x="1105" y="256" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.2194.1194@0.0.2194.1194" timestamp="1600440898668" />
-    <state x="960" y="467" key="#xdebugger.evaluate" timestamp="1600442880087">
+    <state x="960" y="467" key="#xdebugger.evaluate" timestamp="1601081535983">
       <screen x="0" y="0" width="2194" height="1194" />
     </state>
-    <state x="960" y="467" key="#xdebugger.evaluate/0.0.2194.1194@0.0.2194.1194" timestamp="1600442880087" />
+    <state x="960" y="467" key="#xdebugger.evaluate/0.0.2194.1194@0.0.2194.1194" timestamp="1601081535983" />
     <state width="429" height="466" key="DebuggerActiveHint" timestamp="1600699621154">
       <screen x="0" y="0" width="2194" height="1194" />
     </state>
     <state width="429" height="466" key="DebuggerActiveHint/0.0.2194.1194@0.0.2194.1194" timestamp="1600699621154" />
-    <state width="1053" height="434" key="GridCell.Tab.0.bottom" timestamp="1600702615446">
+    <state width="1052" height="438" key="GridCell.Tab.0.bottom" timestamp="1601180983726">
       <screen x="0" y="0" width="2194" height="1194" />
     </state>
-    <state width="1053" height="434" key="GridCell.Tab.0.bottom/0.0.2194.1194@0.0.2194.1194" timestamp="1600702615446" />
-    <state width="1053" height="434" key="GridCell.Tab.0.center" timestamp="1600702615446">
+    <state width="1052" height="438" key="GridCell.Tab.0.bottom/0.0.2194.1194@0.0.2194.1194" timestamp="1601180983726" />
+    <state width="1052" height="438" key="GridCell.Tab.0.center" timestamp="1601180983726">
       <screen x="0" y="0" width="2194" height="1194" />
     </state>
-    <state width="1053" height="434" key="GridCell.Tab.0.center/0.0.2194.1194@0.0.2194.1194" timestamp="1600702615446" />
-    <state width="1053" height="434" key="GridCell.Tab.0.left" timestamp="1600702615446">
+    <state width="1052" height="438" key="GridCell.Tab.0.center/0.0.2194.1194@0.0.2194.1194" timestamp="1601180983726" />
+    <state width="1052" height="438" key="GridCell.Tab.0.left" timestamp="1601180983726">
       <screen x="0" y="0" width="2194" height="1194" />
     </state>
-    <state width="1053" height="434" key="GridCell.Tab.0.left/0.0.2194.1194@0.0.2194.1194" timestamp="1600702615446" />
-    <state width="1053" height="434" key="GridCell.Tab.0.right" timestamp="1600702615446">
+    <state width="1052" height="438" key="GridCell.Tab.0.left/0.0.2194.1194@0.0.2194.1194" timestamp="1601180983726" />
+    <state width="1052" height="438" key="GridCell.Tab.0.right" timestamp="1601180983726">
       <screen x="0" y="0" width="2194" height="1194" />
     </state>
-    <state width="1053" height="434" key="GridCell.Tab.0.right/0.0.2194.1194@0.0.2194.1194" timestamp="1600702615446" />
-    <state width="1053" height="434" key="GridCell.Tab.1.bottom" timestamp="1600702615448">
+    <state width="1052" height="438" key="GridCell.Tab.0.right/0.0.2194.1194@0.0.2194.1194" timestamp="1601180983726" />
+    <state width="1052" height="438" key="GridCell.Tab.1.bottom" timestamp="1601180983590">
       <screen x="0" y="0" width="2194" height="1194" />
     </state>
-    <state width="1053" height="434" key="GridCell.Tab.1.bottom/0.0.2194.1194@0.0.2194.1194" timestamp="1600702615448" />
-    <state width="1053" height="434" key="GridCell.Tab.1.center" timestamp="1600702615447">
+    <state width="1052" height="438" key="GridCell.Tab.1.bottom/0.0.2194.1194@0.0.2194.1194" timestamp="1601180983590" />
+    <state width="1052" height="438" key="GridCell.Tab.1.center" timestamp="1601180983590">
       <screen x="0" y="0" width="2194" height="1194" />
     </state>
-    <state width="1053" height="434" key="GridCell.Tab.1.center/0.0.2194.1194@0.0.2194.1194" timestamp="1600702615447" />
-    <state width="1053" height="434" key="GridCell.Tab.1.left" timestamp="1600702615446">
+    <state width="1052" height="438" key="GridCell.Tab.1.center/0.0.2194.1194@0.0.2194.1194" timestamp="1601180983590" />
+    <state width="1052" height="438" key="GridCell.Tab.1.left" timestamp="1601180983590">
       <screen x="0" y="0" width="2194" height="1194" />
     </state>
-    <state width="1053" height="434" key="GridCell.Tab.1.left/0.0.2194.1194@0.0.2194.1194" timestamp="1600702615446" />
-    <state width="1053" height="434" key="GridCell.Tab.1.right" timestamp="1600702615447">
+    <state width="1052" height="438" key="GridCell.Tab.1.left/0.0.2194.1194@0.0.2194.1194" timestamp="1601180983590" />
+    <state width="1052" height="438" key="GridCell.Tab.1.right" timestamp="1601180983590">
       <screen x="0" y="0" width="2194" height="1194" />
     </state>
-    <state width="1053" height="434" key="GridCell.Tab.1.right/0.0.2194.1194@0.0.2194.1194" timestamp="1600702615447" />
-    <state width="1053" height="434" key="GridCell.Tab.2.bottom" timestamp="1600702615448">
+    <state width="1052" height="438" key="GridCell.Tab.1.right/0.0.2194.1194@0.0.2194.1194" timestamp="1601180983590" />
+    <state width="1052" height="438" key="GridCell.Tab.2.bottom" timestamp="1601180983590">
       <screen x="0" y="0" width="2194" height="1194" />
     </state>
-    <state width="1053" height="434" key="GridCell.Tab.2.bottom/0.0.2194.1194@0.0.2194.1194" timestamp="1600702615448" />
-    <state width="1053" height="434" key="GridCell.Tab.2.center" timestamp="1600702615448">
+    <state width="1052" height="438" key="GridCell.Tab.2.bottom/0.0.2194.1194@0.0.2194.1194" timestamp="1601180983590" />
+    <state width="1052" height="438" key="GridCell.Tab.2.center" timestamp="1601180983590">
       <screen x="0" y="0" width="2194" height="1194" />
     </state>
-    <state width="1053" height="434" key="GridCell.Tab.2.center/0.0.2194.1194@0.0.2194.1194" timestamp="1600702615448" />
-    <state width="1053" height="434" key="GridCell.Tab.2.left" timestamp="1600702615448">
+    <state width="1052" height="438" key="GridCell.Tab.2.center/0.0.2194.1194@0.0.2194.1194" timestamp="1601180983590" />
+    <state width="1052" height="438" key="GridCell.Tab.2.left" timestamp="1601180983590">
       <screen x="0" y="0" width="2194" height="1194" />
     </state>
-    <state width="1053" height="434" key="GridCell.Tab.2.left/0.0.2194.1194@0.0.2194.1194" timestamp="1600702615448" />
-    <state width="1053" height="434" key="GridCell.Tab.2.right" timestamp="1600702615448">
+    <state width="1052" height="438" key="GridCell.Tab.2.left/0.0.2194.1194@0.0.2194.1194" timestamp="1601180983590" />
+    <state width="1052" height="438" key="GridCell.Tab.2.right" timestamp="1601180983590">
       <screen x="0" y="0" width="2194" height="1194" />
     </state>
-    <state width="1053" height="434" key="GridCell.Tab.2.right/0.0.2194.1194@0.0.2194.1194" timestamp="1600702615448" />
-    <state width="1053" height="434" key="GridCell.Tab.3.bottom" timestamp="1600702615448">
+    <state width="1052" height="438" key="GridCell.Tab.2.right/0.0.2194.1194@0.0.2194.1194" timestamp="1601180983590" />
+    <state width="1052" height="438" key="GridCell.Tab.3.bottom" timestamp="1601180983591">
       <screen x="0" y="0" width="2194" height="1194" />
     </state>
-    <state width="1053" height="434" key="GridCell.Tab.3.bottom/0.0.2194.1194@0.0.2194.1194" timestamp="1600702615448" />
-    <state width="1053" height="434" key="GridCell.Tab.3.center" timestamp="1600702615448">
+    <state width="1052" height="438" key="GridCell.Tab.3.bottom/0.0.2194.1194@0.0.2194.1194" timestamp="1601180983591" />
+    <state width="1052" height="438" key="GridCell.Tab.3.center" timestamp="1601180983591">
       <screen x="0" y="0" width="2194" height="1194" />
     </state>
-    <state width="1053" height="434" key="GridCell.Tab.3.center/0.0.2194.1194@0.0.2194.1194" timestamp="1600702615448" />
-    <state width="1053" height="434" key="GridCell.Tab.3.left" timestamp="1600702615448">
+    <state width="1052" height="438" key="GridCell.Tab.3.center/0.0.2194.1194@0.0.2194.1194" timestamp="1601180983591" />
+    <state width="1052" height="438" key="GridCell.Tab.3.left" timestamp="1601180983591">
       <screen x="0" y="0" width="2194" height="1194" />
     </state>
-    <state width="1053" height="434" key="GridCell.Tab.3.left/0.0.2194.1194@0.0.2194.1194" timestamp="1600702615448" />
-    <state width="1053" height="434" key="GridCell.Tab.3.right" timestamp="1600702615448">
+    <state width="1052" height="438" key="GridCell.Tab.3.left/0.0.2194.1194@0.0.2194.1194" timestamp="1601180983591" />
+    <state width="1052" height="438" key="GridCell.Tab.3.right" timestamp="1601180983591">
       <screen x="0" y="0" width="2194" height="1194" />
     </state>
-    <state width="1053" height="434" key="GridCell.Tab.3.right/0.0.2194.1194@0.0.2194.1194" timestamp="1600702615448" />
-    <state width="1053" height="434" key="GridCell.Tab.4.bottom" timestamp="1600702615449">
+    <state width="1052" height="438" key="GridCell.Tab.3.right/0.0.2194.1194@0.0.2194.1194" timestamp="1601180983591" />
+    <state width="1052" height="438" key="GridCell.Tab.4.bottom" timestamp="1601180983591">
       <screen x="0" y="0" width="2194" height="1194" />
     </state>
-    <state width="1053" height="434" key="GridCell.Tab.4.bottom/0.0.2194.1194@0.0.2194.1194" timestamp="1600702615449" />
-    <state width="1053" height="434" key="GridCell.Tab.4.center" timestamp="1600702615449">
+    <state width="1052" height="438" key="GridCell.Tab.4.bottom/0.0.2194.1194@0.0.2194.1194" timestamp="1601180983591" />
+    <state width="1052" height="438" key="GridCell.Tab.4.center" timestamp="1601180983591">
       <screen x="0" y="0" width="2194" height="1194" />
     </state>
-    <state width="1053" height="434" key="GridCell.Tab.4.center/0.0.2194.1194@0.0.2194.1194" timestamp="1600702615449" />
-    <state width="1053" height="434" key="GridCell.Tab.4.left" timestamp="1600702615448">
+    <state width="1052" height="438" key="GridCell.Tab.4.center/0.0.2194.1194@0.0.2194.1194" timestamp="1601180983591" />
+    <state width="1052" height="438" key="GridCell.Tab.4.left" timestamp="1601180983591">
       <screen x="0" y="0" width="2194" height="1194" />
     </state>
-    <state width="1053" height="434" key="GridCell.Tab.4.left/0.0.2194.1194@0.0.2194.1194" timestamp="1600702615448" />
-    <state width="1053" height="434" key="GridCell.Tab.4.right" timestamp="1600702615449">
+    <state width="1052" height="438" key="GridCell.Tab.4.left/0.0.2194.1194@0.0.2194.1194" timestamp="1601180983591" />
+    <state width="1052" height="438" key="GridCell.Tab.4.right" timestamp="1601180983591">
       <screen x="0" y="0" width="2194" height="1194" />
     </state>
-    <state width="1053" height="434" key="GridCell.Tab.4.right/0.0.2194.1194@0.0.2194.1194" timestamp="1600702615449" />
+    <state width="1052" height="438" key="GridCell.Tab.4.right/0.0.2194.1194@0.0.2194.1194" timestamp="1601180983591" />
     <state x="746" y="316" key="Rider.ProjectTemplateDialog.Size" timestamp="1598449822689">
       <screen x="0" y="0" width="2194" height="1194" />
     </state>
@@ -333,18 +358,18 @@
       <screen x="0" y="0" width="2194" height="1194" />
     </state>
     <state x="1087" y="230" width="783" height="743" key="dock-window-1/0.0.2194.1194@0.0.2194.1194" timestamp="1599416233581" />
-    <state x="1327" y="330" width="635" height="592" key="find.popup" timestamp="1600534818292">
+    <state x="1327" y="330" width="635" height="592" key="find.popup" timestamp="1600803128453">
       <screen x="0" y="0" width="2194" height="1194" />
     </state>
-    <state x="1327" y="330" width="635" height="592" key="find.popup/0.0.2194.1194@0.0.2194.1194" timestamp="1600534818292" />
+    <state x="1327" y="330" width="635" height="592" key="find.popup/0.0.2194.1194@0.0.2194.1194" timestamp="1600803128453" />
     <state width="600" height="428" key="javadoc.popup" timestamp="1599416520321">
       <screen x="0" y="0" width="2194" height="1194" />
     </state>
     <state width="600" height="428" key="javadoc.popup/0.0.2194.1194@0.0.2194.1194" timestamp="1599416520321" />
-    <state x="199" y="283" key="run.anything.popup" timestamp="1600535556476">
+    <state x="198" y="283" key="run.anything.popup" timestamp="1600909404150">
       <screen x="0" y="0" width="2194" height="1194" />
     </state>
-    <state x="199" y="283" key="run.anything.popup/0.0.2194.1194@0.0.2194.1194" timestamp="1600535556476" />
+    <state x="198" y="283" key="run.anything.popup/0.0.2194.1194@0.0.2194.1194" timestamp="1600909404150" />
     <state x="1306" y="267" width="672" height="678" key="search.everywhere.popup" timestamp="1600535039635">
       <screen x="0" y="0" width="2194" height="1194" />
     </state>

@@ -1,3 +1,5 @@
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication.Google;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -21,10 +23,21 @@ namespace Modulr
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
-            services.AddSingleton(ModulrConfig.Build());
+            services.AddSingleton<ModulrConfig>();
             services.AddSingleton<JavaUtils>();
             services.AddScoped<MySqlQuery>();
             services.AddScoped<GoogleAuth>();
+
+            var tempConfig = new ModulrConfig(null, verify: false);
+            services.AddAuthentication(o =>
+            {
+                o.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+                o.DefaultChallengeScheme = GoogleDefaults.AuthenticationScheme;
+            }).AddCookie().AddGoogle(o =>
+            {
+                o.ClientId = tempConfig.GoogleClientKey;
+                o.ClientSecret = tempConfig.GoogleSecret;
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -41,6 +54,7 @@ namespace Modulr
 
             app.UseRouting();
 
+            app.UseAuthentication();
             app.UseAuthorization();
             
             app.UseEndpoints(endpoints =>

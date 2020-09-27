@@ -24,13 +24,6 @@ namespace Modulr.Controllers
         [HttpGet("GetKey")]
         public string GetClientKey() => $"{{\"client_id\": \"{_config.GoogleClientKey}\"}}";
 
-        [HttpPost("Callback")]
-        public string GoogleCallback(string message)
-        {
-            _logger.LogInformation(message);
-            return "Mukyu!";
-        }
-
         [HttpPost("Login")]
         public async Task<LoginMessage> Login([FromBody] string token)
         {

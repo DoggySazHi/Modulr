@@ -9,6 +9,7 @@
 onInitTester();
 
 let resetTime = new Date();
+let currentTest = 0;
 
 function onInitTester() {
     bindButtons();
@@ -44,12 +45,13 @@ function submit() {
             for (let i = 0; i < input.files.length; i++)
                 data.append('Files', input.files[i]);
             data.append('IsTester', JSON.stringify(false));
-            data.append('TestID', JSON.stringify(parseInt(document.getElementById("testId").value, 10)))
+            data.append('TestID', JSON.stringify(currentTest))
             data.append('AuthToken', getLoginToken())
         }
     );
 
-    document.getElementById("result").innerHTML = "Now loading...";
+    let output = document.getElementById("result");
+    output.innerHTML = "Now loading...";
     document.getElementById("submit").disabled = true;
 
     fetch("/Tester/Upload", {
@@ -62,7 +64,46 @@ function submit() {
         return response.text();
     })
     .then((formatted) => {
-        document.getElementById("result").innerHTML = formatted;
+        let text = formatted.toString();
+        // Get first word
+        let key = text.substr(0, text.indexOf(" "));
+        // Split by first word
+        let pattern = new RegExp("(?=" + key + ")", "g");
+        let processed = text.split(pattern);
+            
+        output.innerHTML = "";
+        
+        let button;
+        let content;
+        
+        for(let i = 0; i < processed.length; i++) {
+            let item = processed[i];
+            
+            if (i % 2 === 0) {
+                let title = "Test Results";
+                let fileName = item.match(/COMPILING ([0-9A-Za-z ]*\.java)/);
+                if (fileName != null && fileName.length >= 2)
+                    title = "Compiler Info for " + fileName[1];
+                
+                button = document.createElement("button");
+                button.className = "collapse default";
+                button.innerHTML = title;
+                content = document.createElement("div");
+                content.className = "collapse-content";
+                
+                if (fileName == null || fileName.length < 2)
+                    button.classList.toggle("active");
+
+                output.appendChild(button);
+                output.appendChild(content);
+            }
+            
+            content.innerHTML += item;
+            if (button.classList.contains("active"))
+                content.style.maxHeight = content.scrollHeight + "px";
+        }
+        
+        registerCollapsibles();
     })
     .catch((error) => {
         if (error.message.startsWith("HTTPERR")) {
@@ -115,6 +156,7 @@ function getTest(num) {
         }
         generateInputs(formatted.requiredFiles);
         bindUploads();
+        currentTest = id;
     })
     .catch((error) => {
         if (error.message.startsWith("HTTPERR")) {

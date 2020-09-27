@@ -18,6 +18,7 @@
         <e p="GoogleLoginController.cs" t="Include" />
         <e p="HTMLController.cs" t="Include" />
         <e p="MySqlQuery.cs" t="Include" />
+        <e p="RequireAuth.cs" t="Include" />
         <e p="TestReceivedController.cs" t="Include" />
         <e p="UserController.cs" t="Include" />
       </e>
@@ -40,6 +41,7 @@
       </e>
       <e p="Modulr.csproj" t="IncludeRecursive" />
       <e p="Modulr.sln" t="IncludeFlat" />
+      <e p="Modulr.sln.DotSettings" t="Include" />
       <e p="obj" t="ExcludeRecursive">
         <e p="Debug" t="Include">
           <e p="netcoreapp3.1" t="Include">
@@ -94,8 +96,12 @@
           <e p="main.js" t="Include" />
           <e p="tester.js" t="Include" />
         </e>
+        <e p="restrictedviews" t="Include">
+          <e p="admin.html" t="Include" />
+        </e>
         <e p="views" t="Include">
           <e p="error" t="Include">
+            <e p="403.html" t="Include" />
             <e p="404.html" t="Include" />
             <e p="500.html" t="Include" />
           </e>
@@ -111,8 +117,11 @@
       <e p="TestingSource" t="Include">
         <e p="DorasPart2StudentTester.java" t="Include" />
         <e p="DorasStudentTester.java" t="Include" />
+        <e p="MorseCodeCorrect.java" t="Include" />
+        <e p="MorseCodeStudentTest.java" t="Include" />
         <e p="SetWithArrayTest.java" t="Include" />
         <e p="StudentTester.java" t="Include" />
+        <e p="TreeNode.java" t="Include" />
       </e>
     </e>
   </component>

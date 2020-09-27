@@ -1,4 +1,5 @@
 ﻿using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Mvc;
 using Modulr.Models;
 
@@ -25,6 +26,12 @@ namespace Modulr.Controllers
                 return await _query.GetTimeOut(user.Subject);
             Response.StatusCode = 403;
             return null;
+        }
+
+        [HttpGet("LogOut")]
+        public async Task Logout()
+        {
+            await HttpContext.SignOutAsync();
         }
     }
 }

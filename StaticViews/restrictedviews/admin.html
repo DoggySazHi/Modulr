@@ -1,5 +1,4 @@
 ﻿<!DOCTYPE html>
-<!-- It's been soooo long since I wrote web-based applications~ -->
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -32,7 +31,7 @@
     <meta property="og:site_name" content="Modulr">
     <meta name="theme-color" content="#7289DA">
 
-    <title>Error 500! ~ Modulr</title>
+    <title>Admin Area ~ Modulr</title>
 </head>
 <body>
 
@@ -40,9 +39,7 @@
     <div class="blocker-message hidden">
         <div class="blocker-header">
             <span id="blocker-header">Mukyu~</span>
-            <span class="blocker-close" onclick="disablePopup()">
-                    ✖
-                </span>
+            <span class="blocker-close" onclick="disablePopup()">✖</span>
         </div>
         <hr>
         <span id="blocker-message"></span>
@@ -55,17 +52,35 @@
         <span class="nav-item nav-focus">Modulr</span>
         <span class="nav-item-right"></span>
         <span class="nav-item" id="username"></span>
+        <span class="nav-item" id="attempts"></span>
+        <span class="nav-item" id="time"></span>
         <span class="nav-item" id="googleSignIn"></span>
     </div>
 </nav>
 <div class="nav-padding"></div>
 
+<!-- Start Content -->
+
 <div class="container">
-    <header>Error 500...</header>
-    <code>java.lang.InternalError</code>
-    <hr>
-    <div>Oh my~... the server seems to have died on us.</div>
-    <div>Try again later, or file an issue on GitHub.</div>
+    <header>Admin Area</header>
+
+    <div class="row">
+        <div class="column">
+            <h3>Tests Available</h3>
+            <form onsubmit="return false;" id="tests-available">
+
+            </form>
+        </div>
+        <div class="column">
+            <h3>File Manager</h3>
+            <form onsubmit="return false;">
+                <div id="fileInputs" class="form-control"></div>
+
+                <button id="submit" class="default form-control" disabled>Submit!</button>
+                <div id="result" class="output"></div>
+            </form>
+        </div>
+    </div>
 </div>
 
 <div class="footer-padding"></div>
@@ -75,8 +90,11 @@
 </footer>
 
 <!-- JavaScript libraries -->
+
 <script type="text/javascript" src="/js/main.js"></script>
 <script type="text/javascript" src="/js/google.js"></script>
+<script type="text/javascript" src="/js/forceauth.js"></script>
+<script type="text/javascript" src="/js/tester.js"></script>
 <script src="https://apis.google.com/js/platform.js?onload=googleInit" async defer></script>
 </body>
 </html>

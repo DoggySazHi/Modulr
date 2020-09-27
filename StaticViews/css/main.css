@@ -283,6 +283,48 @@ footer a {
     flex: 1;
 }
 
+/* Collapsing stuff */
+
+.collapse {
+    font-family: "Source Code Pro", monospace;
+    background-color: rgb(160, 160, 160);
+    color: white;
+    cursor: pointer;
+    padding: 10px;
+    width: 100%;
+    border: none;
+    text-align: left;
+    outline: none;
+    font-size: 16px;
+    border-radius: 3px;
+    margin: 4px 2px;
+}
+
+.active, .collapse:hover {
+    background-color: rgb(120, 120, 120);
+}
+
+.collapse:after {
+    content: 'O';
+    color: white;
+    font-weight: bold;
+    float: right;
+    margin-left: 5px;
+}
+
+.active:after {
+    content: "|";
+}
+
+.collapse-content {
+    font-family: "Source Code Pro", monospace;
+    padding: 0 12px;
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease-out;
+    background-color: rgb(60, 60, 60);
+}
+
 .normal {
     background-color: rgb(11, 144, 217);
 }
