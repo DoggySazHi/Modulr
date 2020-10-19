@@ -14,12 +14,14 @@ namespace Modulr.Controllers
         private readonly JavaUtils _java;
         private readonly MySqlQuery _query;
         private readonly GoogleAuth _auth;
+        private readonly ModulrConfig _config;
 
-        public TestReceivedController(JavaUtils java, MySqlQuery query, GoogleAuth auth)
+        public TestReceivedController(JavaUtils java, MySqlQuery query, GoogleAuth auth, ModulrConfig config)
         {
             _java = java;
             _query = query;
             _auth = auth;
+            _config = config;
         }
 
         [HttpPost("GetTest")]
@@ -85,7 +87,7 @@ namespace Modulr.Controllers
 
             foreach (var file in test.TesterFiles)
             {
-                System.IO.File.Copy($"TestingSource/{file}", Path.Join(srcPath, file));
+                System.IO.File.Copy(Path.Join(_config.SourceLocation, file), Path.Join(srcPath, file));
                 input.FileNames.Add(file);
             }
 

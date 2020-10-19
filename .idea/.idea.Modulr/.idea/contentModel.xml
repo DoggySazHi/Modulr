@@ -13,12 +13,14 @@
       <e p="config.json" t="Include" />
       <e p="config.sample.json" t="Include" />
       <e p="Controllers" t="Include">
+        <e p="AdminController.cs" t="Include" />
+        <e p="AdminTestController.cs" t="Include" />
         <e p="ErrorController.cs" t="Include" />
         <e p="GoogleAuth.cs" t="Include" />
         <e p="GoogleLoginController.cs" t="Include" />
         <e p="HTMLController.cs" t="Include" />
+        <e p="MainController.cs" t="Include" />
         <e p="MySqlQuery.cs" t="Include" />
-        <e p="RequireAuth.cs" t="Include" />
         <e p="TestReceivedController.cs" t="Include" />
         <e p="UserController.cs" t="Include" />
       </e>
@@ -34,6 +36,7 @@
       <e p="Models" t="Include">
         <e p="LoginMessage.cs" t="Include" />
         <e p="Role.cs" t="Include" />
+        <e p="SourceTesterFiles.cs" t="Include" />
         <e p="Stipulatable.cs" t="Include" />
         <e p="TesterFiles.cs" t="Include" />
         <e p="TestQuery.cs" t="Include" />
@@ -53,6 +56,16 @@
       <e p="Program.cs" t="Include" />
       <e p="Properties" t="Include">
         <e p="launchSettings.json" t="Include" />
+      </e>
+      <e p="restrictedviews" t="Include">
+        <e p="css" t="Include" />
+        <e p="img" t="Include" />
+        <e p="js" t="Include">
+          <e p="admin.js" t="Include" />
+        </e>
+        <e p="views" t="Include">
+          <e p="admin.html" t="Include" />
+        </e>
       </e>
       <e p="Startup.cs" t="Include" />
       <e p="StaticViews" t="Include">
@@ -96,9 +109,6 @@
           <e p="main.js" t="Include" />
           <e p="tester.js" t="Include" />
         </e>
-        <e p="restrictedviews" t="Include">
-          <e p="admin.html" t="Include" />
-        </e>
         <e p="views" t="Include">
           <e p="error" t="Include">
             <e p="403.html" t="Include" />
@@ -110,6 +120,7 @@
         </e>
       </e>
       <e p="Tester" t="Include">
+        <e p="ControllerExtensions.cs" t="Include" />
         <e p="JavaUtils.cs" t="Include" />
         <e p="ModulrConfig.cs" t="Include" />
         <e p="ModulrJail.cs" t="Include" />
@@ -117,8 +128,12 @@
       <e p="TestingSource" t="Include">
         <e p="DorasPart2StudentTester.java" t="Include" />
         <e p="DorasStudentTester.java" t="Include" />
+        <e p="GorgoneaQuartaStudentTest.java" t="Include" />
+        <e p="GQ_Decimal_Converter_Correct.java" t="Include" />
         <e p="MorseCodeCorrect.java" t="Include" />
         <e p="MorseCodeStudentTest.java" t="Include" />
+        <e p="RunRunRunAroundNumbersCorrect.java" t="Include" />
+        <e p="RunRunRunAroundStudentTester.java" t="Include" />
         <e p="SetWithArrayTest.java" t="Include" />
         <e p="StudentTester.java" t="Include" />
         <e p="TreeNode.java" t="Include" />

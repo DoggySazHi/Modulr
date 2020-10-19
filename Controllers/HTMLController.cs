@@ -1,47 +1,27 @@
 ﻿using System.Collections.Generic;
 using System.IO;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.StaticFiles;
 using Microsoft.Extensions.Logging;
 
 namespace Modulr.Controllers
 {
-    [ApiController]
-    [Route("/{**page}")]
-    public class HTMLController : ControllerBase
+    public abstract class HTMLController : ControllerBase
     {
         private readonly ILogger<HTMLController> _logger;
-        private static readonly Dictionary<string, string> Router = new Dictionary<string, string>();
+        protected readonly Dictionary<string, string> Router = new Dictionary<string, string>();
 
-        public HTMLController(ILogger<HTMLController> logger)
+        protected HTMLController(ILogger<HTMLController> logger)
         {
             _logger = logger;
             if (Router.Count == 0)
                 SetupRouter();
         }
-        
-        private void SetupRouter()
-        {
-            // So why not serve static? Because I need a way to serve my own routes.
-            // Even though ASP.NET Core can do that too. Oh well.
-            
-            // HTML Routes
-            Router.Add("", "StaticViews/views/index.html");
-            Router.Add("home", "StaticViews/views/index.html");
-            Router.Add("testdemo", "StaticViews/views/tester.html");
-            Router.Add("student-test", "StaticViews/views/student-test.html");
 
-            // Holy crap icon stuff
-            AddFolderToRouter("", "StaticViews/img");
+        protected abstract void SetupRouter();
 
-            // All other files
-            AddFolderToRouter("", "StaticViews/views");
-            AddFolderToRouter("img", "StaticViews/img");
-            AddFolderToRouter("js", "StaticViews/js");
-            AddFolderToRouter("css", "StaticViews/css");
-        }
-
-        private void AddFolderToRouter(string root, string folder)
+        protected void AddFolderToRouter(string root, string folder)
         {
             var files = Directory.EnumerateFiles(folder);
             foreach (var file in files)
@@ -58,7 +38,7 @@ namespace Modulr.Controllers
         }
 
         [HttpGet]
-        public ContentResult Get(string page)
+        public virtual async Task<ContentResult> Get(string page)
         {
             page ??= "";
             page = page.ToLower();
@@ -66,15 +46,15 @@ namespace Modulr.Controllers
             {
                 var found = Router.TryGetValue(page, out var file);
                 if (!found)
-                    throw new FileNotFoundException();
-                using var reader = new StreamReader(file);
-                return base.Content(reader.ReadToEnd(), GetMIME(file));
+                    throw new FileNotFoundException(); 
+                var text = await System.IO.File.ReadAllTextAsync(file);
+                return base.Content(text, GetMIME(file));
             }
             catch (FileNotFoundException)
             {
-                using var reader = new StreamReader("StaticViews/views/error/404.html");
+                var text = await System.IO.File.ReadAllTextAsync("StaticViews/views/error/404.html");
                 Response.StatusCode = 404;
-                return base.Content(reader.ReadToEnd(), "text/html");
+                return base.Content(text, "text/html");
             }
         }
 

@@ -12,6 +12,7 @@ namespace Modulr.Tester
         [JsonProperty] public bool UseDocker { get; private set; }
         [JsonProperty] public string DockerPath { get; private set; }
         [JsonProperty] public string SaveLocation { get; private set; }
+        [JsonProperty] public string SourceLocation { get; private set; }
         [JsonProperty] public string MySqlServer { get; private set; }
         [JsonProperty] public int MySqlPort { get; private set; }
         [JsonProperty] public string MySqlPassword { get; private set; }
