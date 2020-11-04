@@ -25,7 +25,7 @@ done
 
 if [ $success == false ];
 then
-    echo "$randomkey ========== FAILED COMPILATION - NO TEST =========="
+    echo "!! ======= FAILED COMPILATION - NO TEST ======= !!"
     exit 1
 fi
 

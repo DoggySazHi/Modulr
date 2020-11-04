@@ -1,11 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ContentModelStore">
-    <e p="C:\Users\William Le\AppData\Local\JetBrains\Rider2020.2\extResources" t="IncludeRecursive" />
-    <e p="C:\Users\William Le\AppData\Local\JetBrains\Rider2020.2\resharper-host\Local\Transient\Rider\v202\SolutionCaches\_Modulr.186074604.00" t="ExcludeRecursive" />
-    <e p="C:\Users\William Le\AppData\Roaming\JetBrains\Rider2020.2\consoles\db" t="IncludeRecursive" />
-    <e p="C:\Users\William Le\AppData\Roaming\JetBrains\Rider2020.2\extensions" t="IncludeRecursive" />
-    <e p="C:\Users\William Le\Documents\Programming Projects\Modulr" t="IncludeRecursive">
+    <e p="C:\Users\doggysazhi\AppData\Local\JetBrains\Rider2020.2\extResources" t="IncludeRecursive" />
+    <e p="C:\Users\doggysazhi\AppData\Local\JetBrains\Rider2020.2\resharper-host\Local\Transient\Rider\v202\SolutionCaches\_Modulr.514734568.00" t="ExcludeRecursive" />
+    <e p="C:\Users\doggysazhi\Documents\Modulr" t="IncludeRecursive">
       <e p=".gitignore" t="Include" />
       <e p="appsettings.Development.json" t="Include" />
       <e p="appsettings.json" t="Include" />
@@ -25,8 +23,10 @@
       <e p="CreateDatabase.sql" t="Include" />
       <e p="Docker" t="Include">
         <e p=".Dockerignore" t="Include" />
+        <e p="CompileAndTest.ps1" t="Include" />
         <e p="CompileAndTest.sh" t="Include" />
         <e p="Dockerfile" t="Include" />
+        <e p="DockerfileWS" t="Include" />
         <e p="junit-platform-console-standalone-1.6.2.jar" t="Include" />
         <e p="rebuild.sh" t="Include" />
         <e p="security.policy" t="Include" />
@@ -114,11 +114,30 @@
         <e p="ModulrConfig.cs" t="Include" />
         <e p="ModulrJail.cs" t="Include" />
       </e>
+      <e p="TestingInput" t="Include">
+        <e p="4DpCHv" t="Include">
+          <e p="source" t="Include">
+            <e p="ISBN_Verification.java" t="Include" />
+            <e p="ISBN_VerificationTest.java" t="Include" />
+          </e>
+        </e>
+        <e p="QAefOy" t="Include">
+          <e p="source" t="Include">
+            <e p="ISBN_Verification.java" t="Include" />
+            <e p="ISBN_VerificationTest.java" t="Include" />
+          </e>
+        </e>
+      </e>
       <e p="TestingSource" t="Include">
         <e p="DorasPart2StudentTester.java" t="Include" />
         <e p="DorasStudentTester.java" t="Include" />
+        <e p="GorgoneaQuartaStudentTest.java" t="Include" />
+        <e p="GQ_Decimal_Converter_Correct.java" t="Include" />
+        <e p="ISBN_VerificationTest.java" t="Include" />
         <e p="MorseCodeCorrect.java" t="Include" />
         <e p="MorseCodeStudentTest.java" t="Include" />
+        <e p="RunRunRunAroundNumbersCorrect.java" t="Include" />
+        <e p="RunRunRunAroundStudentTester.java" t="Include" />
         <e p="SetWithArrayTest.java" t="Include" />
         <e p="StudentTester.java" t="Include" />
         <e p="TreeNode.java" t="Include" />
