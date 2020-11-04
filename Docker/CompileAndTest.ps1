@@ -13,7 +13,7 @@ foreach($var in $args) {
 
     & javac $var --% -cp .\junit-platform-console-standalone-1.6.2.jar;. -Xlint:all -Xmaxwarns 100
     if(!$?) {
-        echo "$randomkey ========== FAILED COMPILATION!!! =========="
+        echo "!! ======= FAILED COMPILATION!!! ======= !!"
         $success = $false
         break;
     }
@@ -22,7 +22,7 @@ foreach($var in $args) {
 }
 
 if(!$success) {
-    echo "!! ======= FAILED COMPILATION - NO TEST ======= !!"
+    echo "$randomkey ========== FAILED COMPILATION - NO TEST =========="
     exit 1
 }
 

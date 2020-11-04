@@ -40,15 +40,20 @@ function bindUploads() {
 function submit() {
     let data = new FormData();
     
-    document.querySelectorAll("input[type='file']").forEach((input) => {
-            data.append('FileNames', input.name);
-            for (let i = 0; i < input.files.length; i++)
-                data.append('Files', input.files[i]);
-            data.append('IsTester', JSON.stringify(false));
-            data.append('TestID', JSON.stringify(currentTest))
-            data.append('AuthToken', getLoginToken())
+    let fileInputs = document.querySelectorAll("input[type='file']");
+    for (let input of fileInputs) {
+        data.append('FileNames', input.name);
+        if (input.files.length === 0) {
+            console.error("User missed " + input.name + "!");
+            triggerPopup("Mukyu~", "You need to attach a file for " + input.name + "!");
+            return;
         }
-    );
+        for (let i = 0; i < input.files.length; i++)
+            data.append('Files', input.files[i]);
+        data.append('IsTester', JSON.stringify(false));
+        data.append('TestID', JSON.stringify(currentTest));
+        data.append('AuthToken', getLoginToken());
+    }
 
     let output = document.getElementById("result");
     output.innerHTML = "Now loading...";
@@ -70,7 +75,7 @@ function submit() {
         // Split by first word
         let pattern = new RegExp("(?=" + key + ")", "g");
         let processed = text.split(pattern);
-            
+
         output.innerHTML = "";
         
         let button;
@@ -81,7 +86,9 @@ function submit() {
             
             if (i % 2 === 0) {
                 let title = "Test Results";
-                let fileName = item.match(/COMPILING ([0-9A-Za-z ]*\.java)/);
+                let fileName = item.match(/COMPILING (\S*\.java)/);
+                console.log(item);
+                console.log(fileName);
                 if (fileName != null && fileName.length >= 2)
                     title = "Compiler Info for " + fileName[1];
                 
@@ -108,6 +115,9 @@ function submit() {
     .catch((error) => {
         if (error.message.startsWith("HTTPERR")) {
             switch (parseInt(error.message.substr(7))) {
+                case 400:
+                    error = "The server didn't like your files... did you miss something?";
+                    break;
                 case 403:
                     error = "Either you are on a cooldown, or your login credentials failed.\nIf the former isn't true, try logging out and logging back in!";
                     break;
@@ -115,6 +125,7 @@ function submit() {
                     error = "Could not locate the uploader... try refreshing the page?";
                     break;
                 case 500:
+                case 502:
                     error = "The server decided that it wanted to die. Ask William about what the heck you did to kill it.";
                     break;
             }

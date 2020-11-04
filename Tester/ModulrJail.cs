@@ -73,6 +73,11 @@ namespace Modulr.Tester
                 return;
 
             var dockerFile = _isEnterprise ? "DockerfileWS" : "Dockerfile";
+            if (!_isEnterprise)
+            {
+                ToLF("Docker/CompileAndTest.sh");
+                ToLF("Docker/Dockerfile");
+            }
 
             var imageProcess = new Process
             {
@@ -89,6 +94,15 @@ namespace Modulr.Tester
             
             imageProcess.Start();
             imageProcess.WaitForExit();
+        }
+
+        private static void ToLF(string file)
+        {
+            using (var sr = new StreamReader(file))
+                using (var sw = new StreamWriter($"{file}.lf"))
+                    sw.Write(sr.ReadToEnd().Replace("\r\n","\n"));
+            File.Delete(file);
+            File.Move($"{file}.lf", file);
         }
 
         public string GetAllOutput()

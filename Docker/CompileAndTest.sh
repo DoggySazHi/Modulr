@@ -17,7 +17,7 @@ for var in "$@" ; do
     javac -cp junit-platform-console-standalone-1.6.2.jar:. -Xlint:all -Xmaxwarns 100 $var
     if [ $? != 0 ]; # If it's a non-zero exit code (aka bad compilation)
     then
-        echo "$randomkey ========== FAILED COMPILATION!!! =========="
+        echo "!! ======= FAILED COMPILATION!!! ======= !!"
         success=false
     fi
     echo "$randomkey ========== END COMPILING $var =========="
@@ -25,7 +25,7 @@ done
 
 if [ $success == false ];
 then
-    echo "!! ======= FAILED COMPILATION - NO TEST ======= !!"
+    echo "$randomkey ========== FAILED COMPILATION - NO TEST =========="
     exit 1
 fi
 
