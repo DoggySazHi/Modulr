@@ -55,8 +55,8 @@ namespace Modulr.Controllers
         {
             username ??= name;
             const string command =
-                "INSERT INTO Modulr.Users (google_id, name, username, email) VALUES (@GoogleID, @Name, @Username, @Email) ON DUPLICATE KEY UPDATE google_id = @GoogleID, name = @Name, username = @Username, email = @Email;" + 
-                "UPDATE Modulr.Users SET tests_remaining = 5 WHERE tests_timeout < CURRENT_TIMESTAMP();";
+                "INSERT INTO Modulr.Users (google_id, name, username, email) VALUES (@GoogleID, @Name, @Username, @Email) ON DUPLICATE KEY UPDATE google_id = @GoogleID, name = @Name, username = @Username, email = @Email;" +
+                "UPDATE Modulr.Users SET tests_remaining = 10 WHERE tests_timeout < CURRENT_TIMESTAMP();";
             await Connection.ExecuteAsync(command,
                 new {GoogleID = googleID, Name = name, Username = username, Email = email});
         }

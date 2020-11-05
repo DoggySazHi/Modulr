@@ -12,15 +12,20 @@ namespace Modulr.Tester
         private readonly Process _process;
         
         public static ModulrConfig Config { private get; set; }
-        private static bool SelfInit;
+        private static bool _selfInit;
+        private static bool _isEnterprise;
         
         public ModulrJail(string sourceFolder, params string[] files)
         {
-            if (!SelfInit)
+            if (!_selfInit)
                 Initialize();
-            SelfInit = true;
+            _selfInit = true;
+
+            var args = $"run --rm -v \"{Path.Join(Path.GetFullPath(sourceFolder), "\\source").ToLower().Replace("\\", "" + Path.DirectorySeparatorChar)}:/src/files\" modulrjail {string.Join(' ', files)}";
+            if (_isEnterprise)
+                args =
+                    $"run --rm -v {Path.Join(Path.GetFullPath(sourceFolder), "\\source")}:c:\\src\\files modulrjail {string.Join(' ', files)}";
             
-            var args = $"run --rm -v \"{Path.Join(Path.GetFullPath(sourceFolder), "/source").ToLower()}:/src/files\" modulrjail {string.Join(' ', files)}";
             _process = new Process
             {
                 StartInfo = new ProcessStartInfo
@@ -44,15 +49,41 @@ namespace Modulr.Tester
 
         private static void Initialize()
         {
-            if (!Directory.Exists("Docker"))
-                return;
-            
-            var process = new Process
+            var versionProcess = new Process
             {
                 StartInfo = new ProcessStartInfo
                 {
                     FileName = Config.DockerPath,
-                    Arguments = "build -t modulrjail .",
+                    Arguments = "version",
+                    UseShellExecute = false,
+                    RedirectStandardOutput = true,
+                    RedirectStandardError = true,
+                    WorkingDirectory = "Docker"
+                }
+            };
+
+            versionProcess.Start();
+            var output = versionProcess.StandardOutput.ReadToEnd();
+            if (output.Contains("Enterprise"))
+                _isEnterprise = true;
+            versionProcess.WaitForExit();
+            
+            if (!Directory.Exists("Docker"))
+                return;
+
+            var dockerFile = _isEnterprise ? "DockerfileWS" : "Dockerfile";
+            if (!_isEnterprise)
+            {
+                ToLF("Docker/CompileAndTest.sh");
+                ToLF("Docker/Dockerfile");
+            }
+
+            var imageProcess = new Process
+            {
+                StartInfo = new ProcessStartInfo
+                {
+                    FileName = Config.DockerPath,
+                    Arguments = $"build -f {dockerFile} -t modulrjail .",
                     UseShellExecute = false,
                     RedirectStandardOutput = true,
                     RedirectStandardError = true,
@@ -60,8 +91,17 @@ namespace Modulr.Tester
                 }
             };
             
-            process.Start();
-            process.WaitForExit();
+            imageProcess.Start();
+            imageProcess.WaitForExit();
+        }
+
+        private static void ToLF(string file)
+        {
+            using (var sr = new StreamReader(file))
+                using (var sw = new StreamWriter($"{file}.lf"))
+                    sw.Write(sr.ReadToEnd().Replace("\r\n","\n"));
+            File.Delete(file);
+            File.Move($"{file}.lf", file);
         }
 
         public string GetAllOutput()

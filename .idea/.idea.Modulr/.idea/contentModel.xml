@@ -27,8 +27,10 @@
       <e p="CreateDatabase.sql" t="Include" />
       <e p="Docker" t="Include">
         <e p=".Dockerignore" t="Include" />
+        <e p="CompileAndTest.ps1" t="Include" />
         <e p="CompileAndTest.sh" t="Include" />
         <e p="Dockerfile" t="Include" />
+        <e p="DockerfileWS" t="Include" />
         <e p="junit-platform-console-standalone-1.6.2.jar" t="Include" />
         <e p="rebuild.sh" t="Include" />
         <e p="security.policy" t="Include" />
@@ -125,11 +127,20 @@
         <e p="ModulrConfig.cs" t="Include" />
         <e p="ModulrJail.cs" t="Include" />
       </e>
+      <e p="TestingInput" t="Include">
+        <e p="Bic8W3" t="Include">
+          <e p="source" t="Include">
+            <e p="ISBN_Verification.java" t="Include" />
+            <e p="ISBN_VerificationTest.java" t="Include" />
+          </e>
+        </e>
+      </e>
       <e p="TestingSource" t="Include">
         <e p="DorasPart2StudentTester.java" t="Include" />
         <e p="DorasStudentTester.java" t="Include" />
         <e p="GorgoneaQuartaStudentTest.java" t="Include" />
         <e p="GQ_Decimal_Converter_Correct.java" t="Include" />
+        <e p="ISBN_VerificationTest.java" t="Include" />
         <e p="MorseCodeCorrect.java" t="Include" />
         <e p="MorseCodeStudentTest.java" t="Include" />
         <e p="RunRunRunAroundNumbersCorrect.java" t="Include" />
