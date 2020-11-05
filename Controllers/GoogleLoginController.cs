@@ -1,6 +1,5 @@
 ﻿using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
 using Modulr.Models;
 using Modulr.Tester;
 
@@ -10,13 +9,11 @@ namespace Modulr.Controllers
     [Route("/Google")]
     public class GoogleLoginController : ControllerBase
     {
-        private readonly ILogger<GoogleLoginController> _logger;
         private readonly ModulrConfig _config;
         private readonly GoogleAuth _auth;
 
-        public GoogleLoginController(ILogger<GoogleLoginController> logger, ModulrConfig config, GoogleAuth auth)
+        public GoogleLoginController(ModulrConfig config, GoogleAuth auth)
         {
-            _logger = logger;
             _config = config;
             _auth = auth;
         }
