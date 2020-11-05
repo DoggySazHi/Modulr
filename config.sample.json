@@ -9,5 +9,6 @@
   "MySqlPassword": "correcthorsebatterystaple",
   "GoogleClientKey": "YOUR_CLIENT_ID.apps.googleusercontent.com\n",
   "GoogleSecret": "YOUR_SECRET",
-  "HostedDomain": "mukyu.org"
+  "HostedDomain": "mukyu.org",
+  "TimeoutAttempts": -1
 }

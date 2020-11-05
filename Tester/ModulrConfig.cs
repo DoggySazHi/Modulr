@@ -23,6 +23,7 @@ namespace Modulr.Tester
         [JsonProperty] public string GoogleClientKey { get; private set; }
         [JsonProperty] public string GoogleSecret { get; private set; }
         [JsonProperty] public string HostedDomain { get; private set; }
+        [JsonProperty] public int TimeoutAttempts { get; private set; }
 
         [JsonIgnore] private readonly ILogger<ModulrConfig> _logger;
 
@@ -30,13 +31,15 @@ namespace Modulr.Tester
         {
             var json = File.ReadAllText(file);
             JsonConvert.PopulateObject(json, this);
+            File.WriteAllText(file, JsonConvert.SerializeObject(this, Formatting.Indented));
             _logger = logger;
             if (verify)
                 VerifyConfig();
         }
 
         private readonly string[] _dockerWinPath = {
-            @"C:\Program Files\Docker\Docker\resources\docker.exe", 
+            @"C:\Program Files\Docker\Docker\resources\docker.exe",
+            @"C:\Program Files\Docker\docker.exe",
             @"C:\Program Files\Docker\Docker\resources\bin\com.docker.cli.exe"
         };
         

@@ -14,6 +14,7 @@ namespace Modulr.Controllers
     public class MySqlQuery : IDisposable
     {
         public MySqlConnection Connection { get; }
+        private readonly ModulrConfig _config;
 
         public void Dispose()
         {
@@ -28,7 +29,8 @@ namespace Modulr.Controllers
 
         public MySqlQuery(ModulrConfig config)
         {
-            Connection = new MySqlConnection(config.MySqlConnection);
+            _config = config;
+            Connection = new MySqlConnection(_config.MySqlConnection);
             DefaultTypeMap.MatchNamesWithUnderscores = true;
         }
         
@@ -54,9 +56,9 @@ namespace Modulr.Controllers
         public async Task Register(string googleID, string name, string email, string username = null)
         {
             username ??= name;
-            const string command =
+            var command =
                 "INSERT INTO Modulr.Users (google_id, name, username, email) VALUES (@GoogleID, @Name, @Username, @Email) ON DUPLICATE KEY UPDATE google_id = @GoogleID, name = @Name, username = @Username, email = @Email;" +
-                "UPDATE Modulr.Users SET tests_remaining = 10 WHERE tests_timeout < CURRENT_TIMESTAMP();";
+                $"UPDATE Modulr.Users SET tests_remaining = {_config.TimeoutAttempts} WHERE tests_timeout < CURRENT_TIMESTAMP();";
             await Connection.ExecuteAsync(command,
                 new {GoogleID = googleID, Name = name, Username = username, Email = email});
         }
@@ -84,6 +86,8 @@ namespace Modulr.Controllers
 
         public async Task DecrementAttempts(string googleID)
         {
+            if (_config.TimeoutAttempts < 1)
+                return;
             const string command =
                 "UPDATE Modulr.Users SET tests_timeout = ADDTIME(CURRENT_TIMESTAMP(), '00:30:00') WHERE google_id = @GoogleID AND tests_remaining = 3;" +
                 "UPDATE Modulr.Users SET tests_remaining = tests_remaining - 1 WHERE google_id = @GoogleID;";

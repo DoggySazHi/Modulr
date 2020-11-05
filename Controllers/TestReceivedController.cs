@@ -65,7 +65,7 @@ namespace Modulr.Controllers
                 return Fail(403, "Login needed!");
 
             var attempts = await _query.GetTimeOut(user.Subject);
-            if (attempts.TestsRemaining <= 0)
+            if (_config.TimeoutAttempts >= 1 && attempts.TestsRemaining <= 0)
                 return Fail(403, "You are on a cooldown!");
 
             var test = await _query.GetTest(input.TestID);
