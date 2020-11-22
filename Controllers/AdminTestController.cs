@@ -44,6 +44,12 @@ namespace Modulr.Controllers
 
         private async Task<string> DownloadTester(IFormFile file)
         {
+            if(!await this.IsAdmin(_query))
+            {
+                Response.StatusCode = 403;
+                return null;
+            }
+            
             if (file.Length > 8 * 1024 * 1024) return null;
             var fileName = Path.GetFileName(file.FileName);
             var outputPath = Path.Join(_config.SourceLocation, fileName);
@@ -52,6 +58,51 @@ namespace Modulr.Controllers
             await using var stream = new FileStream(outputPath, FileMode.Create);
             await file.CopyToAsync(stream);
             return Path.GetFileName(outputPath);
+        }
+
+        [HttpPost("GetTests")]
+        public async Task<List<AdminStipulatable>> GetTests()
+        {
+            if(!await this.IsAdmin(_query))
+            {
+                Response.StatusCode = 403;
+                return null;
+            }
+            
+            var tests = await _query.GetAllTests();
+            var validatedTests = new List<AdminStipulatable>();
+            foreach (var test in tests)
+            {
+                var adminStipulatable = new AdminStipulatable(test);
+                adminStipulatable.Validate(_config);
+                validatedTests.Add(adminStipulatable);
+            }
+
+            return validatedTests;
+        }
+        
+        [HttpPut("UpdateTest")]
+        public async Task<bool> UpdateTest(UpdateTesterFiles input)
+        {
+            if(!await this.IsAdmin(_query))
+            {
+                Response.StatusCode = 403;
+                return false;
+            }
+
+            return await _query.UpdateTest(input.TestID, input.TestName, input.Testers, input.Required);
+        }
+
+        [HttpDelete("DeleteTest")]
+        public async Task<bool> DeleteTest([FromBody] int id)
+        {
+            if(!await this.IsAdmin(_query))
+            {
+                Response.StatusCode = 403;
+                return false;
+            }
+
+            return await _query.DeleteTest(id);
         }
     }
 }

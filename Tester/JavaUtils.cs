@@ -49,7 +49,7 @@ namespace Modulr.Tester
             return path;
         }
 
-        private const string RNGChars = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
+        private const string RNGChars = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 
         private string GetRandomString()
         {

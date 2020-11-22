@@ -15,8 +15,6 @@ namespace Modulr.Controllers
         protected HTMLController(ILogger<HTMLController> logger)
         {
             _logger = logger;
-            if (Router.Count == 0)
-                SetupRouter();
         }
 
         protected abstract void SetupRouter();
@@ -40,6 +38,9 @@ namespace Modulr.Controllers
         [HttpGet]
         public virtual async Task<ContentResult> Get(string page)
         {
+            if(Router.Count == 0)
+                SetupRouter();
+            
             page ??= "";
             page = page.ToLower();
             try

@@ -34,6 +34,9 @@ namespace Modulr.Controllers
         [HttpGet]
         public override async Task<ContentResult> Get(string page)
         {
+            if(Router.Count == 0)
+                SetupRouter();
+            
             if (!await this.IsAdmin(_query))
             {
                 var error = await System.IO.File.ReadAllTextAsync("StaticViews/views/error/403.html");

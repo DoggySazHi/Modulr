@@ -23,9 +23,17 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="d515f5dc-d6ad-4b1a-9f75-33bd05ecf17a" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/Models/AdminStipulatable.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Models/UpdateTesterFiles.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.Modulr/.idea/contentModel.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Modulr/.idea/contentModel.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.Modulr/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Modulr/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Docker/CompileAndTest.ps1" beforeDir="false" afterPath="$PROJECT_DIR$/Docker/CompileAndTest.ps1" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Controllers/AdminController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Controllers/AdminController.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Controllers/AdminTestController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Controllers/AdminTestController.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Controllers/HTMLController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Controllers/HTMLController.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Controllers/MySqlQuery.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Controllers/MySqlQuery.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Models/SourceTesterFiles.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Models/SourceTesterFiles.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Modulr.sln.DotSettings" beforeDir="false" afterPath="$PROJECT_DIR$/Modulr.sln.DotSettings" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Tester/JavaUtils.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Tester/JavaUtils.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -57,10 +65,18 @@
         <option value="$PROJECT_DIR$/Controllers/GoogleLoginController.cs" />
         <option value="$PROJECT_DIR$/Tester/ModulrJail.cs" />
         <option value="$PROJECT_DIR$/config.sample.json" />
-        <option value="$PROJECT_DIR$/Controllers/MySqlQuery.cs" />
         <option value="$PROJECT_DIR$/Tester/ModulrConfig.cs" />
         <option value="$PROJECT_DIR$/Controllers/TestReceivedController.cs" />
         <option value="$PROJECT_DIR$/Docker/CompileAndTest.ps1" />
+        <option value="$PROJECT_DIR$/Tester/JavaUtils.cs" />
+        <option value="$PROJECT_DIR$/Controllers/AdminController.cs" />
+        <option value="$PROJECT_DIR$/Controllers/HTMLController.cs" />
+        <option value="$PROJECT_DIR$/Controllers/MainController.cs" />
+        <option value="$PROJECT_DIR$/Controllers/MySqlQuery.cs" />
+        <option value="$PROJECT_DIR$/Models/UpdateTesterFiles.cs" />
+        <option value="$PROJECT_DIR$/Models/SourceTesterFiles.cs" />
+        <option value="$PROJECT_DIR$/Models/AdminStipulatable.cs" />
+        <option value="$PROJECT_DIR$/Controllers/AdminTestController.cs" />
       </list>
     </option>
   </component>
@@ -129,7 +145,11 @@
       <workItem from="1604434522000" duration="67000" />
       <workItem from="1604434605131" duration="4306000" />
       <workItem from="1604554916974" duration="67000" />
-      <workItem from="1604558580121" duration="189000" />
+      <workItem from="1604558580121" duration="7865000" />
+      <workItem from="1604818239451" duration="51000" />
+      <workItem from="1605075710075" duration="11000" />
+      <workItem from="1605501005446" duration="42000" />
+      <workItem from="1605943486016" duration="7844000" />
     </task>
     <servers />
   </component>
@@ -250,5 +270,9 @@
       <screen x="0" y="0" width="2194" height="1194" />
     </state>
     <state x="225" y="333" width="635" height="534" key="find.popup/0.0.2194.1194@0.0.2194.1194" timestamp="1604558531931" />
+    <state x="760" y="264" width="672" height="678" key="search.everywhere.popup" timestamp="1606012469293">
+      <screen x="0" y="0" width="2194" height="1194" />
+    </state>
+    <state x="760" y="264" width="672" height="678" key="search.everywhere.popup/0.0.2194.1194@0.0.2194.1194" timestamp="1606012469293" />
   </component>
 </project>

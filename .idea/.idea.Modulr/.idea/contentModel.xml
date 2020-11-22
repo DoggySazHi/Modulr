@@ -36,12 +36,14 @@
         <e p="security.policy" t="Include" />
       </e>
       <e p="Models" t="Include">
+        <e p="AdminStipulatable.cs" t="Include" />
         <e p="LoginMessage.cs" t="Include" />
         <e p="Role.cs" t="Include" />
         <e p="SourceTesterFiles.cs" t="Include" />
         <e p="Stipulatable.cs" t="Include" />
         <e p="TesterFiles.cs" t="Include" />
         <e p="TestQuery.cs" t="Include" />
+        <e p="UpdateTesterFiles.cs" t="Include" />
         <e p="UserTimeout.cs" t="Include" />
       </e>
       <e p="Modulr.csproj" t="IncludeRecursive" />
@@ -148,6 +150,8 @@
         <e p="SetWithArrayTest.java" t="Include" />
         <e p="StudentTester.java" t="Include" />
         <e p="TreeNode.java" t="Include" />
+        <e p="Twos_Complement_Correct.java" t="Include" />
+        <e p="Twos_ComplementTest.java" t="Include" />
       </e>
     </e>
   </component>

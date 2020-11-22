@@ -53,6 +53,19 @@ namespace Modulr.Controllers
             return results;
         }
         
+        public async Task<bool> UpdateTest(int id, string name, IEnumerable<string> testers, IEnumerable<string> required)
+        {
+            const string command = "UPDATE Modulr.Stipulatables SET (name, testers, required) VALUES (name = @Name, testers = @Testers, required = @Required) WHERE id = @ID";
+            return await Connection.ExecuteAsync(command,
+                new {Name = name, Testers = testers, Required = required, ID = id}) != 0;
+        }
+        
+        public async Task<bool> DeleteTest(int id)
+        {
+            const string command = "DELETE FROM Modulr.Stipulatables WHERE id = @ID";
+            return await Connection.ExecuteAsync(command,new {ID = id}) != 0;
+        }
+        
         public async Task Register(string googleID, string name, string email, string username = null)
         {
             username ??= name;
