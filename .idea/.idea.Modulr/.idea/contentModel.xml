@@ -129,14 +129,7 @@
         <e p="ModulrConfig.cs" t="Include" />
         <e p="ModulrJail.cs" t="Include" />
       </e>
-      <e p="TestingInput" t="Include">
-        <e p="u1fmcM" t="Include">
-          <e p="source" t="Include">
-            <e p="ISBN_Verification.java" t="Include" />
-            <e p="ISBN_VerificationTest.java" t="Include" />
-          </e>
-        </e>
-      </e>
+      <e p="TestingInput" t="Include" />
       <e p="TestingSource" t="Include">
         <e p="DorasPart2StudentTester.java" t="Include" />
         <e p="DorasStudentTester.java" t="Include" />

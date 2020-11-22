@@ -69,9 +69,10 @@ namespace Modulr.Controllers
         public async Task Register(string googleID, string name, string email, string username = null)
         {
             username ??= name;
+            var attempts = _config.TimeoutAttempts <= 0 ? -1 : _config.TimeoutAttempts;
             var command =
                 "INSERT INTO Modulr.Users (google_id, name, username, email) VALUES (@GoogleID, @Name, @Username, @Email) ON DUPLICATE KEY UPDATE google_id = @GoogleID, name = @Name, username = @Username, email = @Email;" +
-                $"UPDATE Modulr.Users SET tests_remaining = {_config.TimeoutAttempts} WHERE tests_timeout < CURRENT_TIMESTAMP();";
+                $"UPDATE Modulr.Users SET tests_remaining = {attempts} WHERE tests_timeout < CURRENT_TIMESTAMP();";
             await Connection.ExecuteAsync(command,
                 new {GoogleID = googleID, Name = name, Username = username, Email = email});
         }

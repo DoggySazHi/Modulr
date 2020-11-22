@@ -9,6 +9,7 @@
 onInitTester();
 
 let resetTime = new Date();
+let testsRemaining = 0;
 let currentTest = 0;
 
 function onInitTester() {
@@ -242,7 +243,8 @@ function getAttemptsLeft() {
     })
     .then((formatted) => {
         resetTime = new Date(Date.now() + formatted.milliseconds);
-        document.getElementById("attempts").innerHTML = "Attempts Left: " + formatted.testsRemaining;
+        testsRemaining = formatted.testsRemaining;
+        updateAttemptsVisual();
         setInterval(updateTimer, 1000);
     })
     .catch((error) => {
@@ -270,7 +272,7 @@ function updateTimer() {
     let output = document.getElementById("time");
     if (difference < 0) {
         output.innerHTML = "";
-        document.getElementById("attempts").innerHTML = "Attempts Left: 3";
+        updateAttemptsVisual();
         return;
     }
     output.innerHTML = "Reset in " + new Date(difference).toISOString().substr(11, 8);
@@ -309,4 +311,11 @@ function generateList(tests) {
         })
         list.appendChild(testBtn);
     }
+}
+
+function updateAttemptsVisual() {
+    if (testsRemaining <= 0)
+        document.getElementById("attempts").innerHTML = "";
+    else
+        document.getElementById("attempts").innerHTML = "Attempts Left: " + testsRemaining;
 }

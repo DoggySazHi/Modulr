@@ -4,7 +4,6 @@ let onLoginEvent = [];
 let onGoogleReady = [];
 
 // stupid IDE not detecting the Google script
-// noinspection JSUnusedGlobalSymbols
 async function googleInit() {
     let result = await fetch("/Google/GetKey");
     let key = await result.json();

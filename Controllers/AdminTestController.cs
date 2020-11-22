@@ -11,7 +11,7 @@ namespace Modulr.Controllers
 {
     [ApiController]
     [Authorize]
-    [Route("/Admin/AddTest")]
+    [Route("/Admin/Tester")]
     public class AdminTestController : ControllerBase
     {
         private readonly MySqlQuery _query;
@@ -23,7 +23,7 @@ namespace Modulr.Controllers
             _config = config;
         }
         
-        [HttpPost("AddTest")]
+        [HttpPost("Add")]
         public async Task<int> OnUpload([FromForm] SourceTesterFiles input)
         {
             if(!await this.IsAdmin(_query))
@@ -60,7 +60,7 @@ namespace Modulr.Controllers
             return Path.GetFileName(outputPath);
         }
 
-        [HttpPost("GetTests")]
+        [HttpPost("GetAll")]
         public async Task<List<AdminStipulatable>> GetTests()
         {
             if(!await this.IsAdmin(_query))
@@ -81,7 +81,7 @@ namespace Modulr.Controllers
             return validatedTests;
         }
         
-        [HttpPut("UpdateTest")]
+        [HttpPut("Update")]
         public async Task<bool> UpdateTest(UpdateTesterFiles input)
         {
             if(!await this.IsAdmin(_query))
@@ -93,7 +93,7 @@ namespace Modulr.Controllers
             return await _query.UpdateTest(input.TestID, input.TestName, input.Testers, input.Required);
         }
 
-        [HttpDelete("DeleteTest")]
+        [HttpDelete("Delete")]
         public async Task<bool> DeleteTest([FromBody] int id)
         {
             if(!await this.IsAdmin(_query))
