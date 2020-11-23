@@ -129,12 +129,12 @@
         <e p="ModulrConfig.cs" t="Include" />
         <e p="ModulrJail.cs" t="Include" />
       </e>
-      <e p="TestingInput" t="Include" />
       <e p="TestingSource" t="Include">
         <e p="DorasPart2StudentTester.java" t="Include" />
         <e p="DorasStudentTester.java" t="Include" />
         <e p="GorgoneaQuartaStudentTest.java" t="Include" />
         <e p="GQ_Decimal_Converter_Correct.java" t="Include" />
+        <e p="hidden" t="Include" />
         <e p="ISBN_VerificationTest.java" t="Include" />
         <e p="MorseCodeCorrect.java" t="Include" />
         <e p="MorseCodeStudentTest.java" t="Include" />

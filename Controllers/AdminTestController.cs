@@ -16,11 +16,13 @@ namespace Modulr.Controllers
     {
         private readonly MySqlQuery _query;
         private readonly ModulrConfig _config;
+        private readonly GoogleAuth _auth;
         
-        public AdminTestController(MySqlQuery query, ModulrConfig config)
+        public AdminTestController(MySqlQuery query, ModulrConfig config, GoogleAuth auth)
         {
             _query = query;
             _config = config;
+            _auth = auth;
         }
         
         [HttpPost("Add")]
@@ -61,9 +63,15 @@ namespace Modulr.Controllers
         }
 
         [HttpPost("GetAll")]
-        public async Task<List<AdminStipulatable>> GetTests()
+        public async Task<List<AdminStipulatable>> GetTests([FromBody] TestQuery login)
         {
             if(!await this.IsAdmin(_query))
+            {
+                Response.StatusCode = 403;
+                return null;
+            }
+            
+            if ((await _auth.Verify(login.AuthToken)).Status != GoogleAuth.LoginStatus.Success)
             {
                 Response.StatusCode = 403;
                 return null;
@@ -77,8 +85,36 @@ namespace Modulr.Controllers
                 adminStipulatable.Validate(_config);
                 validatedTests.Add(adminStipulatable);
             }
-
+            
             return validatedTests;
+        }
+        
+        [HttpPost("Get")]
+        public async Task<AdminStipulatable> GetTest([FromBody] TestQuery login)
+        {
+            if(!await this.IsAdmin(_query))
+            {
+                Response.StatusCode = 403;
+                return null;
+            }
+            
+            if ((await _auth.Verify(login.AuthToken)).Status != GoogleAuth.LoginStatus.Success)
+            {
+                Response.StatusCode = 403;
+                return null;
+            }
+            
+            var test = await _query.GetTest(login.TestID);
+            
+            if (test == null)
+            {
+                Response.StatusCode = 404;
+                return null;
+            }
+            
+            var adminStipulatable = new AdminStipulatable(test);
+            adminStipulatable.Validate(_config);
+            return adminStipulatable;
         }
         
         [HttpPut("Update")]

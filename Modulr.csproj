@@ -25,5 +25,6 @@
     <ItemGroup>
       <Folder Include="RestrictedViews\css" />
       <Folder Include="RestrictedViews\img" />
+      <Folder Include="TestingSource\hidden" />
     </ItemGroup>
 </Project>

@@ -14,6 +14,7 @@ namespace Modulr.Models
     {
         public int ID { get; set; }
         public string Name { get; set; }
+        public bool Valid { get; set; }
         public IReadOnlyCollection<TesterFile> TesterFiles => _testerFiles;
         public IReadOnlyCollection<string> RequiredFiles => _requiredFiles;
         private readonly List<TesterFile> _testerFiles = new List<TesterFile>();
@@ -40,7 +41,8 @@ namespace Modulr.Models
                 else
                     tester.Exists = true;
             }
-            
+
+            Valid = success;
             return success;
         }
     }
