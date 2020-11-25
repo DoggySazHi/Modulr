@@ -38,16 +38,54 @@ function clearInputs() {
     submit.classList.add("hidden");
 }
 
+function generateFileExplorer(formatted) {
+    let inputArea = document.getElementById("fileInputs");
+    let testerTitle = document.createElement("span");
+    testerTitle.innerHTML = "Testers"
+    testerTitle.className = "topic"
+    let bar = document.createElement("hr");
+    let requiredTitle = document.createElement("span");
+    requiredTitle.innerHTML = "Required"
+    requiredTitle.className = "topic"
+
+    let testerRow = document.createElement("div");
+    testerRow.className = "row center"
+    let testerAddButton = document.createElement("button");
+    testerAddButton.className = "success modifier-btn";
+    testerAddButton.innerHTML = "&plus;";
+    testerRow.appendChild(testerTitle);
+    testerRow.appendChild(testerAddButton);
+
+    let requiredRow = document.createElement("div");
+    requiredRow.className = "row center"
+    let requiredAddButton = document.createElement("button");
+    requiredAddButton.className = "success modifier-btn";
+    requiredAddButton.innerHTML = "&plus;";
+    requiredRow.appendChild(requiredTitle);
+    requiredRow.appendChild(requiredAddButton);
+
+    inputArea.appendChild(testerRow);
+    generateInputs(formatted.testerFiles);
+    inputArea.appendChild(bar);
+    inputArea.appendChild(requiredRow);
+    generateInputs(formatted.requiredFiles);
+}
+
 function generateInputs(names) {
     let inputArea = document.getElementById("fileInputs");
     for (let file of names) {
-        let input = document.createElement("input");
-        input.type = "file";
-        
         let label = document.createElement("label");
         label.className = "input";
+        let removeButton = document.createElement("button");
+        let input;
         
         if(file.hasOwnProperty("exists")) {
+            input = document.createElement("input");
+            input.type = "file";
+
+            input.name = file.file;
+            label.innerHTML = file.file;
+            
             if(!file.exists) {
                 label.classList.add("danger");
                 label.innerHTML += " &#10060;";
@@ -56,16 +94,25 @@ function generateInputs(names) {
                 label.classList.add("success");
                 label.innerHTML += " &#10004;";
             }
-            input.name = file.file;
-            label.innerHTML = file.file;
         }
         else {
+            input = document.createElement("div");
+
             label.classList.add("normal");
             input.name = file;
+            removeButton.name = file;
             label.innerHTML = file;
         }
+        
+        removeButton.className = "danger modifier-btn";
+        removeButton.innerHTML = "&minus;";
+        removeButton.addEventListener("click", (e) => {
+            e.preventDefault();
+            e.target.parentElement.remove();
+        });
 
         label.appendChild(input);
+        label.appendChild(removeButton);
         inputArea.appendChild(label);
     }
     document.getElementById("submit").disabled = false;
@@ -162,18 +209,7 @@ function getTestAdmin(num) {
             return;
         }
         
-        let inputArea = document.getElementById("fileInputs");
-        let testerTitle = document.createElement("h4");
-        testerTitle.innerHTML = "Testers"
-        let bar = document.createElement("hr");
-        let requiredTitle = document.createElement("h4");
-        requiredTitle.innerHTML = "Required"
-        inputArea.appendChild(testerTitle);
-        generateInputs(formatted.testerFiles);
-        inputArea.appendChild(bar);
-        inputArea.appendChild(requiredTitle);
-        generateInputs(formatted.requiredFiles);
-        
+        generateFileExplorer(formatted);
         bindUploads();
         currentTest = id;
     })

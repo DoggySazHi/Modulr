@@ -121,6 +121,10 @@
           </e>
           <e p="index.html" t="Include" />
           <e p="student-test.html" t="Include" />
+          <e p="template" t="Include">
+            <e p="_footer.html" t="Include" />
+            <e p="_header.html" t="Include" />
+          </e>
         </e>
       </e>
       <e p="Tester" t="Include">

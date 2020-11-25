@@ -15,6 +15,7 @@
     <ItemGroup>
       <PackageReference Include="Dapper" Version="2.0.35" />
       <PackageReference Include="Google.Apis.Auth" Version="1.49.0" />
+      <PackageReference Include="HtmlAgilityPack" Version="1.11.28" />
       <PackageReference Include="Microsoft.AspNetCore.Authentication.Google" Version="3.1.8" />
       <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="3.1.8" />
       <PackageReference Include="Microsoft.AspNetCore.StaticFiles" Version="2.2.0" />

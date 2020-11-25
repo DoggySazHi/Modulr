@@ -97,6 +97,8 @@ input[type="file"] {
     margin: 4px 2px;
 
     text-align: center;
+    align-items: center;
+    justify-content: center;
     text-decoration: none;
     display: inline-flex;
     cursor: pointer;
@@ -105,6 +107,17 @@ input[type="file"] {
 .input:hover {
     filter: brightness(120%);
     -webkit-filter: brightness(120%);
+}
+
+.modifier-btn {
+    padding-left: 15px;
+    padding-right: 15px;
+    margin-left: 10px;
+    font-weight: bolder;
+}
+
+.topic {
+    font-weight: bold;
 }
 
 .container {
@@ -286,6 +299,10 @@ footer a {
 .column {
     flex-direction: column;
     flex: 1;
+}
+
+.row.center, .column.center {
+    align-items: center;
 }
 
 /* Collapsing stuff */
