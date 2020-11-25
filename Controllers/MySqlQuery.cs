@@ -70,11 +70,26 @@ namespace Modulr.Controllers
         {
             username ??= name;
             var attempts = _config.TimeoutAttempts <= 0 ? -1 : _config.TimeoutAttempts;
-            var command =
-                "INSERT INTO Modulr.Users (google_id, name, username, email) VALUES (@GoogleID, @Name, @Username, @Email) ON DUPLICATE KEY UPDATE google_id = @GoogleID, name = @Name, username = @Username, email = @Email;" +
-                $"UPDATE Modulr.Users SET tests_remaining = {attempts} WHERE tests_timeout < CURRENT_TIMESTAMP();";
-            await Connection.ExecuteAsync(command,
-                new {GoogleID = googleID, Name = name, Username = username, Email = email});
+            const string commandUserInsert =
+                "INSERT INTO Modulr.Users (google_id, name, username, email) VALUES (@GoogleID, @Name, @Username, @Email)";
+            const string commandUserUpdate =
+                "UPDATE Modulr.Users SET name = @Name, username = @Username, email = @Email WHERE google_id = @GoogleID";
+            var commandUpdate = $"UPDATE Modulr.Users SET tests_remaining = {attempts} WHERE tests_timeout < CURRENT_TIMESTAMP()";
+            if(!await UserExists(googleID))
+                await Connection.ExecuteAsync(commandUserInsert,
+                    new {GoogleID = googleID, Name = name, Username = username, Email = email});
+            else
+                await Connection.ExecuteAsync(commandUserUpdate,
+                    new {GoogleID = googleID, Name = name, Username = username, Email = email});
+            await Connection.ExecuteAsync(commandUpdate);
+        }
+
+        public async Task<bool> UserExists(string googleID)
+        {
+            const string command = "SELECT COUNT(1) FROM Modulr.Users WHERE google_id = @GoogleID;";
+            var results = await Connection.QuerySingleOrDefaultAsync<int>(command,
+                new {GoogleID = googleID});
+            return results == 1;
         }
         
         public async Task<UserTimeout> GetTimeOut(string googleID)

@@ -8,3 +8,6 @@ Docker/*.java
 Docker/*.class
 TestingInput
 TestingSource
+sqldialects.xml
+contentModel.xml
+workspace.xml
