@@ -57,6 +57,7 @@ function generateInputs(names, inputArea) {
             input.type = "file";
 
             input.name = file.file;
+            label.appendChild(input);
             label.appendChild(labelName);
             labelName.value = file.file;
 
@@ -73,6 +74,7 @@ function generateInputs(names, inputArea) {
         }
         else {
             input = document.createElement("div");
+            label.appendChild(input);
 
             label.classList.add("normal");
             input.name = file;
@@ -88,8 +90,6 @@ function generateInputs(names, inputArea) {
             e.preventDefault();
             e.target.parentElement.remove();
         });
-
-        label.appendChild(input);
         label.appendChild(removeButton);
         inputArea.appendChild(label);
     }
