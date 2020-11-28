@@ -16,11 +16,40 @@
         </div>
         <div class="column">
             <h3>File Manager</h3>
-            <form onsubmit="return false;">
-                <div id="fileInputs" class="form-control"></div>
+            <form id="manager" class="hidden" onsubmit="return false;">
+                <div id="fileInputs" class="form-control">
 
-                <button id="submit" class="default form-control" disabled>Update!</button>
-                <div id="result" class="output"></div>
+                </div>
+                
+                <div class="form-control">
+                    <div class="row center">
+                        <label>
+                            <span class="topic">Name</span>
+                            <input autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="true"/>
+                        </label>
+                    </div>
+                    <hr/>
+                    <label>
+                        <span class="topic">Testers</span>
+                        <button class="success modifier-btn">&plus;</button>
+                    </label>
+                    <div id="testers">
+                        
+                    </div>
+                    <hr/>
+                    <label>
+                        <span class="topic">Required</span>
+                        <button class="success modifier-btn">&plus;</button>
+                    </label>
+                    <div id="required">
+
+                    </div>
+                </div>
+
+                <div class="row">
+                    <button id="submit" class="default form-control" disabled>Update</button>
+                    <button id="delete" class="danger form-control" disabled>Delete</button>
+                </div>
             </form>
         </div>
     </div>

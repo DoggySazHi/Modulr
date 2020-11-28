@@ -22,7 +22,7 @@ function bindUploads() {
     document.querySelectorAll("input[type='file']").forEach((input) => {
         input.addEventListener("change", (e) => {
             if (e.target.value === "")
-                e.target.parentNode.className = "input normal";
+                e.target.parentNode.className = "input danger";
             else
                 e.target.parentNode.className = "input success";
         }, false);
@@ -31,50 +31,23 @@ function bindUploads() {
 }
 
 function clearInputs() {
-    let inputArea = document.getElementById("fileInputs");
-    inputArea.innerHTML = "";
-    let submit = document.getElementById("submit");
-    submit.disabled = true;
-    submit.classList.add("hidden");
+    document.getElementById("manager").classList.add("hidden");
+    document.getElementById("testers").innerHTML = "";
+    document.getElementById("required").innerHTML = "";
 }
 
 function generateFileExplorer(formatted) {
-    let inputArea = document.getElementById("fileInputs");
-    let testerTitle = document.createElement("span");
-    testerTitle.innerHTML = "Testers"
-    testerTitle.className = "topic"
-    let bar = document.createElement("hr");
-    let requiredTitle = document.createElement("span");
-    requiredTitle.innerHTML = "Required"
-    requiredTitle.className = "topic"
-
-    let testerRow = document.createElement("div");
-    testerRow.className = "row center"
-    let testerAddButton = document.createElement("button");
-    testerAddButton.className = "success modifier-btn";
-    testerAddButton.innerHTML = "&plus;";
-    testerRow.appendChild(testerTitle);
-    testerRow.appendChild(testerAddButton);
-
-    let requiredRow = document.createElement("div");
-    requiredRow.className = "row center"
-    let requiredAddButton = document.createElement("button");
-    requiredAddButton.className = "success modifier-btn";
-    requiredAddButton.innerHTML = "&plus;";
-    requiredRow.appendChild(requiredTitle);
-    requiredRow.appendChild(requiredAddButton);
-
-    inputArea.appendChild(testerRow);
-    generateInputs(formatted.testerFiles);
-    inputArea.appendChild(bar);
-    inputArea.appendChild(requiredRow);
-    generateInputs(formatted.requiredFiles);
+    let fileManager = document.getElementById("manager");
+    fileManager.getElementsByTagName("input")[0].value = formatted.name;
+    generateInputs(formatted.testerFiles, document.getElementById("testers"));
+    generateInputs(formatted.requiredFiles, document.getElementById("required"));
+    fileManager.classList.remove("hidden");
 }
 
-function generateInputs(names) {
-    let inputArea = document.getElementById("fileInputs");
+function generateInputs(names, inputArea) {
     for (let file of names) {
         let label = document.createElement("label");
+        let labelName = document.createElement("input");
         label.className = "input";
         let removeButton = document.createElement("button");
         let input;
@@ -84,16 +57,19 @@ function generateInputs(names) {
             input.type = "file";
 
             input.name = file.file;
-            label.innerHTML = file.file;
-            
+            label.appendChild(labelName);
+            labelName.value = file.file;
+
+            let statusChar = document.createElement("span");
             if(!file.exists) {
                 label.classList.add("danger");
-                label.innerHTML += " &#10060;";
+                statusChar.innerHTML = "&#10060;";
             }
             else {
                 label.classList.add("success");
-                label.innerHTML += " &#10004;";
+                statusChar.innerHTML = "&#10004;";
             }
+            label.appendChild(statusChar);
         }
         else {
             input = document.createElement("div");
@@ -101,7 +77,9 @@ function generateInputs(names) {
             label.classList.add("normal");
             input.name = file;
             removeButton.name = file;
-            label.innerHTML = file;
+
+            label.appendChild(labelName);
+            labelName.value = file;
         }
         
         removeButton.className = "danger modifier-btn";
@@ -116,6 +94,7 @@ function generateInputs(names) {
         inputArea.appendChild(label);
     }
     document.getElementById("submit").disabled = false;
+    document.getElementById("delete").disabled = false;
 }
 
 function generateList(tests) {
