@@ -46,9 +46,28 @@ function triggerPopup(header, message) {
     let blocker = document.getElementsByClassName("blocker")[0];
     document.getElementById("blocker-header").innerHTML = header;
     document.getElementById("blocker-message").innerHTML = message;
+    blocker.getElementsByClassName("blocker-buttons")[0].classList.add("hidden");
     blocker.className = "blocker blocker-on";
     // blocker.addEventListener("click", disablePopup)
     document.getElementsByClassName("blocker-message")[0].className = "blocker-message blocker-message-on";
+}
+
+function triggerPopupButtons(buttons) {
+    let blockerButtons = document.getElementsByClassName("blocker")[0].getElementsByClassName("blocker-buttons")[0];
+    if(buttons === undefined || buttons == null || !Array.isArray(buttons)) {
+        blockerButtons.classList.add("hidden");
+        return;
+    }
+    blockerButtons.innerHTML = "";
+    let cancelButton = document.createElement("button");
+    cancelButton.className = "default";
+    cancelButton.onclick = disablePopup;
+    cancelButton.innerHTML = "Cancel";
+    blockerButtons.appendChild(cancelButton);
+    for (let button of buttons) {
+        blockerButtons.appendChild(button);
+    }
+    blockerButtons.classList.remove("hidden");
 }
 
 function disablePopup() {

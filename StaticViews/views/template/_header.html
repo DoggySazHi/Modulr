@@ -35,17 +35,6 @@
 </head>
 <body>
 
-<div class="blocker hidden">
-    <div class="blocker-message hidden">
-        <div class="blocker-header">
-            <span id="blocker-header">Mukyu~</span>
-            <span class="blocker-close" onclick="disablePopup()">✖</span>
-        </div>
-        <hr>
-        <span id="blocker-message"></span>
-    </div>
-</div>
-
 <nav>
     <div class="nav-container">
         <a href="/">
@@ -59,4 +48,19 @@
         <span class="nav-item" id="googleSignIn"></span>
     </div>
 </nav>
+
+<div class="blocker hidden">
+    <div class="blocker-message hidden">
+        <div class="blocker-header">
+            <span id="blocker-header">Mukyu~</span>
+            <span class="blocker-close" onclick="disablePopup()">✖</span>
+        </div>
+        <hr>
+        <span id="blocker-message"></span>
+        <div class="blocker-buttons">
+            <button class="normal" onclick="disablePopup()">Cancel</button>
+            <button class="danger">Delete</button>
+        </div>
+    </div>
+</div>
 <div class="nav-padding"></div>

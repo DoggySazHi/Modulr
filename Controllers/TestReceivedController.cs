@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Modulr.Models;
@@ -84,14 +85,14 @@ namespace Modulr.Controllers
                 await using var stream = new FileStream(outputPath, FileMode.Create);
                 await file.CopyToAsync(stream);
             }
-
+            
             foreach (var file in test.TesterFiles)
             {
                 System.IO.File.Copy(Path.Join(_config.SourceLocation, file), Path.Join(srcPath, file));
                 input.FileNames.Add(file);
             }
 
-            var output = _java.DockerTest(path, input.FileNames.ToArray());
+            var output = _java.DockerTest(path, test.TesterFiles.ToArray());
             await _query.DecrementAttempts(user.Subject);
             return output;
         }
