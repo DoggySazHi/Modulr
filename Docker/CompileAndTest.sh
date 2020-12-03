@@ -39,7 +39,6 @@ echo "$randomkey ========== BEGIN TEST =========="
 # (unless they somehow decompile the class on the fly)
 shopt -s globstar
 rm -r -- **/*.java
-ls
 java -Djava.security.manager -Djava.security.policy=security.policy -Xmx64M -cp *:. org.junit.platform.console.ConsoleLauncher --disable-banner --include-engine=junit-jupiter --scan-class-path --details=tree --details-theme=ascii --disable-ansi-colors --fail-if-no-tests --include-classname '.*'
 echo "$randomkey ========== END TEST =========="
 exit 0
