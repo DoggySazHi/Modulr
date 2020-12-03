@@ -3,7 +3,7 @@
 success=true
 randomkey=$(tr -dc 'A-F0-9' < /dev/urandom | head -c6)
 
-cp /src/files/*.java .
+cp /src/files/* .
 
 for var in "$@" ; do
 
@@ -14,7 +14,7 @@ for var in "$@" ; do
     fi
     
     echo "$randomkey ========== BEGIN COMPILING $var =========="
-    javac -cp junit-platform-console-standalone-1.6.2.jar:. -Xlint:all -Xmaxwarns 100 $var
+    javac -cp *:. -Xlint:all -Xmaxwarns 100 $var
     if [ $? != 0 ]; # If it's a non-zero exit code (aka bad compilation)
     then
         echo "!! ======= FAILED COMPILATION!!! ======= !!"
@@ -39,6 +39,7 @@ echo "$randomkey ========== BEGIN TEST =========="
 # (unless they somehow decompile the class on the fly)
 shopt -s globstar
 rm -r -- **/*.java
-java -Djava.security.manager -Djava.security.policy=security.policy -Xmx64M -jar junit-platform-console-standalone-1.6.2.jar --disable-banner --include-engine=junit-jupiter --scan-class-path --class-path=. --details=tree --details-theme=ascii --disable-ansi-colors --fail-if-no-tests --include-classname '.*'
+ls
+java -Djava.security.manager -Djava.security.policy=security.policy -Xmx64M -cp *:. org.junit.platform.console.ConsoleLauncher --disable-banner --include-engine=junit-jupiter --scan-class-path --details=tree --details-theme=ascii --disable-ansi-colors --fail-if-no-tests --include-classname '.*'
 echo "$randomkey ========== END TEST =========="
 exit 0
