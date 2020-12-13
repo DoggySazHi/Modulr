@@ -22,6 +22,14 @@ function bindButtons() {
         e.preventDefault();
         remove();
     }, false);
+    document.getElementById("tester-add").addEventListener("click", (e) => {
+        e.preventDefault();
+        addTester();
+    }, false);
+    document.getElementById("required-add").addEventListener("click", (e) => {
+        e.preventDefault();
+        addRequired();
+    }, false);
 }
 
 function bindUploads() {
@@ -131,6 +139,7 @@ function generateInputs(names, inputArea) {
 
 function generateList(tests) {
     let list = document.getElementById("tests-available");
+    list.innerHTML = "";
     for(let test of tests) {
         let testBtn = document.createElement("button");
         testBtn.className = "default form-control";
@@ -330,6 +339,8 @@ function updateStipulatable(message) {
         else
             message.push("Successfully updated the stipulatable's information!\nDone!");
         triggerPopup("Finished updating!", message.join('\n'));
+        getAllTestsAdmin();
+        getTestAdmin(currentTest);
     })
     .catch((error) => {
         if (error.message.startsWith("HTTPERR")) {
@@ -374,31 +385,110 @@ function actuallyDelete() {
         },
         body: currentTest
     })
-        .then((response) => {
-            if (response.status >= 400 && response.status < 600)
-                throw new Error("HTTPERR" + response.status);
-            return response.json();
-        })
-        .then((formatted) => {
-            if(!formatted)
-                triggerPopup("Mukyu~", "The server couldn't delete anything! Is the cache old?");
-            getAllTestsAdmin();
-        })
-        .catch((error) => {
-            if (error.message.startsWith("HTTPERR")) {
-                switch (parseInt(error.message.substr(7))) {
-                    case 403:
-                        error = "Login credentials failed, try logging out and logging back in!";
-                        break;
-                    case 404:
-                        error = "The test was not found... was it deleted already?";
-                        break;
-                    case 500:
-                        error = "The server decided that it wanted to die. Ask William about what the heck you did to kill it.";
-                        break;
+    .then((response) => {
+        if (response.status >= 400 && response.status < 600)
+            throw new Error("HTTPERR" + response.status);
+        return response.json();
+    })
+    .then((formatted) => {
+        if(!formatted)
+            triggerPopup("Mukyu~", "The server couldn't delete anything! Is the cache old?");
+        getAllTestsAdmin();
+    })
+    .catch((error) => {
+        if (error.message.startsWith("HTTPERR")) {
+            switch (parseInt(error.message.substr(7))) {
+                case 403:
+                    error = "Login credentials failed, try logging out and logging back in!";
+                    break;
+                case 404:
+                    error = "The test was not found... was it deleted already?";
+                    break;
+                case 500:
+                    error = "The server decided that it wanted to die. Ask William about what the heck you did to kill it.";
+                    break;
+            }
+        }
+        console.error("We had an error... ", error);
+        triggerPopup("Mukyu~", error);
+    });
+}
+
+function addTester() {
+    let inputArea = document.getElementById("testers")
+
+    let order = [...document.getElementById("testers").children].sort((p, q) =>  parseInt(q.style.order) - parseInt(p.style.order));
+    order = order.length === 0 ? 0 : order[0].style.order; // If there are no items, the first order is zero, otherwise it's the greatest order (by sort).
+    
+    let label = document.createElement("label");
+    let labelName = document.createElement("input");
+    label.className = "input";
+    let removeButton = document.createElement("button");
+    let input = document.createElement("input");
+    input.type = "file";
+
+    let dragChar = document.createElement("span");
+    dragChar.innerHTML = "\u2195";
+
+    label.appendChild(dragChar)
+    label.appendChild(input);
+    label.appendChild(labelName);
+
+    let statusChar = document.createElement("span");
+    label.classList.add("normal");
+    statusChar.innerHTML = "?";
+    label.appendChild(statusChar);
+    label.draggable = true;
+    label.style.order = order + "";
+    label.addEventListener("dragstart", (e) => {
+        startSwap = e.target;
+    });
+    label.addEventListener("dragover", (e) => {
+        e.preventDefault();
+    })
+    label.addEventListener("drop", (e) => {
+        if(e.target !== startSwap) {
+            for (let label of document.getElementById("testers").children) {
+                if (label === e.target || label.contains(e.target)) {
+                    let oldOrder = label.style.order;
+                    label.style.order = startSwap.style.order;
+                    startSwap.style.order = oldOrder;
                 }
             }
-            console.error("We had an error... ", error);
-            triggerPopup("Mukyu~", error);
-        });
+        }
+        startSwap = null;
+    })
+
+    removeButton.className = "danger modifier-btn";
+    removeButton.innerHTML = "&minus;";
+    removeButton.addEventListener("click", (e) => {
+        e.preventDefault();
+        e.target.parentElement.remove();
+    });
+    label.appendChild(removeButton);
+    inputArea.appendChild(label);
+}
+
+function addRequired() {
+    let inputArea = document.getElementById("required")
+    let label = document.createElement("label");
+    let labelName = document.createElement("input");
+    label.className = "input";
+    let removeButton = document.createElement("button");
+    
+    let input = document.createElement("div");
+    label.appendChild(input);
+
+    label.classList.add("normal");
+
+    label.appendChild(labelName);
+
+    removeButton.className = "danger modifier-btn";
+    removeButton.innerHTML = "&minus;";
+    removeButton.addEventListener("click", (e) => {
+        e.preventDefault();
+        e.target.parentElement.remove();
+    });
+    label.appendChild(removeButton);
+    inputArea.appendChild(label);
 }
