@@ -25,6 +25,11 @@ namespace Modulr.Controllers
 
         protected void AddFolderToRouter(string root, string folder)
         {
+            if (!Directory.Exists(folder))
+            {
+                _logger.LogWarning($"The folder {folder} does not exist; the router cannot handle this!");
+                //return;
+            }
             var files = Directory.EnumerateFiles(folder);
             foreach (var file in files)
             {
@@ -41,7 +46,7 @@ namespace Modulr.Controllers
         }
 
         [HttpGet]
-        public virtual async Task<ContentResult> Get(string page)
+        public virtual async Task<IActionResult> Get(string page)
         {
             if(Router.Count == 0)
                 SetupRouter();
@@ -53,13 +58,15 @@ namespace Modulr.Controllers
                 var found = Router.TryGetValue(page, out var file);
                 if (!found)
                     throw new FileNotFoundException();
-                return base.Content(await Templater(file), GetMIME(file));
+                if(file.EndsWith("html"))
+                    return base.Content(await Templater(file), GetMIME(file));
+                return base.PhysicalFile(Path.GetFullPath(file), GetMIME(file));
             }
             catch (FileNotFoundException)
             {
-                var text = (await Get("staticviews/views/404.html")).Content;
                 Response.StatusCode = 404;
-                return base.Content(text, "text/html");
+                var found = Router.TryGetValue("staticviews/views/404.html", out var file);
+                return !found ? base.Content("Error 404!!") : base.Content(await Templater(file), GetMIME(file));
             }
         }
 

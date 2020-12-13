@@ -32,7 +32,7 @@ namespace Modulr.Controllers
         }
 
         [HttpGet]
-        public override async Task<ContentResult> Get(string page)
+        public override async Task<IActionResult> Get(string page)
         {
             if(Router.Count == 0)
                 SetupRouter();
