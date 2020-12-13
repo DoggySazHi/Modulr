@@ -119,11 +119,17 @@ namespace Modulr.Controllers
         }
         
         [HttpPut("Update")]
-        public async Task<bool> UpdateTest(UpdateTesterFiles input)
+        public async Task<bool> UpdateTest([FromBody] UpdateTesterFiles input)
         {
             if(!await this.IsAdmin(_query))
             {
                 Response.StatusCode = 403;
+                return false;
+            }
+
+            if (!input.IsLikelyValid())
+            {
+                Response.StatusCode = 400;
                 return false;
             }
 
@@ -145,7 +151,9 @@ namespace Modulr.Controllers
         [HttpPost("Upload")]
         public async Task<string> FileUpload([FromForm] TesterFiles input)
         {
-            if (input == null || !input.IsLikelyValid())
+            if (input.IsEmpty())
+                return "WARNING: No files were found, nothing was uploaded!";
+            if (!input.IsLikelyValid())
                 return Fail(400, ">:[ not nice");
 
             var auth = await _auth.Verify(input.AuthToken);

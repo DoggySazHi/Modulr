@@ -55,9 +55,12 @@ namespace Modulr.Controllers
         
         public async Task<bool> UpdateTest(int id, string name, IEnumerable<string> testers, IEnumerable<string> required)
         {
-            const string command = "UPDATE Modulr.Stipulatables SET (name, testers, required) VALUES (name = @Name, testers = @Testers, required = @Required) WHERE id = @ID";
+            const string command = "UPDATE Modulr.Stipulatables SET `name` = @Name, testers = @Testers, required = @Required WHERE id = @ID";
             return await Connection.ExecuteAsync(command,
-                new {Name = name, Testers = testers, Required = required, ID = id}) != 0;
+                new {Name = name,
+                    Testers = JsonConvert.SerializeObject(testers),
+                    Required = JsonConvert.SerializeObject(required),
+                    ID = id}) != 0;
         }
         
         public async Task<bool> DeleteTest(int id)

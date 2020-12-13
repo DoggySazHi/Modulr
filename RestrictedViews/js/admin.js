@@ -248,7 +248,20 @@ function submit() {
     triggerPopup("Updating...", message.join('\n'));
     document.getElementById("submit").disabled = true;
 
-    fetch("/Tester/Upload", {
+    let data = new FormData();
+
+    let fileInputs = document.querySelectorAll("input[type='file']");
+    for (let input of fileInputs) {
+        if(input.files.length === 0)
+            continue;
+        data.append('FileNames', input.name);
+        data.append('Files', input.files[0]);
+        data.append('IsTester', JSON.stringify(false));
+        data.append('TestID', JSON.stringify(currentTest));
+        data.append('AuthToken', getLoginToken());
+    }
+
+    fetch("/Admin/Tester/Upload", {
         method: "POST",
         body: data
     })
@@ -263,6 +276,7 @@ function submit() {
         message.push(text);
         message.push("---\nNow updating stipulatable information...");
         triggerPopup("Updating...", message.join('\n'));
+        updateStipulatable(message);
     })
     .catch((error) => {
         if (error.message.startsWith("HTTPERR")) {
@@ -281,24 +295,28 @@ function submit() {
                     error = "The server decided that it wanted to die. Ask William about what the heck you did to kill it.";
                     break;
             }
+            document.getElementById("submit").disabled = false;
         }
 
-        console.error("We had an error... ", error);
-        triggerPopup("Mukyu~", error);
-    })
-    .finally(() => {
-        document.getElementById("submit").disabled = false;
+        message.push(error);
+        triggerPopup("Mukyu~", message.join('\n'));
     });
 }
 
-function uploadStipulatables() {
+function updateStipulatable(message) {
     fetch("/Admin/Tester/Update", {
-        method: "POST",
+        method: "PUT",
         headers: {
             'Content-Type': 'application/json'
         },
         body: JSON.stringify({
-            "AuthToken": getLoginToken()
+            "AuthToken": getLoginToken(),
+            "TestID": currentTest,
+            "TestName": document.querySelector("input[autocorrect]").value,
+            // William, what the heck? (Gets all children, extracts name from each input element)
+            "Required": [...document.getElementById("required").children].map(o => o.getElementsByTagName("input")[0].value),
+            // ... (Get all children under the testers, sort by flexbox order for draggables, then grab the names of each tester)
+            "Testers": [...document.getElementById("testers").children].sort((p, q) => parseInt(p.style.order) - parseInt(q.style.order)).map(o => o.getElementsByTagName("input")[1].value)
         })
     })
     .then((response) => {
@@ -307,8 +325,11 @@ function uploadStipulatables() {
         return response.json();
     })
     .then((formatted) => {
-        generateList(formatted);
-        bindUploads();
+        if(!formatted)
+            message.push("Server failed to find a record; was it deleted?");
+        else
+            message.push("Successfully updated the stipulatable's information!\nDone!");
+        triggerPopup("Finished updating!", message.join('\n'));
     })
     .catch((error) => {
         if (error.message.startsWith("HTTPERR")) {
@@ -324,8 +345,10 @@ function uploadStipulatables() {
                     break;
             }
         }
-        console.error("We had an error... ", error);
-        triggerPopup("Mukyu~", error);
+        message.push(error);
+        triggerPopup("Error updating!", message.join('\n'));
+    }).finally(() => {
+        document.getElementById("submit").disabled = false;
     });
 }
 
@@ -345,14 +368,11 @@ function remove() {
 function actuallyDelete() {
     clearInputs();
     fetch("/Admin/Tester/Delete", {
-        method: "POST",
+        method: "DELETE",
         headers: {
             'Content-Type': 'application/json'
         },
-        body: JSON.stringify({
-            "AuthToken": getLoginToken(),
-            "id": currentTest
-        })
+        body: currentTest
     })
         .then((response) => {
             if (response.status >= 400 && response.status < 600)

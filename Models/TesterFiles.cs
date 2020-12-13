@@ -38,5 +38,11 @@ namespace Modulr.Models
             }
             return true;
         }
+
+        public bool IsEmpty()
+        {
+            return FileNames == null || Files == null || IsTester == null || FileNames.Count == 0 || Files.Count == 0 ||
+                   IsTester.Count == 0;
+        }
     }
 }
