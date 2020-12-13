@@ -36,7 +36,7 @@ namespace Modulr.Models
 
             foreach (var tester in _testerFiles)
             {
-                if (!File.Exists(Path.Join(config.SourceLocation, tester.File)))
+                if (!_requiredFiles.Contains(tester.File) && !File.Exists(Path.Join(config.SourceLocation, tester.File)))
                     success = false;
                 else
                     tester.Exists = true;

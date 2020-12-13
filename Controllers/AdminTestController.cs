@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.IO;
+using System.Text;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -139,6 +140,50 @@ namespace Modulr.Controllers
             }
 
             return await _query.DeleteTest(id);
+        }
+        
+        [HttpPost("Upload")]
+        public async Task<string> FileUpload([FromForm] TesterFiles input)
+        {
+            if (input == null || !input.IsLikelyValid())
+                return Fail(400, ">:[ not nice");
+
+            var auth = await _auth.Verify(input.AuthToken);
+            if (auth.Status != GoogleAuth.LoginStatus.Success)
+                return Fail(403, "Login needed!");
+
+            var output = new StringBuilder();
+
+            for (var i = 0; i < input.Files.Count; i++)
+            {
+                var file = input.Files[i];
+                if (file.Length > 8 * 1024 * 1024) continue;
+                var fileName = input.FileNames[i];
+                var outputPath = Path.Join(_config.SourceLocation, fileName);
+                var backupPath = outputPath;
+                if (System.IO.File.Exists(backupPath))
+                {
+                    var counter = 0;
+                    do
+                    {
+                        counter++;
+                        backupPath = Path.Join(_config.SourceLocation, $"old-{counter}-{fileName}");
+                    } while (System.IO.File.Exists(backupPath));
+                    System.IO.File.Move(outputPath, backupPath);
+                    output.AppendLine($"WARNING: {fileName} existed already, made a copy at {backupPath}.");
+                }
+                await using var stream = new FileStream(outputPath, FileMode.Create);
+                await file.CopyToAsync(stream);
+                output.AppendLine($"Successfully uploaded {fileName} to {outputPath}!");
+            }
+
+            return output.ToString();
+        }
+        
+        private string Fail(int response, string message)
+        {
+            Response.StatusCode = response;
+            return message;
         }
     }
 }

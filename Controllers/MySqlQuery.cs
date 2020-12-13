@@ -118,9 +118,9 @@ namespace Modulr.Controllers
             if (_config.TimeoutAttempts < 1)
                 return;
             const string command =
-                "UPDATE Modulr.Users SET tests_timeout = ADDTIME(CURRENT_TIMESTAMP(), '00:30:00') WHERE google_id = @GoogleID AND tests_remaining = 3;" +
+                "UPDATE Modulr.Users SET tests_timeout = ADDTIME(CURRENT_TIMESTAMP(), '00:30:00') WHERE google_id = @GoogleID AND tests_remaining = @MaxTests;" +
                 "UPDATE Modulr.Users SET tests_remaining = tests_remaining - 1 WHERE google_id = @GoogleID;";
-            await Connection.ExecuteAsync(command, new { GoogleID = googleID } );
+            await Connection.ExecuteAsync(command, new { MaxTests = _config.TimeoutAttempts, GoogleID = googleID } );
         }
         
         public async Task<Role> GetRole(string googleID)

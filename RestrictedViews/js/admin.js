@@ -3,6 +3,8 @@
 onInitAdmin();
 
 let currentTest = 0;
+let startSwap;
+let endSwap;
 
 function onInitAdmin() {
     bindButtons();
@@ -15,6 +17,10 @@ function bindButtons() {
     document.getElementById("submit").addEventListener("click", (e) => {
         e.preventDefault();
         submit();
+    }, false);
+    document.getElementById("delete").addEventListener("click", (e) => {
+        e.preventDefault();
+        remove();
     }, false);
 }
 
@@ -45,6 +51,7 @@ function generateFileExplorer(formatted) {
 }
 
 function generateInputs(names, inputArea) {
+    let order = 1;
     for (let file of names) {
         let label = document.createElement("label");
         let labelName = document.createElement("input");
@@ -55,8 +62,12 @@ function generateInputs(names, inputArea) {
         if(file.hasOwnProperty("exists")) {
             input = document.createElement("input");
             input.type = "file";
-
             input.name = file.file;
+
+            let dragChar = document.createElement("span");
+            dragChar.innerHTML = "\u2195";
+            
+            label.appendChild(dragChar)
             label.appendChild(input);
             label.appendChild(labelName);
             labelName.value = file.file;
@@ -71,6 +82,27 @@ function generateInputs(names, inputArea) {
                 statusChar.innerHTML = "&#10004;";
             }
             label.appendChild(statusChar);
+            label.draggable = true;
+            label.style.order = order + "";
+            order++;
+            label.addEventListener("dragstart", (e) => {
+                startSwap = e.target;
+            });
+            label.addEventListener("dragover", (e) => {
+                e.preventDefault();
+            })
+            label.addEventListener("drop", (e) => {
+                if(e.target !== startSwap) {
+                    for (let label of document.getElementById("testers").children) {
+                        if (label === e.target || label.contains(e.target)) {
+                            let oldOrder = label.style.order;
+                            label.style.order = startSwap.style.order;
+                            startSwap.style.order = oldOrder;
+                        }
+                    }
+                }
+                startSwap = null;
+            })
         }
         else {
             input = document.createElement("div");
@@ -212,5 +244,141 @@ function getTestAdmin(num) {
 }
 
 function submit() {
-    
+    let message = ["Now uploading files, if any..."];
+    triggerPopup("Updating...", message.join('\n'));
+    document.getElementById("submit").disabled = true;
+
+    fetch("/Tester/Upload", {
+        method: "POST",
+        body: data
+    })
+    .then((response) => {
+        if (response.status >= 400 && response.status < 600)
+            throw new Error("HTTPERR " + response.status);
+        return response.text();
+    })
+    .then((formatted) => {
+        let text = formatted.toString();
+        message.push("---");
+        message.push(text);
+        message.push("---\nNow updating stipulatable information...");
+        triggerPopup("Updating...", message.join('\n'));
+    })
+    .catch((error) => {
+        if (error.message.startsWith("HTTPERR")) {
+            switch (parseInt(error.message.substr(7))) {
+                case 400:
+                    error = "The server didn't like your files... did you miss something?";
+                    break;
+                case 403:
+                    error = "Either you are on a cooldown, or your login credentials failed.\nIf the former isn't true, try logging out and logging back in!";
+                    break;
+                case 404:
+                    error = "Could not locate the uploader... try refreshing the page?";
+                    break;
+                case 500:
+                case 502:
+                    error = "The server decided that it wanted to die. Ask William about what the heck you did to kill it.";
+                    break;
+            }
+        }
+
+        console.error("We had an error... ", error);
+        triggerPopup("Mukyu~", error);
+    })
+    .finally(() => {
+        document.getElementById("submit").disabled = false;
+    });
+}
+
+function uploadStipulatables() {
+    fetch("/Admin/Tester/Update", {
+        method: "POST",
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            "AuthToken": getLoginToken()
+        })
+    })
+    .then((response) => {
+        if (response.status >= 400 && response.status < 600)
+            throw new Error("HTTPERR" + response.status);
+        return response.json();
+    })
+    .then((formatted) => {
+        generateList(formatted);
+        bindUploads();
+    })
+    .catch((error) => {
+        if (error.message.startsWith("HTTPERR")) {
+            switch (parseInt(error.message.substr(7))) {
+                case 403:
+                    error = "Login credentials failed, try logging out and logging back in!";
+                    break;
+                case 404:
+                    error = "Could not fetch tests because none were found!";
+                    break;
+                case 500:
+                    error = "The server decided that it wanted to die. Ask William about what the heck you did to kill it.";
+                    break;
+            }
+        }
+        console.error("We had an error... ", error);
+        triggerPopup("Mukyu~", error);
+    });
+}
+
+function remove() {
+    let name = document.querySelector("input[autocorrect]").value;
+    let deleteBtn = document.createElement("button");
+    deleteBtn.className = "danger form-control";
+    deleteBtn.innerHTML = "Delete";
+    deleteBtn.addEventListener("click", (e) => {
+        e.preventDefault();
+        actuallyDelete();
+    }, false);
+    triggerPopup("Delete?", "Are you sure you want to delete the test for \"" + name + "\" (id " + currentTest + ")?");
+    triggerPopupButtons([deleteBtn]);
+}
+
+function actuallyDelete() {
+    clearInputs();
+    fetch("/Admin/Tester/Delete", {
+        method: "POST",
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            "AuthToken": getLoginToken(),
+            "id": currentTest
+        })
+    })
+        .then((response) => {
+            if (response.status >= 400 && response.status < 600)
+                throw new Error("HTTPERR" + response.status);
+            return response.json();
+        })
+        .then((formatted) => {
+            if(!formatted)
+                triggerPopup("Mukyu~", "The server couldn't delete anything! Is the cache old?");
+            getAllTestsAdmin();
+        })
+        .catch((error) => {
+            if (error.message.startsWith("HTTPERR")) {
+                switch (parseInt(error.message.substr(7))) {
+                    case 403:
+                        error = "Login credentials failed, try logging out and logging back in!";
+                        break;
+                    case 404:
+                        error = "The test was not found... was it deleted already?";
+                        break;
+                    case 500:
+                        error = "The server decided that it wanted to die. Ask William about what the heck you did to kill it.";
+                        break;
+                }
+            }
+            console.error("We had an error... ", error);
+            triggerPopup("Mukyu~", error);
+        });
 }

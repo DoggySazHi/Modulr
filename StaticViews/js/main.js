@@ -66,6 +66,10 @@ function triggerPopupButtons(buttons) {
     blockerButtons.appendChild(cancelButton);
     for (let button of buttons) {
         blockerButtons.appendChild(button);
+        button.addEventListener("click", (e) => {
+            e.preventDefault();
+            disablePopup();
+        }, false);
     }
     blockerButtons.classList.remove("hidden");
 }
