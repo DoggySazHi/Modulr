@@ -1,4 +1,4 @@
-﻿[![Modulr Logo](https://modulr.williamle.com/img/paneltransparent.png)](https://modulr.williamle.com)
+﻿[![Modulr Logo](StaticViews/img/paneltransparent.png)](https://modulr.williamle.com)
 # Modulr
 A server-based Java stipulator written in C#.
 
