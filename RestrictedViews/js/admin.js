@@ -4,7 +4,7 @@ onInitAdmin();
 
 let currentTest = 0;
 let startSwap;
-let endSwap;
+let modified = false;
 
 function onInitAdmin() {
     bindButtons();
@@ -30,6 +30,14 @@ function bindButtons() {
         e.preventDefault();
         addRequired();
     }, false);
+    document.getElementById("stipulatable-add").addEventListener("click", (e) => {
+        e.preventDefault();
+        addBlankStipulatable();
+    })
+    document.querySelector("input[autocorrect]").addEventListener("change", (e) => {
+        e.preventDefault();
+        modified = true;
+    })
 }
 
 function bindUploads() {
@@ -45,6 +53,7 @@ function bindUploads() {
 }
 
 function clearInputs() {
+    modified = false;
     document.getElementById("manager").classList.add("hidden");
     document.getElementById("testers").innerHTML = "";
     document.getElementById("required").innerHTML = "";
@@ -129,7 +138,12 @@ function generateInputs(names, inputArea) {
         removeButton.addEventListener("click", (e) => {
             e.preventDefault();
             e.target.parentElement.remove();
+            modified = true;
         });
+        labelName.addEventListener("change", (e) => {
+            e.preventDefault();
+            modified = true;
+        })
         label.appendChild(removeButton);
         inputArea.appendChild(label);
     }
@@ -199,7 +213,24 @@ function getAllTestsAdmin() {
     });
 }
 
+function warnModified(callback) {
+    triggerPopup("Stipulatable has been modified!", "Are you sure you want to discard changes?")
+    let discardBtn = document.createElement("button");
+    discardBtn.className = "danger form-control";
+    discardBtn.innerHTML = "Discard";
+    discardBtn.addEventListener("click", (e) => {
+        e.preventDefault();
+        modified = false;
+        callback();
+    }, false);
+    triggerPopupButtons([discardBtn]);
+}
+
 function getTestAdmin(num) {
+    if (modified) {
+        warnModified(() => getTestAdmin(num));
+        return;
+    }
     let id = parseInt(num, 10);
     if (isNaN(id))
         return;
@@ -285,7 +316,10 @@ function submit() {
         message.push(text);
         message.push("---\nNow updating stipulatable information...");
         triggerPopup("Updating...", message.join('\n'));
-        updateStipulatable(message);
+        if(currentTest > 0)
+            updateStipulatable(message);
+        else
+            addStipulatable(message);
     })
     .catch((error) => {
         if (error.message.startsWith("HTTPERR")) {
@@ -363,6 +397,56 @@ function updateStipulatable(message) {
     });
 }
 
+function addStipulatable(message) {
+    fetch("/Admin/Tester/Add", {
+        method: "POST",
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            "AuthToken": getLoginToken(),
+            "TestName": document.querySelector("input[autocorrect]").value,
+            "Required": [...document.getElementById("required").children].map(o => o.getElementsByTagName("input")[0].value),
+            "Testers": [...document.getElementById("testers").children].sort((p, q) => parseInt(p.style.order) - parseInt(q.style.order)).map(o => o.getElementsByTagName("input")[1].value)
+        })
+    })
+        .then((response) => {
+            if (response.status >= 400 && response.status < 600)
+                throw new Error("HTTPERR" + response.status);
+            return response.json();
+        })
+        .then((formatted) => {
+            if(formatted <= 0)
+                message.push("Server failed to return a valid ID...");
+            else
+                message.push("Successfully added the stipulatable (id " + formatted + ")!\nDone!");
+            currentTest = formatted;
+            triggerPopup("Finished updating!", message.join('\n'));
+            getAllTestsAdmin();
+            if (currentTest > 0)
+                getTestAdmin(currentTest);
+        })
+        .catch((error) => {
+            if (error.message.startsWith("HTTPERR")) {
+                switch (parseInt(error.message.substr(7))) {
+                    case 403:
+                        error = "Login credentials failed, try logging out and logging back in!";
+                        break;
+                    case 404:
+                        error = "Could not fetch tests because none were found!";
+                        break;
+                    case 500:
+                        error = "The server decided that it wanted to die. Ask William about what the heck you did to kill it.";
+                        break;
+                }
+            }
+            message.push(error);
+            triggerPopup("Error updating!", message.join('\n'));
+        }).finally(() => {
+        document.getElementById("submit").disabled = false;
+    });
+}
+
 function remove() {
     let name = document.querySelector("input[autocorrect]").value;
     let deleteBtn = document.createElement("button");
@@ -378,6 +462,8 @@ function remove() {
 
 function actuallyDelete() {
     clearInputs();
+    if (!(currentTest > 0)) // Why not <= 0? Because null and undefined.
+        return;
     fetch("/Admin/Tester/Delete", {
         method: "DELETE",
         headers: {
@@ -415,6 +501,7 @@ function actuallyDelete() {
 }
 
 function addTester() {
+    modified = true;
     let inputArea = document.getElementById("testers")
 
     let order = [...document.getElementById("testers").children].sort((p, q) =>  parseInt(q.style.order) - parseInt(p.style.order));
@@ -464,12 +551,18 @@ function addTester() {
     removeButton.addEventListener("click", (e) => {
         e.preventDefault();
         e.target.parentElement.remove();
+        modified = true;
     });
+    labelName.addEventListener("change", (e) => {
+        e.preventDefault();
+        modified = true;
+    })
     label.appendChild(removeButton);
     inputArea.appendChild(label);
 }
 
 function addRequired() {
+    modified = true;
     let inputArea = document.getElementById("required")
     let label = document.createElement("label");
     let labelName = document.createElement("input");
@@ -488,7 +581,25 @@ function addRequired() {
     removeButton.addEventListener("click", (e) => {
         e.preventDefault();
         e.target.parentElement.remove();
+        modified = true;
     });
+    labelName.addEventListener("change", (e) => {
+        e.preventDefault();
+        modified = true;
+    })
     label.appendChild(removeButton);
     inputArea.appendChild(label);
+}
+
+function addBlankStipulatable() {
+    if(modified) {
+        warnModified(() => addBlankStipulatable());
+        return;
+    }
+    currentTest = null;
+    clearInputs();
+    document.querySelector("input[autocorrect]").value = "";
+    document.getElementById("manager").classList.remove("hidden");
+    document.getElementById("submit").disabled = false;
+    document.getElementById("delete").disabled = false;
 }

@@ -47,9 +47,9 @@ namespace Modulr.Controllers
 
         public async Task<int> AddTest(string name, IEnumerable<string> testers, IEnumerable<string> required)
         {
-            const string command = "INSERT INTO Modulr.Stipulatables (name, testers, required) VALUES (name = @Name, testers = @Testers, required = @Required); SELECT LAST_INSERT_ID();";
+            const string command = "INSERT INTO Modulr.Stipulatables (`name`, testers, required) VALUES (@Name, @Testers, @Required); SELECT LAST_INSERT_ID();";
             var results = await Connection.QuerySingleOrDefaultAsync<int>(command,
-                new {Name = name, Testers = testers, Required = required});
+                new {Name = name, Testers = JsonConvert.SerializeObject(testers), Required = JsonConvert.SerializeObject(required)});
             return results;
         }
         

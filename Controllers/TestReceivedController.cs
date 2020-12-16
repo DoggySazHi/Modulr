@@ -56,6 +56,7 @@ namespace Modulr.Controllers
         }
         
         [HttpPost("Upload")]
+        [RequestSizeLimit(8388608)] // 8 MiB
         public async Task<string> FileUpload([FromForm] TesterFiles input)
         {
             if (input == null || !input.IsLikelyValid())

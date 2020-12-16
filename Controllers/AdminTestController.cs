@@ -3,7 +3,6 @@ using System.IO;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Modulr.Models;
 using Modulr.Tester;
@@ -27,40 +26,21 @@ namespace Modulr.Controllers
         }
         
         [HttpPost("Add")]
-        public async Task<int> OnUpload([FromForm] SourceTesterFiles input)
+        public async Task<int> OnAdd([FromBody] UpdateTesterFiles input)
         {
             if(!await this.IsAdmin(_query))
             {
                 Response.StatusCode = 403;
                 return -1;
             }
-            
-            var testerFiles = new List<string>();
-            
-            foreach(var file in input.Extra)
-                testerFiles.Add(await DownloadTester(file));
-            foreach(var file in input.Testers)
-                testerFiles.Add(await DownloadTester(file));
 
-            return await _query.AddTest(input.TestName, testerFiles, input.Required);
-        }
-
-        private async Task<string> DownloadTester(IFormFile file)
-        {
-            if(!await this.IsAdmin(_query))
+            if (!input.IsLikelyValid())
             {
-                Response.StatusCode = 403;
-                return null;
+                Response.StatusCode = 400;
+                return -1;
             }
             
-            if (file.Length > 8 * 1024 * 1024) return null;
-            var fileName = Path.GetFileName(file.FileName);
-            var outputPath = Path.Join(_config.SourceLocation, fileName);
-            for(var i = 2; System.IO.File.Exists(outputPath); i++)
-                outputPath = Path.Join(_config.SourceLocation, $"{fileName}_{i}");
-            await using var stream = new FileStream(outputPath, FileMode.Create);
-            await file.CopyToAsync(stream);
-            return Path.GetFileName(outputPath);
+            return await _query.AddTest(input.TestName, input.Testers, input.Required);
         }
 
         [HttpPost("GetAll")]
@@ -149,6 +129,7 @@ namespace Modulr.Controllers
         }
         
         [HttpPost("Upload")]
+        [RequestSizeLimit(33554432)] // 32 MiB max
         public async Task<string> FileUpload([FromForm] TesterFiles input)
         {
             if (input.IsEmpty())

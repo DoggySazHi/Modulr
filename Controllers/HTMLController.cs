@@ -14,7 +14,7 @@ namespace Modulr.Controllers
     public abstract class HTMLController : ControllerBase
     {
         private readonly ILogger<HTMLController> _logger;
-        protected readonly Dictionary<string, string> Router = new Dictionary<string, string>();
+        protected readonly Dictionary<string, string> Router = new();
 
         protected HTMLController(ILogger<HTMLController> logger)
         {
@@ -28,7 +28,7 @@ namespace Modulr.Controllers
             if (!Directory.Exists(folder))
             {
                 _logger.LogWarning($"The folder {folder} does not exist; the router cannot handle this!");
-                //return;
+                return;
             }
             var files = Directory.EnumerateFiles(folder);
             foreach (var file in files)

@@ -8,7 +8,7 @@ namespace Modulr.Tester
 {
     public class ModulrJail : IDisposable
     {
-        private readonly BlockingCollection<string> _logQueue = new BlockingCollection<string>();
+        private readonly BlockingCollection<string> _logQueue = new();
         private readonly Process _process;
         
         public static ModulrConfig Config { private get; set; }
@@ -39,8 +39,8 @@ namespace Modulr.Tester
                 }
             };
 
-            _process.OutputDataReceived += (sender, info) => _logQueue.Add(info.Data);
-            _process.ErrorDataReceived += (sender, info) => _logQueue.Add(info.Data);
+            _process.OutputDataReceived += (_, info) => _logQueue.Add(info.Data);
+            _process.ErrorDataReceived += (_, info) => _logQueue.Add(info.Data);
 
             _process.Start();
             _process.BeginOutputReadLine();
