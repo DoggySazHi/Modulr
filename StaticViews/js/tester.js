@@ -75,6 +75,7 @@ function submit() {
 
     document.getElementById("result").innerHTML = "Now loading...";
     document.getElementById("submit").disabled = true;
+    document.getElementById("loading-icon").classList.remove("hidden");
 
     fetch("/Tester/Upload", {
         method: "POST",
@@ -112,6 +113,7 @@ function submit() {
     })
     .finally(() => {
         document.getElementById("submit").disabled = false;
+        document.getElementById("loading-icon").classList.add("hidden");
         getAttemptsLeft();
     });
 }
