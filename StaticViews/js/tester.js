@@ -11,6 +11,7 @@ onInitTester();
 let resetTime = new Date();
 let testsRemaining = 0;
 let currentTest = 0;
+let websocketBuffer = [];
 
 function onInitTester() {
     bindButtons();
@@ -38,26 +39,37 @@ function bindUploads() {
     });
 }
 
+function initWebsocket() {
+    if(typeof connectionId === "undefined")
+        return;
+    connection.on("ReceiveUpdate", (data) => {
+        websocketBuffer.push(data);
+        displayOutput(websocketBuffer.join('\n'));
+    });
+}
+
 function submit() {
     let data = new FormData();
+    websocketBuffer = [];
     
     let fileInputs = document.querySelectorAll("input[type='file']");
     for (let input of fileInputs) {
-        data.append('FileNames', input.name);
+        data.append("FileNames", input.name);
         if (input.files.length === 0) {
             console.error("User missed " + input.name + "!");
             triggerPopup("Mukyu~", "You need to attach a file for " + input.name + "!");
             return;
         }
         for (let i = 0; i < input.files.length; i++)
-            data.append('Files', input.files[i]);
-        data.append('IsTester', JSON.stringify(false));
-        data.append('TestID', JSON.stringify(currentTest));
-        data.append('AuthToken', getLoginToken());
+            data.append("Files", input.files[i]);
+        data.append("IsTester", JSON.stringify(false));
     }
+    data.append("TestID", JSON.stringify(currentTest));
+    data.append("AuthToken", getLoginToken());
+    if(typeof connectionId !== "undefined")
+        data.append("ConnectionID", connectionId);
 
-    let output = document.getElementById("result");
-    output.innerHTML = "Now loading...";
+    document.getElementById("result").innerHTML = "Now loading...";
     document.getElementById("submit").disabled = true;
 
     fetch("/Tester/Upload", {
@@ -70,48 +82,7 @@ function submit() {
         return response.text();
     })
     .then((formatted) => {
-        let text = formatted.toString();
-        // Get first word
-        let key = text.substr(0, text.indexOf(" "));
-        // Split by first word
-        let pattern = new RegExp("(?=" + key + ")", "g");
-        let processed = text.split(pattern);
-
-        output.innerHTML = "";
-        
-        let button;
-        let content;
-        
-        for(let i = 0; i < processed.length; i++) {
-            let item = processed[i];
-            
-            if (i % 2 === 0) {
-                let title = "Test Results";
-                let fileName = item.match(/COMPILING (\S*\.java)/);
-                console.log(item);
-                console.log(fileName);
-                if (fileName != null && fileName.length >= 2)
-                    title = "Compiler Info for " + fileName[1];
-                
-                button = document.createElement("button");
-                button.className = "collapse default";
-                button.innerHTML = title;
-                content = document.createElement("div");
-                content.className = "collapse-content";
-                
-                if (fileName == null || fileName.length < 2)
-                    button.classList.toggle("active");
-
-                output.appendChild(button);
-                output.appendChild(content);
-            }
-            
-            content.innerHTML += item;
-            if (button.classList.contains("active"))
-                content.style.maxHeight = content.scrollHeight + "px";
-        }
-        
-        registerCollapsibles();
+        displayOutput(formatted)
     })
     .catch((error) => {
         if (error.message.startsWith("HTTPERR")) {
@@ -139,6 +110,50 @@ function submit() {
         document.getElementById("submit").disabled = false;
         getAttemptsLeft();
     });
+}
+
+function displayOutput(data) {
+    let text = data.toString();
+    // Get first word
+    let key = text.substr(0, text.indexOf(" "));
+    // Split by first word
+    let pattern = new RegExp("(?=" + key + ")", "g");
+    let processed = text.split(pattern);
+    let output = document.getElementById("result");
+    
+    output.innerHTML = "";
+
+    let button;
+    let content;
+
+    for(let i = 0; i < processed.length; i++) {
+        let item = processed[i];
+
+        if (i % 2 === 0) {
+            let title = "Test Results";
+            let fileName = item.match(/COMPILING (\S*\.java)/);
+            if (fileName != null && fileName.length >= 2)
+                title = "Compiler Info for " + fileName[1];
+
+            button = document.createElement("button");
+            button.className = "collapse default";
+            button.innerHTML = title;
+            content = document.createElement("div");
+            content.className = "collapse-content";
+
+            if (i >= processed.length - 2)
+                button.classList.toggle("active");
+
+            output.appendChild(button);
+            output.appendChild(content);
+        }
+
+        content.innerHTML += item;
+        if (button.classList.contains("active"))
+            content.style.maxHeight = content.scrollHeight + "px";
+    }
+
+    registerCollapsibles();
 }
 
 function getTest(num) {

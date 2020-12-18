@@ -3,6 +3,7 @@ using System.Collections.Concurrent;
 using System.Diagnostics;
 using System.IO;
 using System.Text;
+using Modulr.Hubs;
 
 namespace Modulr.Tester
 {
@@ -10,12 +11,14 @@ namespace Modulr.Tester
     {
         private readonly BlockingCollection<string> _logQueue = new();
         private readonly Process _process;
+        private string _connectionID;
         
         public static ModulrConfig Config { private get; set; }
+        public static TestQueryHub WebSocket { private get; set; }
         private static bool _selfInit;
         private static bool _isEnterprise;
         
-        public ModulrJail(string sourceFolder, params string[] files)
+        public ModulrJail(string sourceFolder, string connectionID = null, params string[] files)
         {
             if (!_selfInit)
                 Initialize();
@@ -25,6 +28,8 @@ namespace Modulr.Tester
             if (_isEnterprise)
                 args =
                     $"run --rm -v {Path.Join(Path.GetFullPath(sourceFolder), "\\source")}:c:\\src\\files modulrjail {string.Join(' ', files)}";
+
+            _connectionID = connectionID;
             
             _process = new Process
             {
@@ -39,12 +44,33 @@ namespace Modulr.Tester
                 }
             };
 
-            _process.OutputDataReceived += (_, info) => _logQueue.Add(info.Data);
-            _process.ErrorDataReceived += (_, info) => _logQueue.Add(info.Data);
+            _process.OutputDataReceived += (_, info) =>
+            {
+                _logQueue.Add(info.Data);
+                SendUpdate(info.Data);
+            };
+            _process.ErrorDataReceived += (_, info) =>
+            {
+                _logQueue.Add(info.Data);
+                SendUpdate(info.Data);
+            };
 
             _process.Start();
             _process.BeginOutputReadLine();
             _process.BeginErrorReadLine();
+        }
+
+        private void SendUpdate(string data)
+        {
+            if (_connectionID == null) return;
+            try
+            {
+                WebSocket.Clients.Client(_connectionID).ReceiveUpdate(data);
+            }
+            catch (Exception)
+            {
+                _connectionID = null;
+            }
         }
 
         private static void Initialize()

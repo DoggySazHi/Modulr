@@ -23,13 +23,13 @@ namespace Modulr.Tester
             Directory.CreateDirectory(_config.SaveLocation);
         }
 
-        public string DockerTest(string sourceFolder, params string[] files)
+        public string DockerTest(string sourceFolder, string connectionID = null, params string[] files)
         {
             // We're going to make the assumption that sourceFolder is sanitized.
             // Mainly because it's created within Modulr.
             // Probably requires to be relative as well.
             
-            var jail = new ModulrJail(sourceFolder, files);
+            var jail = new ModulrJail(sourceFolder, connectionID, files);
             jail.Wait();
             var output = jail.GetAllOutput();
             jail.Dispose();

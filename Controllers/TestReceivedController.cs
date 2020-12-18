@@ -96,7 +96,7 @@ namespace Modulr.Controllers
                 input.FileNames.Add(file);
             }
 
-            var output = _java.DockerTest(path, test.TesterFiles.ToArray());
+            var output = _java.DockerTest(path, input.ConnectionID, test.TesterFiles.ToArray());
             await _query.DecrementAttempts(user.Subject);
             return output;
         }

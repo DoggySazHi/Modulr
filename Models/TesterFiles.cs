@@ -8,6 +8,7 @@ namespace Modulr.Models
     public class TesterFiles
     {
         public string AuthToken { get; set; }
+        public string ConnectionID { get; set; }
         public int TestID { get; set; }
         public List<string> FileNames { get; set; }
         public List<IFormFile> Files { get; set; }
