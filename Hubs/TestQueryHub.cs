@@ -9,7 +9,6 @@ namespace Modulr.Hubs
     {
         public async Task Update(string output)
         {
-            Console.WriteLine(GetConnectionId());
             await Clients.Caller.ReceiveUpdate(output);
         }
         

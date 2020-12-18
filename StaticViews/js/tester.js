@@ -16,6 +16,7 @@ let websocketBuffer = [];
 function onInitTester() {
     bindButtons();
     bindUploads();
+    onSocketReady.push(initWebsocket);
     onGoogleReady.push(getAllTests);
     onGoogleReady.push(getAttemptsLeft);
     console.info("Initialized tester script!");
@@ -40,12 +41,15 @@ function bindUploads() {
 }
 
 function initWebsocket() {
-    if(typeof connectionId === "undefined")
+    if(typeof connectionId === "undefined") {
+        console.warn("Could not initialize WebSocket for the tester... is SignalR loaded?")
         return;
+    }
     connection.on("ReceiveUpdate", (data) => {
         websocketBuffer.push(data);
         displayOutput(websocketBuffer.join('\n'));
     });
+    console.log("Bound WebSocket!")
 }
 
 function submit() {

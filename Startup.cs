@@ -43,7 +43,7 @@ namespace Modulr
                 o.ClientSecret = tempConfig.GoogleSecret;
             });
             services.AddSignalR();
-            services.AddHostedService<TestWorker>();
+            services.AddSingleton<TestWorker>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

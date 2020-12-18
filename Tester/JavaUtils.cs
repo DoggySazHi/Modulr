@@ -1,5 +1,7 @@
 ﻿using System;
 using System.IO;
+using Modulr.Hubs;
+using Modulr.Hubs.Workers;
 
 namespace Modulr.Tester
 {
@@ -8,9 +10,10 @@ namespace Modulr.Tester
         private readonly ModulrConfig _config;
         private readonly Random _rng;
         
-        public JavaUtils(ModulrConfig config)
+        public JavaUtils(ModulrConfig config, TestWorker worker)
         {
             ModulrJail.Config = config;
+            ModulrJail.WebSocket = worker;
             _config = config;
             _rng = new Random();
             Clean();

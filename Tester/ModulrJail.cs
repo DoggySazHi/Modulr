@@ -3,7 +3,7 @@ using System.Collections.Concurrent;
 using System.Diagnostics;
 using System.IO;
 using System.Text;
-using Modulr.Hubs;
+using Modulr.Hubs.Workers;
 
 namespace Modulr.Tester
 {
@@ -14,7 +14,7 @@ namespace Modulr.Tester
         private string _connectionID;
         
         public static ModulrConfig Config { private get; set; }
-        public static TestQueryHub WebSocket { private get; set; }
+        public static TestWorker WebSocket { private get; set; }
         private static bool _selfInit;
         private static bool _isEnterprise;
         
@@ -65,7 +65,7 @@ namespace Modulr.Tester
             if (_connectionID == null) return;
             try
             {
-                WebSocket.Clients.Client(_connectionID).ReceiveUpdate(data);
+                WebSocket.SendUpdate(_connectionID, data).ContinueWithoutAwait(_ => _connectionID = null);
             }
             catch (Exception)
             {

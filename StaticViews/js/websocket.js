@@ -2,6 +2,7 @@
 
 let connection;
 let connectionId;
+let onSocketReady = [];
 
 onInitWebsocket();
 
@@ -15,7 +16,8 @@ function onInitWebsocket() {
     connection.start().then(() => {
         connectionId = connection.connectionId;
         console.log(`Connected to the Koumakan! Your connection ID is ${connectionId}. Have a nice day.`);
-
+        for(let f of onSocketReady)
+            f(connection);
     }).catch((e) => {
         console.error("Error connecting to the Koumakan! " + e.toString());
     });

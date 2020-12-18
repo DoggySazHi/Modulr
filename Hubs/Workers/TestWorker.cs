@@ -21,10 +21,8 @@ namespace Modulr.Hubs.Workers
         
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
         {
-            var r = new Random();
             while (!stoppingToken.IsCancellationRequested)
             {
-                await _clockHub.Clients.All.ReceiveUpdate(r.NextDouble() + "");
                 await Task.Delay(1000, stoppingToken);
             }
         }
