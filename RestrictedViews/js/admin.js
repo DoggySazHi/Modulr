@@ -297,7 +297,7 @@ function submit() {
     for (let input of fileInputs) {
         if(input.files.length === 0)
             continue;
-        data.append('FileNames', input.parentElement.querySelector("input:not([type])")).value;
+        data.append('FileNames', input.parentElement.querySelector("input:not([type])").value);
         data.append('Files', input.files[0]);
         data.append('IsTester', JSON.stringify(false));
     }
