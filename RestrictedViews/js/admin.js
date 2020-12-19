@@ -290,15 +290,16 @@ function submit() {
 
     let data = new FormData();
 
+    data.append('AuthToken', getLoginToken());
+    data.append('ConnectionID', "no");
+    data.append('TestID', JSON.stringify(-1));
     let fileInputs = document.querySelectorAll("input[type='file']");
     for (let input of fileInputs) {
         if(input.files.length === 0)
             continue;
-        data.append('FileNames', input.name);
+        data.append('FileNames', input.parentElement.querySelector("input:not([type])")).value;
         data.append('Files', input.files[0]);
         data.append('IsTester', JSON.stringify(false));
-        data.append('TestID', JSON.stringify(currentTest));
-        data.append('AuthToken', getLoginToken());
     }
 
     fetch("/Admin/Tester/Upload", {
@@ -312,7 +313,7 @@ function submit() {
     })
     .then((formatted) => {
         let text = formatted.toString();
-        message.push("---");
+        message.push("---\n");
         message.push(text);
         message.push("---\nNow updating stipulatable information...");
         triggerPopup("Updating...", message.join('\n'));
@@ -505,7 +506,7 @@ function addTester() {
     let inputArea = document.getElementById("testers")
 
     let order = [...document.getElementById("testers").children].sort((p, q) =>  parseInt(q.style.order) - parseInt(p.style.order));
-    order = order.length === 0 ? 0 : order[0].style.order; // If there are no items, the first order is zero, otherwise it's the greatest order (by sort).
+    order = order.length === 0 ? 0 : parseInt(order[0].style.order) + 1; // If there are no items, the first order is zero, otherwise it's the greatest order (by sort), then +1.
     
     let label = document.createElement("label");
     let labelName = document.createElement("input");
@@ -513,6 +514,14 @@ function addTester() {
     let removeButton = document.createElement("button");
     let input = document.createElement("input");
     input.type = "file";
+    input.addEventListener("change", (e) => {
+        if (e.target.value === "")
+            e.target.parentNode.className = "input normal";
+        else {
+            e.target.parentNode.className = "input success";
+            labelName.value = e.target.files[0].name;
+        }
+    }, false);
 
     let dragChar = document.createElement("span");
     dragChar.innerHTML = "\u2195";
