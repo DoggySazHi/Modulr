@@ -147,7 +147,7 @@ namespace Modulr.Controllers
             {
                 var file = input.Files[i];
                 if (file.Length > 8 * 1024 * 1024) continue;
-                var fileName = input.FileNames[i];
+                var fileName = input.FileNames[i] ?? Path.GetFileName(file.FileName);
                 var outputPath = Path.Join(_config.SourceLocation, fileName);
                 var backupPath = outputPath;
                 if (System.IO.File.Exists(backupPath))
