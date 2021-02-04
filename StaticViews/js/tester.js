@@ -298,6 +298,7 @@ function handleErrors(statusCode, error) {
             error = "Could not locate test, please try another one!";
             break;
         case 500:
+        case 502:
             error = "The server decided that it wanted to die. Ask William about what the heck you did to kill it.";
             break;
     }

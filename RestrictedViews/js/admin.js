@@ -1,6 +1,7 @@
 ﻿"use strict";
 
-import { onGoogleReady } from "/StaticViews/js/google";
+import {getLoginToken, onGoogleReady} from "/StaticViews/js/google.js";
+import {triggerPopup, triggerPopupButtons} from "/StaticViews/js/main.js";
 
 onInitAdmin();
 
@@ -16,13 +17,13 @@ function onInitAdmin() {
 }
 
 function bindButtons() {
-    document.getElementById("submit").addEventListener("click", (e) => {
+    document.getElementById("submit").addEventListener("click", async (e) => {
         e.preventDefault();
-        submit();
+        await submit();
     }, false);
-    document.getElementById("delete").addEventListener("click", (e) => {
+    document.getElementById("delete").addEventListener("click", async (e) => {
         e.preventDefault();
-        remove();
+        await remove();
     }, false);
     document.getElementById("tester-add").addEventListener("click", (e) => {
         e.preventDefault();
@@ -169,8 +170,8 @@ function generateList(tests) {
             testBtn.classList.add("normal");
             testBtn.innerHTML += " &#10004;";
         }
-        testBtn.addEventListener("click", (e) => {
-            getTestAdmin(e.target.name);
+        testBtn.addEventListener("click", async (e) => {
+            await getTestAdmin(e.target.name);
         })
         list.appendChild(testBtn);
     }
@@ -189,19 +190,9 @@ async function getAllTestsAdmin() {
                 "AuthToken": getLoginToken()
             })
         })
-        if (response.status >= 400 && response.status < 600) {
-            switch (response.status) {
-                case 403:
-                    error = "Login credentials failed, try logging out and logging back in!";
-                    break;
-                case 404:
-                    error = "Could not fetch tests because none were found!";
-                    break;
-                case 500:
-                    error = "The server decided that it wanted to die. Ask William about what the heck you did to kill it.";
-                    break;
-            }
-        } else {
+        if (response.status >= 400 && response.status < 600)
+            handleErrors(response.status, null);
+        else {
             let data = await response.json();
             generateList(data);
             bindUploads();
@@ -228,7 +219,7 @@ function warnModified(callback) {
     triggerPopupButtons([discardBtn]);
 }
 
-function getTestAdmin(num) {
+async function getTestAdmin(num) {
     if (modified) {
         warnModified(() => getTestAdmin(num));
         return;
@@ -237,55 +228,41 @@ function getTestAdmin(num) {
     if (isNaN(id))
         return;
     clearInputs();
-    fetch("/Admin/Tester/Get", {
-        method: "POST",
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-            "AuthToken": getLoginToken(),
-            "TestID": id
-        })
-    })
-    .then((response) => {
+    try {
+        let response = await fetch("/Admin/Tester/Get", {
+            method: "POST",
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                "AuthToken": getLoginToken(),
+                "TestID": id
+            })
+        });
         if (response.status >= 400 && response.status < 600)
-            throw new Error("HTTPERR" + response.status);
-        return response.json();
-    })
-    .then((formatted) => {
-        if(!formatted.hasOwnProperty("testerFiles")) {
-            console.error("Could not find the tester files from tester!");
-            return;
-        }
-        if(!formatted.hasOwnProperty("requiredFiles")) {
-            console.error("Could not find the required files from tester!");
-            return;
-        }
-        
-        generateFileExplorer(formatted);
-        bindUploads();
-        currentTest = id;
-    })
-    .catch((error) => {
-        if (error.message.startsWith("HTTPERR")) {
-            switch (parseInt(error.message.substr(7))) {
-                case 403:
-                    error = "Login credentials failed, try logging out and logging back in!";
-                    break;
-                case 404:
-                    error = "Could not locate test, please try another one!";
-                    break;
-                case 500:
-                    error = "The server decided that it wanted to die. Ask William about what the heck you did to kill it.";
-                    break;
+            handleErrors(response.status, null);
+        else {
+            let data = await response.json();
+            if (!data.hasOwnProperty("testerFiles")) {
+                console.error("Could not find the tester files from tester!");
+                return;
             }
+            if (!data.hasOwnProperty("requiredFiles")) {
+                console.error("Could not find the required files from tester!");
+                return;
+            }
+
+            generateFileExplorer(data);
+            bindUploads();
+            currentTest = id;
         }
-        console.error("We had an error... ", error);
-        triggerPopup("Mukyu~", error);
-    });
+    }
+    catch (e) {
+        handleErrors(0, e);
+    }
 }
 
-function submit() {
+async function submit() {
     let message = ["Now uploading files, if any..."];
     triggerPopup("Updating...", message.join('\n'));
     document.getElementById("submit").disabled = true;
@@ -297,210 +274,149 @@ function submit() {
     data.append('TestID', JSON.stringify(-1));
     let fileInputs = document.querySelectorAll("input[type='file']");
     for (let input of fileInputs) {
-        if(input.files.length === 0)
+        if (input.files.length === 0)
             continue;
         data.append('FileNames', input.parentElement.querySelector("input:not([type])").value);
         data.append('Files', input.files[0]);
         data.append('IsTester', JSON.stringify(false));
     }
 
-    fetch("/Admin/Tester/Upload", {
-        method: "POST",
-        body: data
-    })
-    .then((response) => {
+    try {
+        let response = await fetch("/Admin/Tester/Upload", {
+            method: "POST",
+            body: data
+        });
         if (response.status >= 400 && response.status < 600)
-            throw new Error("HTTPERR " + response.status);
-        return response.text();
-    })
-    .then((formatted) => {
-        let text = formatted.toString();
-        message.push("---\n");
-        message.push(text);
-        message.push("---\nNow updating stipulatable information...");
-        triggerPopup("Updating...", message.join('\n'));
-        if(currentTest > 0)
-            updateStipulatable(message);
-        else
-            addStipulatable(message);
-    })
-    .catch((error) => {
-        if (error.message.startsWith("HTTPERR")) {
-            switch (parseInt(error.message.substr(7))) {
-                case 400:
-                    error = "The server didn't like your files... did you miss something?";
-                    break;
-                case 403:
-                    error = "Either you are on a cooldown, or your login credentials failed.\nIf the former isn't true, try logging out and logging back in!";
-                    break;
-                case 404:
-                    error = "Could not locate the uploader... try refreshing the page?";
-                    break;
-                case 500:
-                case 502:
-                    error = "The server decided that it wanted to die. Ask William about what the heck you did to kill it.";
-                    break;
-            }
-            document.getElementById("submit").disabled = false;
+            handleErrors(response.status, null)
+        else {
+            let data = await response.text();
+            let text = data.toString();
+            message.push("---\n");
+            message.push(text);
+            message.push("---\nNow updating stipulatable information...");
+            triggerPopup("Updating...", message.join('\n'));
+            if (currentTest > 0)
+                await updateStipulatable(message);
+            else
+                await addStipulatable(message);
         }
-
-        message.push(error);
-        triggerPopup("Mukyu~", message.join('\n'));
-    });
-}
-
-function updateStipulatable(message) {
-    fetch("/Admin/Tester/Update", {
-        method: "PUT",
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-            "AuthToken": getLoginToken(),
-            "TestID": currentTest,
-            "TestName": document.querySelector("input[autocorrect]").value,
-            // William, what the heck? (Gets all children, extracts name from each input element)
-            "Required": [...document.getElementById("required").children].map(o => o.getElementsByTagName("input")[0].value),
-            // ... (Get all children under the testers, sort by flexbox order for draggables, then grab the names of each tester)
-            "Testers": [...document.getElementById("testers").children].sort((p, q) => parseInt(p.style.order) - parseInt(q.style.order)).map(o => o.getElementsByTagName("input")[1].value)
-        })
-    })
-    .then((response) => {
-        if (response.status >= 400 && response.status < 600)
-            throw new Error("HTTPERR" + response.status);
-        return response.json();
-    })
-    .then((formatted) => {
-        if(!formatted)
-            message.push("Server failed to find a record; was it deleted?");
-        else
-            message.push("Successfully updated the stipulatable's information!\nDone!");
-        triggerPopup("Finished updating!", message.join('\n'));
-        getAllTestsAdmin();
-        getTestAdmin(currentTest);
-    })
-    .catch((error) => {
-        if (error.message.startsWith("HTTPERR")) {
-            switch (parseInt(error.message.substr(7))) {
-                case 403:
-                    error = "Login credentials failed, try logging out and logging back in!";
-                    break;
-                case 404:
-                    error = "Could not fetch tests because none were found!";
-                    break;
-                case 500:
-                    error = "The server decided that it wanted to die. Ask William about what the heck you did to kill it.";
-                    break;
-            }
-        }
-        message.push(error);
-        triggerPopup("Error updating!", message.join('\n'));
-    }).finally(() => {
+    } catch (e) {
         document.getElementById("submit").disabled = false;
-    });
+        message.push(e);
+        handleErrors(0, message.join('\n'))
+    }
 }
 
-function addStipulatable(message) {
-    fetch("/Admin/Tester/Add", {
-        method: "POST",
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-            "AuthToken": getLoginToken(),
-            "TestName": document.querySelector("input[autocorrect]").value,
-            "Required": [...document.getElementById("required").children].map(o => o.getElementsByTagName("input")[0].value),
-            "Testers": [...document.getElementById("testers").children].sort((p, q) => parseInt(p.style.order) - parseInt(q.style.order)).map(o => o.getElementsByTagName("input")[1].value)
+async function updateStipulatable(message) {
+    try {
+        let response = fetch("/Admin/Tester/Update", {
+            method: "PUT",
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                "AuthToken": getLoginToken(),
+                "TestID": currentTest,
+                "TestName": document.querySelector("input[autocorrect]").value,
+                // William, what the heck? (Gets all children, extracts name from each input element)
+                "Required": [...document.getElementById("required").children].map(o => o.getElementsByTagName("input")[0].value),
+                // ... (Get all children under the testers, sort by flexbox order for draggables, then grab the names of each tester)
+                "Testers": [...document.getElementById("testers").children].sort((p, q) => parseInt(p.style.order) - parseInt(q.style.order)).map(o => o.getElementsByTagName("input")[1].value)
+            })
+        });
+        if (response.status >= 400 && response.status < 600)
+            handleErrors(response.status, null)
+        else {
+            let data = await response.json();
+            if (!data)
+                message.push("Server failed to find a record; was it deleted?");
+            else
+                message.push("Successfully updated the stipulatable's information!\nDone!");
+            triggerPopup("Finished updating!", message.join('\n'));
+            await getAllTestsAdmin();
+            await getTestAdmin(currentTest);
+        }
+    }
+    catch (e) {
+        document.getElementById("submit").disabled = false;
+        message.push(e);
+        triggerPopup("Error updating!", message.join('\n'));
+    }
+}
+
+async function addStipulatable(message) {
+    try {
+        let response = await fetch("/Admin/Tester/Add", {
+            method: "POST",
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                "AuthToken": getLoginToken(),
+                "TestName": document.querySelector("input[autocorrect]").value,
+                "Required": [...document.getElementById("required").children].map(o => o.getElementsByTagName("input")[0].value),
+                "Testers": [...document.getElementById("testers").children].sort((p, q) => parseInt(p.style.order) - parseInt(q.style.order)).map(o => o.getElementsByTagName("input")[1].value)
+            })
         })
-    })
-        .then((response) => {
-            if (response.status >= 400 && response.status < 600)
-                throw new Error("HTTPERR" + response.status);
-            return response.json();
-        })
-        .then((formatted) => {
-            if(formatted <= 0)
+        if (response.status >= 400 && response.status < 600)
+            handleErrors(response.status, null)
+        else {
+            let data = await response.json();
+            if (data <= 0)
                 message.push("Server failed to return a valid ID...");
             else
-                message.push("Successfully added the stipulatable (id " + formatted + ")!\nDone!");
-            currentTest = formatted;
+                message.push("Successfully added the stipulatable (id " + data + ")!\nDone!");
+            currentTest = data;
             triggerPopup("Finished updating!", message.join('\n'));
-            getAllTestsAdmin();
+            await getAllTestsAdmin();
             if (currentTest > 0)
-                getTestAdmin(currentTest);
-        })
-        .catch((error) => {
-            if (error.message.startsWith("HTTPERR")) {
-                switch (parseInt(error.message.substr(7))) {
-                    case 403:
-                        error = "Login credentials failed, try logging out and logging back in!";
-                        break;
-                    case 404:
-                        error = "Could not fetch tests because none were found!";
-                        break;
-                    case 500:
-                        error = "The server decided that it wanted to die. Ask William about what the heck you did to kill it.";
-                        break;
-                }
-            }
-            message.push(error);
-            triggerPopup("Error updating!", message.join('\n'));
-        }).finally(() => {
+                await getTestAdmin(currentTest);
+        }
+    }
+    catch (e) {
         document.getElementById("submit").disabled = false;
-    });
+        message.push(e);
+        handleErrors(0, message.join('\n'));
+    }
 }
 
-function remove() {
+async function remove() {
     let name = document.querySelector("input[autocorrect]").value;
     let deleteBtn = document.createElement("button");
     deleteBtn.className = "danger form-control";
     deleteBtn.innerHTML = "Delete";
-    deleteBtn.addEventListener("click", (e) => {
+    deleteBtn.addEventListener("click", async (e) => {
         e.preventDefault();
-        actuallyDelete();
+        await actuallyDelete();
     }, false);
     triggerPopup("Delete?", "Are you sure you want to delete the test for \"" + name + "\" (id " + currentTest + ")?");
     triggerPopupButtons([deleteBtn]);
 }
 
-function actuallyDelete() {
+async function actuallyDelete() {
     clearInputs();
     if (!(currentTest > 0)) // Why not <= 0? Because null and undefined.
         return;
-    fetch("/Admin/Tester/Delete", {
-        method: "DELETE",
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: currentTest
-    })
-    .then((response) => {
+    try {
+        let response = await fetch("/Admin/Tester/Delete", {
+            method: "DELETE",
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: currentTest
+        });
         if (response.status >= 400 && response.status < 600)
-            throw new Error("HTTPERR" + response.status);
-        return response.json();
-    })
-    .then((formatted) => {
-        if(!formatted)
-            triggerPopup("Mukyu~", "The server couldn't delete anything! Is the cache old?");
-        getAllTestsAdmin();
-    })
-    .catch((error) => {
-        if (error.message.startsWith("HTTPERR")) {
-            switch (parseInt(error.message.substr(7))) {
-                case 403:
-                    error = "Login credentials failed, try logging out and logging back in!";
-                    break;
-                case 404:
-                    error = "The test was not found... was it deleted already?";
-                    break;
-                case 500:
-                    error = "The server decided that it wanted to die. Ask William about what the heck you did to kill it.";
-                    break;
-            }
+            handleErrors(response.status, null);
+        else {
+            let data = await response.json();
+            if (!data)
+                triggerPopup("Mukyu~", "The server couldn't delete anything! Is the cache old?");
+            await getAllTestsAdmin();
         }
-        console.error("We had an error... ", error);
-        triggerPopup("Mukyu~", error);
-    });
+    }
+    catch (e) {
+        
+    }
 }
 
 function addTester() {
@@ -613,4 +529,23 @@ function addBlankStipulatable() {
     document.getElementById("manager").classList.remove("hidden");
     document.getElementById("submit").disabled = false;
     document.getElementById("delete").disabled = false;
+}
+
+function handleErrors(statusCode, error) {
+    switch (statusCode) {
+        case 403:
+            error = "Login credentials failed, try logging out and logging back in!";
+            break;
+        case 404:
+            error = "Could not locate test, please try another one!";
+            break;
+        case 500:
+        case 502:
+            error = "The server decided that it wanted to die. Ask William about what the heck you did to kill it.";
+            break;
+    }
+    if (error != null) {
+        console.error("We had an error... ", error);
+        triggerPopup("Mukyu~", error);
+    }
 }
