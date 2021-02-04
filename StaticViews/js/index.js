@@ -1,5 +1,8 @@
 ﻿"use strict";
 
+import { getUrl } from "/js/main.js";
+import { onLoginEvent } from "/js/google.js";
+
 onInitIndex();
 
 function onInitIndex() {
