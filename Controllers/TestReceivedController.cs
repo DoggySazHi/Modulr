@@ -90,9 +90,10 @@ namespace Modulr.Controllers
             foreach (var file in test.TesterFiles)
             {
                 var tester = Path.Join(_config.SourceLocation, file);
-                if (!System.IO.File.Exists(tester))
+                var testerOut = Path.Join(srcPath, file);
+                if (!System.IO.File.Exists(tester) || System.IO.File.Exists(testerOut))
                     continue;
-                System.IO.File.Copy(Path.Join(_config.SourceLocation, file), Path.Join(srcPath, file));
+                System.IO.File.Copy(tester, testerOut);
                 input.FileNames.Add(file);
             }
 

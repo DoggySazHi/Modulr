@@ -1,7 +1,7 @@
 ﻿"use strict";
 
-import {getLoginToken, onGoogleReady} from "/StaticViews/js/google.js";
-import {triggerPopup, triggerPopupButtons} from "/StaticViews/js/main.js";
+import {getLoginToken, onGoogleReady} from "/js/google.js";
+import {triggerPopup, triggerPopupButtons} from "/js/main.js";
 
 onInitAdmin();
 
@@ -271,7 +271,7 @@ async function submit() {
 
     data.append('AuthToken', getLoginToken());
     data.append('ConnectionID', "no");
-    data.append('TestID', JSON.stringify(-1));
+    data.append('TestID', JSON.stringify(currentTest));
     let fileInputs = document.querySelectorAll("input[type='file']");
     for (let input of fileInputs) {
         if (input.files.length === 0)

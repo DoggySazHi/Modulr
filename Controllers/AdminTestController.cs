@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
@@ -141,6 +142,7 @@ namespace Modulr.Controllers
             if (auth.Status != GoogleAuth.LoginStatus.Success)
                 return Fail(403, "Login needed!");
 
+            var test = await _query.GetTest(input.TestID);
             var output = new StringBuilder();
 
             for (var i = 0; i < input.Files.Count; i++)
@@ -161,6 +163,10 @@ namespace Modulr.Controllers
                     System.IO.File.Move(outputPath, backupPath);
                     output.AppendLine($"WARNING: {fileName} existed already, made a copy at {backupPath}.");
                 }
+
+                if (test.RequiredFiles.Contains(fileName))
+                    output.AppendLine(
+                        $"WARNING: {fileName} is a required file; it will not be copied during stipulation!");
                 await using var stream = new FileStream(outputPath, FileMode.Create);
                 await file.CopyToAsync(stream);
                 output.AppendLine($"Successfully uploaded {fileName} to {outputPath}!");
