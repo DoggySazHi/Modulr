@@ -25,6 +25,7 @@ namespace Modulr.Controllers
             Router.Add("", "RestrictedViews/views/admin.html");
             Router.Add("home", "RestrictedViews/views/admin.html");
             
+            AddFolderToRouter("error", "StaticViews/views/error");
             AddFolderToRouter("", "RestrictedViews/views");
             AddFolderToRouter("img", "RestrictedViews/img");
             AddFolderToRouter("js", "RestrictedViews/js");
@@ -39,9 +40,8 @@ namespace Modulr.Controllers
             
             if (!await this.IsAdmin(_query))
             {
-                var error = await System.IO.File.ReadAllTextAsync("StaticViews/views/error/403.html");
                 Response.StatusCode = 403;
-                return base.Content(error, "text/html");
+                return await base.Get("error/403.html");
             }
 
             return await base.Get(page);

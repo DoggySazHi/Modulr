@@ -1,9 +1,27 @@
 ﻿"use strict";
 
+import { triggerPopup, getUrl } from "/js/main.js";
+
+export { onLoginEvent, onGoogleReady, getLoginToken };
+
 let onLoginEvent = [];
 let onGoogleReady = [];
 
-// stupid IDE not detecting the Google script
+// noinspection JSIgnoredPromiseFromCall
+onInitGoogle();
+
+async function onInitGoogle() {
+    console.log("Waiting for Google...");
+    await waitForGoogle();
+}
+
+async function waitForGoogle() {
+    if(typeof gapi.signin2 !== "undefined")
+        await googleInit();
+    else
+        setTimeout(waitForGoogle, 250);
+}
+
 async function googleInit() {
     let result = await fetch("/Google/GetKey");
     let key = await result.json();
@@ -17,7 +35,7 @@ async function googleInit() {
     });
 }
 
-function renderLogin() {
+async function renderLogin() {
     gapi.signin2.render('googleSignIn', {
         'scope': 'profile email',
         'width': 160,
@@ -29,32 +47,28 @@ function renderLogin() {
     });
 }
 
-function onSignIn(user)
+async function onSignIn(user)
 {
     console.info('Logged in! User: ' + user.getBasicProfile().getName());
     let token = user.getAuthResponse().id_token;
-    fetch("/Google/Login", {
+    let response = await fetch("/Google/Login", {
         method: "POST",
         headers: {
             'Content-Type': 'application/json'
         },
         body: JSON.stringify(token)
-    })
-    .then((response) => response.json())
-    .then((message) => {
-        if (!message.success) {
-            triggerPopup("Mukyu~", "The server didn't let us login.\nMessage: " + message.error);
-            console.error("Server didn't like our Google login!\n" + message.error);
-            signOut();
-        } else {
-            document.getElementById("username").innerHTML = "Hello " + user.getBasicProfile().getName() + "!";
-            createSignOut();
-        }
-    })
-    .finally(() => {
-        for (let f of onLoginEvent)
-            f(gapi.auth2.getAuthInstance().currentUser.get());
     });
+    let message = await response.json();
+    if (!message.success) {
+        triggerPopup("Mukyu~", "The server didn't let us login.\nMessage: " + message.error);
+        console.error("Server didn't like our Google login!\n" + message.error);
+        await signOut();
+    } else {
+        document.getElementById("username").innerHTML = "Hello " + user.getBasicProfile().getName() + "!";
+        createSignOut();
+    }
+    for (let f of onLoginEvent)
+        f(gapi.auth2.getAuthInstance().currentUser.get());
 }
 
 function onSignInError(error)
@@ -73,9 +87,9 @@ function createSignOut() {
     button.appendChild(signOutButton);
 }
 
-function signOut() {
+async function signOut() {
     let google = gapi.auth2.getAuthInstance();
-    fetch(getUrl("/Users/LogOut", {})).then(() => {
+    await fetch(getUrl("/Users/LogOut", {})).then(() => {
         google.signOut().then(function () {
             console.info('Logged out!');
             renderLogin();

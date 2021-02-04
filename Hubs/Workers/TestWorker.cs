@@ -1,22 +1,18 @@
-﻿using System;
-using System.Threading;
+﻿using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 using Modulr.Hubs.Models;
 
 namespace Modulr.Hubs.Workers
 {
     public class TestWorker : BackgroundService
     {
-        private readonly ILogger<TestWorker> _logger;
-        private readonly IHubContext<TestQueryHub, ITestClient> _clockHub;
+        private readonly IHubContext<TestQueryHub, ITestClient> _testHub;
 
-        public TestWorker(ILogger<TestWorker> logger, IHubContext<TestQueryHub, ITestClient> clockHub)
+        public TestWorker(IHubContext<TestQueryHub, ITestClient> testHub)
         {
-            _logger = logger;
-            _clockHub = clockHub;
+            _testHub = testHub;
         }
         
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
@@ -29,7 +25,7 @@ namespace Modulr.Hubs.Workers
 
         public async Task SendUpdate(string connectionID, string message)
         {
-            await _clockHub.Clients.Client(connectionID).ReceiveUpdate(message);
+            await _testHub.Clients.Client(connectionID).ReceiveUpdate(message);
         }
     }
 }

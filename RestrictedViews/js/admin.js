@@ -1,5 +1,7 @@
 ﻿"use strict";
 
+import { onGoogleReady } from "/StaticViews/js/google";
+
 onInitAdmin();
 
 let currentTest = 0;
@@ -174,29 +176,21 @@ function generateList(tests) {
     }
 }
 
-function getAllTestsAdmin() {
+async function getAllTestsAdmin() {
     clearInputs();
-    fetch("/Admin/Tester/GetAll", {
-        method: "POST",
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-            "AuthToken": getLoginToken()
+    let error = null;
+    try {
+        let response = await fetch("/Admin/Tester/GetAll", {
+            method: "POST",
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                "AuthToken": getLoginToken()
+            })
         })
-    })
-    .then((response) => {
-        if (response.status >= 400 && response.status < 600)
-            throw new Error("HTTPERR" + response.status);
-        return response.json();
-    })
-    .then((formatted) => {
-        generateList(formatted);
-        bindUploads();
-    })
-    .catch((error) => {
-        if (error.message.startsWith("HTTPERR")) {
-            switch (parseInt(error.message.substr(7))) {
+        if (response.status >= 400 && response.status < 600) {
+            switch (response.status) {
                 case 403:
                     error = "Login credentials failed, try logging out and logging back in!";
                     break;
@@ -207,10 +201,18 @@ function getAllTestsAdmin() {
                     error = "The server decided that it wanted to die. Ask William about what the heck you did to kill it.";
                     break;
             }
+        } else {
+            let data = await response.json();
+            generateList(data);
+            bindUploads();
         }
+    } catch (e) {
+        error = e;
+    }
+    if (error != null) {
         console.error("We had an error... ", error);
         triggerPopup("Mukyu~", error);
-    });
+    }
 }
 
 function warnModified(callback) {

@@ -1,6 +1,5 @@
 ﻿using System;
 using System.IO;
-using Modulr.Hubs;
 using Modulr.Hubs.Workers;
 
 namespace Modulr.Tester

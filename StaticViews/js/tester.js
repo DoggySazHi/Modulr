@@ -6,9 +6,14 @@
  * mukyu~
  */
 
+import {getLoginToken, onGoogleReady} from "./google.js";
+import {registerCollapsibles, triggerPopup} from "./main.js";
+import {onSocketReady, connectionId} from "./websocket.js";
+
 onInitTester();
 
 let resetTime = new Date();
+let intervalTimer = 0;
 let testsRemaining = 0;
 let currentTest = 0;
 let websocketBuffer = [];
@@ -23,9 +28,9 @@ function onInitTester() {
 }
 
 function bindButtons() {
-    document.getElementById("submit").addEventListener("click", (e) => {
+    document.getElementById("submit").addEventListener("click", async (e) => {
         e.preventDefault();
-        submit();
+        await submit();
     }, false);
 }
 
@@ -40,7 +45,7 @@ function bindUploads() {
     });
 }
 
-function initWebsocket() {
+function initWebsocket(connection) {
     if(typeof connectionId === "undefined") {
         console.warn("Could not initialize WebSocket for the tester... is SignalR loaded?")
         return;
@@ -52,10 +57,10 @@ function initWebsocket() {
     console.log("Bound WebSocket!")
 }
 
-function submit() {
+async function submit() {
     let data = new FormData();
     websocketBuffer = [];
-    
+
     let fileInputs = document.querySelectorAll("input[type='file']");
     for (let input of fileInputs) {
         data.append("FileNames", input.name);
@@ -70,52 +75,32 @@ function submit() {
     }
     data.append("TestID", JSON.stringify(currentTest));
     data.append("AuthToken", getLoginToken());
-    if(typeof connectionId !== "undefined")
+    if (typeof connectionId !== "undefined")
         data.append("ConnectionID", connectionId);
 
     document.getElementById("result").innerHTML = "Now loading...";
     document.getElementById("submit").disabled = true;
     document.getElementById("loading-icon").classList.remove("hidden");
 
-    fetch("/Tester/Upload", {
-        method: "POST",
-        body: data
-    })
-    .then((response) => {
-        if (response.status >= 400 && response.status < 600)
-            throw new Error("HTTPERR " + response.status);
-        return response.text();
-    })
-    .then((formatted) => {
-        displayOutput(formatted)
-    })
-    .catch((error) => {
-        if (error.message.startsWith("HTTPERR")) {
-            switch (parseInt(error.message.substr(7))) {
-                case 400:
-                    error = "The server didn't like your files... did you miss something?";
-                    break;
-                case 403:
-                    error = "Either you are on a cooldown, or your login credentials failed.\nIf the former isn't true, try logging out and logging back in!";
-                    break;
-                case 404:
-                    error = "Could not locate the uploader... try refreshing the page?";
-                    break;
-                case 500:
-                case 502:
-                    error = "The server decided that it wanted to die. Ask William about what the heck you did to kill it.";
-                    break;
-            }
+    try {
+        let response = await fetch("/Tester/Upload", {
+            method: "POST",
+            body: data
+        });
+        if (response.status >= 400 && response.status < 600) {
+            handleErrors(response.status, null);
+        } else {
+            let data = await response.text();
+            displayOutput(data);
         }
-        
-        console.error("We had an error... ", error);
-        triggerPopup("Mukyu~", error);
-    })
-    .finally(() => {
-        document.getElementById("submit").disabled = false;
-        document.getElementById("loading-icon").classList.add("hidden");
-        getAttemptsLeft();
-    });
+    }
+    catch (e) {
+        handleErrors(0, e);
+    }
+    
+    document.getElementById("submit").disabled = false;
+    document.getElementById("loading-icon").classList.add("hidden");
+    await getAttemptsLeft();
 }
 
 function displayOutput(data) {
@@ -162,136 +147,99 @@ function displayOutput(data) {
     registerCollapsibles();
 }
 
-function getTest(num) {
+async function getTest(num) {
     let id = parseInt(num, 10);
     if (isNaN(id))
         return;
     clearInputs();
-    fetch("/Tester/GetTest", {
-        method: "POST",
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-            "AuthToken": getLoginToken(),
-            "TestID": id
-        })
-    })
-    .then((response) => {
+    try {
+        let response = await fetch("/Tester/GetTest", {
+            method: "POST",
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                "AuthToken": getLoginToken(),
+                "TestID": id
+            })
+        });
+
         if (response.status >= 400 && response.status < 600)
-            throw new Error("HTTPERR" + response.status);
-        return response.json();
-    })
-    .then((formatted) => {
-        if(!formatted.hasOwnProperty("requiredFiles")) {
-            console.error("Could not find the required files from tester!");
-            return;
-        }
-        generateInputs(formatted.requiredFiles);
-        bindUploads();
-        currentTest = id;
-    })
-    .catch((error) => {
-        if (error.message.startsWith("HTTPERR")) {
-            switch (parseInt(error.message.substr(7))) {
-                case 403:
-                    error = "Login credentials failed, try logging out and logging back in!";
-                    break;
-                case 404:
-                    error = "Could not locate test, please try another one!";
-                    break;
-                case 500:
-                    error = "The server decided that it wanted to die. Ask William about what the heck you did to kill it.";
-                    break;
+            handleErrors(response.status, null);
+        else {
+            let data = await response.json();
+            if (!data.hasOwnProperty("requiredFiles")) {
+                console.error("Could not find the required files from tester!");
+                return;
             }
+            generateInputs(data.requiredFiles);
+            bindUploads();
+            currentTest = id;
         }
-        console.error("We had an error... ", error);
-        triggerPopup("Mukyu~", error);
-    });
+    } catch (e) {
+        handleErrors(0, e);
+    }
 }
 
-function getAllTests() {
+async function getAllTests() {
     clearInputs();
-    fetch("/Tester/GetAllTests", {
-        method: "POST",
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-            "AuthToken": getLoginToken()
+    try {
+        let response = await fetch("/Tester/GetAllTests", {
+            method: "POST",
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                "AuthToken": getLoginToken()
+            })
         })
-    })
-    .then((response) => {
-        if (response.status >= 400 && response.status < 600)
-            throw new Error("HTTPERR" + response.status);
-        return response.json();
-    })
-    .then((formatted) => {
-        generateList(formatted);
-        bindUploads();
-    })
-    .catch((error) => {
-        if (error.message.startsWith("HTTPERR")) {
-            switch (parseInt(error.message.substr(7))) {
-                case 403:
-                    error = "Login credentials failed, try logging out and logging back in!";
-                    break;
-                case 404:
-                    error = "Could not fetch tests because none were found!";
-                    break;
-                case 500:
-                    error = "The server decided that it wanted to die. Ask William about what the heck you did to kill it.";
-                    break;
-            }
+        if (response.status >= 400 && response.status < 600) {
+            handleErrors(response.status, null);
+        } else {
+            let data = await response.json();
+            generateList(data);
+            bindUploads();
         }
-        console.error("We had an error... ", error);
-        triggerPopup("Mukyu~", error);
-    });
+    } catch (e) {
+        handleErrors(0, e);
+    }
 }
-
-function getAttemptsLeft() {
-    fetch("/Users/GetTimeout", {
-        method: "POST",
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(getLoginToken())
-    })
-    .then((response) => {
-        if (response.status >= 400 && response.status < 600)
-            throw new Error("HTTPERR" + response.status);
-        return response.json();
-    })
-    .then((formatted) => {
-        resetTime = new Date(Date.now() + formatted.milliseconds);
-        testsRemaining = formatted.testsRemaining;
-        updateAttemptsVisual();
-        setInterval(updateTimer, 1000);
-    })
-    .catch((error) => {
-        if (error.message.startsWith("HTTPERR")) {
-            switch (parseInt(error.message.substr(7))) {
-                case 403:
-                    error = "Login credentials failed, try logging out and logging back in!";
-                    break;
-                case 404:
-                    error = "Could not fetch tests because none were found!";
-                    break;
-                case 500:
-                    error = "The server decided that it wanted to die. Ask William about what the heck you did to kill it.";
-                    break;
-            }
+async function getAttemptsLeft() {
+    try {
+        let response = await fetch("/Users/GetTimeout", {
+            method: "POST",
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(getLoginToken())
+        });
+        if (response.status >= 400 && response.status < 600) {
+            handleErrors(response.status, null);
+        } else {
+            let data = await response.json();
+            resetTime = new Date(Date.now() + data.milliseconds);
+            testsRemaining = data.testsRemaining;
+            updateAttemptsVisual();
+            intervalTimer = setInterval(updateTimer, 1000);
         }
-        console.error("We had an error... ", error);
-        triggerPopup("Mukyu~", error);
-    });
+    }
+    catch (e) {
+        handleErrors(0, e);
+    }
 }
 
 function updateTimer() {
     // Oh no, timezones!
     let difference = resetTime - new Date();
     let output = document.getElementById("time");
-    if (difference < 0) {
+    if (difference < -5) { // Delay to compensate for server time.
+        output.innerHTML = "";
+        updateAttemptsVisual();
+        clearInterval(intervalTimer);
+        intervalTimer = 0;
+        return;
+    }
+    if (difference < 0) { // Actually clear the box.
         output.innerHTML = "";
         updateAttemptsVisual();
         return;
@@ -327,8 +275,8 @@ function generateList(tests) {
         testBtn.className = "default form-control";
         testBtn.innerHTML = test.name;
         testBtn.name = test.id;
-        testBtn.addEventListener("click", (e) => {
-            getTest(e.target.name);
+        testBtn.addEventListener("click", async (e) => {
+            await getTest(e.target.name);
         })
         list.appendChild(testBtn);
     }
@@ -339,4 +287,22 @@ function updateAttemptsVisual() {
         document.getElementById("attempts").innerHTML = "";
     else
         document.getElementById("attempts").innerHTML = "Attempts Left: " + testsRemaining;
+}
+
+function handleErrors(statusCode, error) {
+    switch (statusCode) {
+        case 403:
+            error = "Login credentials failed, try logging out and logging back in!";
+            break;
+        case 404:
+            error = "Could not locate test, please try another one!";
+            break;
+        case 500:
+            error = "The server decided that it wanted to die. Ask William about what the heck you did to kill it.";
+            break;
+    }
+    if (error != null) {
+        console.error("We had an error... ", error);
+        triggerPopup("Mukyu~", error);
+    }
 }

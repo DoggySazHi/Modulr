@@ -1,5 +1,7 @@
 ﻿"use strict";
 
+export { triggerPopup, triggerPopupButtons, disablePopup, registerCollapsibles, getUrl }
+
 onInit();
 
 function onInit() {

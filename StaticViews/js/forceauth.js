@@ -1,5 +1,8 @@
 ﻿"use strict";
 
+import {onGoogleReady} from "./google.js";
+import {getUrl} from "./main.js";
+
 onInitAuth();
 
 function onInitAuth() {
