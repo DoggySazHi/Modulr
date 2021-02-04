@@ -1,0 +1,2 @@
+﻿* linguist-vendored
+*.cs linguist-vendored=false
