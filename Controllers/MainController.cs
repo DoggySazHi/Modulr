@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using Modulr.Tester;
 
 namespace Modulr.Controllers
 {
@@ -7,7 +8,7 @@ namespace Modulr.Controllers
     [Route("/{**page}")]
     public class MainController : HTMLController
     {
-        public MainController(ILogger<HTMLController> logger) : base(logger)
+        public MainController(ILogger<HTMLController> logger, ModulrConfig config) : base(logger, config)
         {
             
         }

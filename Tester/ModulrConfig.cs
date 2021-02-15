@@ -2,6 +2,8 @@
 using System.Runtime.InteropServices;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
+
 // ReSharper disable UnusedAutoPropertyAccessor.Local
 
 namespace Modulr.Tester
@@ -22,8 +24,12 @@ namespace Modulr.Tester
 
         [JsonProperty] public string GoogleClientKey { get; private set; }
         [JsonProperty] public string GoogleSecret { get; private set; }
+        // ReSharper disable twice InconsistentNaming
+        [JsonProperty] public string reCAPCHASiteKey { get; private set; }
+        [JsonProperty] public string reCAPCHASecretKey { get; private set; }
         [JsonProperty] public string HostedDomain { get; private set; }
         [JsonProperty] public int TimeoutAttempts { get; private set; }
+        [JsonIgnore] public JObject RawData { get; }
 
         [JsonIgnore] private readonly ILogger<ModulrConfig> _logger;
 
@@ -31,6 +37,7 @@ namespace Modulr.Tester
         {
             var json = File.ReadAllText(file);
             JsonConvert.PopulateObject(json, this);
+            RawData = JObject.Parse(json);
             File.WriteAllText(file, JsonConvert.SerializeObject(this, Formatting.Indented));
             _logger = logger;
             if (verify)

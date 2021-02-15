@@ -13,7 +13,7 @@ namespace Modulr.Controllers
     {
         private readonly MySqlQuery _query;
         
-        public AdminController(ILogger<HTMLController> logger, MySqlQuery query) : base(logger)
+        public AdminController(ILogger<HTMLController> logger, MySqlQuery query, ModulrConfig config) : base(logger, config)
         {
             _query = query;
         }

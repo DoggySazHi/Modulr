@@ -16,7 +16,7 @@ async function onInitGoogle() {
 }
 
 async function waitForGoogle() {
-    if(typeof gapi.signin2 !== "undefined")
+    if(typeof gapi !== "undefined")
         await googleInit();
     else
         setTimeout(waitForGoogle, 250);

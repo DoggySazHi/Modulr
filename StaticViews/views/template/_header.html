@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="icon" href="/img/modulr.svg">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Code+Pro">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro">
@@ -53,12 +54,12 @@
     <div class="blocker-message hidden">
         <div class="blocker-header">
             <span id="blocker-header">Mukyu~</span>
-            <span class="blocker-close" onclick="disablePopup()">✖</span>
+            <span class="blocker-close" modulr-trigger="disablePopup">✖</span>
         </div>
         <hr>
         <span id="blocker-message"></span>
         <div class="blocker-buttons">
-            <button class="normal" onclick="disablePopup()">Cancel</button>
+            <button class="normal" modulr-trigger="disablePopup">Cancel</button>
             <button class="danger">Delete</button>
         </div>
     </div>

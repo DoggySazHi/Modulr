@@ -9,8 +9,9 @@ function onInit() {
     fixFooter();
     console.info("Initialized main script!");
     readError();
+    fixPopup();
     if (!checkForCookieSupport())
-        triggerPopup("Mukyu~", "Cookies need to be enabled for login to work!")
+        triggerPopup("Mukyu~", "Cookies need to be enabled for login to work!");
 }
 
 function fixNavbar() {
@@ -21,6 +22,13 @@ function fixNavbar() {
 function fixFooter() {
     let height = document.getElementsByTagName("footer")[0].offsetHeight;
     document.getElementsByClassName("footer-padding")[0].style.height = height + "px";
+}
+
+function fixPopup() {
+    document.querySelectorAll('[modulr-trigger="disablePopup"]').forEach(o => o.addEventListener("click", (e) => {
+        e.preventDefault();
+        disablePopup();
+    }));
 }
 
 function registerCollapsibles() {
@@ -46,6 +54,7 @@ function getUrl(urlLink, params) {
 
 function triggerPopup(header, message) {
     let blocker = document.getElementsByClassName("blocker")[0];
+    blocker.style.height = document.body.scrollHeight + "px"
     document.getElementById("blocker-header").innerHTML = header;
     document.getElementById("blocker-message").innerHTML = message;
     blocker.getElementsByClassName("blocker-buttons")[0].classList.add("hidden");

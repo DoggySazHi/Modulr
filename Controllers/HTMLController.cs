@@ -6,6 +6,7 @@ using HtmlAgilityPack;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.StaticFiles;
 using Microsoft.Extensions.Logging;
+using Modulr.Tester;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
@@ -14,11 +15,13 @@ namespace Modulr.Controllers
     public abstract class HTMLController : ControllerBase
     {
         private readonly ILogger<HTMLController> _logger;
+        private readonly ModulrConfig _config;
         protected readonly Dictionary<string, string> Router = new();
 
-        protected HTMLController(ILogger<HTMLController> logger)
+        protected HTMLController(ILogger<HTMLController> logger, ModulrConfig config)
         {
             _logger = logger;
+            _config = config;
         }
 
         protected abstract void SetupRouter();
@@ -76,7 +79,9 @@ namespace Modulr.Controllers
             return !provider.TryGetContentType(file, out var contentType) ? "application/octet-stream" : contentType;
         }
         
-        private enum TemplateCode { Fail, Include, Title }
+        private enum TemplateCode { Fail, Include, Title,
+            Config
+        }
 
         private async Task<string> Templater(string file)
         {
@@ -125,6 +130,9 @@ namespace Modulr.Controllers
                 var title = obj["title"]?.ToString();
                 if (title != null)
                     return (TemplateCode.Title, title);
+                var config = obj["config"]?.ToString();
+                if (config != null)
+                    return (TemplateCode.Config, _config.RawData[config]?.ToString());
                 throw new JsonException("Could not understand command!");
             }
             catch (JsonException e)

@@ -271,6 +271,8 @@ async function submit() {
 
     data.append('AuthToken', getLoginToken());
     data.append('ConnectionID', "no");
+    if (currentTest == null)
+        currentTest = 0;
     data.append('TestID', JSON.stringify(currentTest));
     let fileInputs = document.querySelectorAll("input[type='file']");
     for (let input of fileInputs) {
@@ -309,7 +311,7 @@ async function submit() {
 
 async function updateStipulatable(message) {
     try {
-        let response = fetch("/Admin/Tester/Update", {
+        let response = await fetch("/Admin/Tester/Update", {
             method: "PUT",
             headers: {
                 'Content-Type': 'application/json'
