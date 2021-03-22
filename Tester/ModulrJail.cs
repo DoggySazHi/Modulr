@@ -18,6 +18,11 @@ namespace Modulr.Tester
         private static bool _selfInit;
         private static bool _isEnterprise;
         
+        /**
+         * This can be risky if auto-downloaded; we might add an option to disable auto-updates.
+         */
+        private static readonly string DOWNLOAD_PATH = "https://github.com/DoggySazHi/Modulr.Stipulator/releases/latest/download/Modulr.Stipulator.jar";
+
         public ModulrJail(string sourceFolder, string connectionID = null, params string[] files)
         {
             if (!_selfInit)
@@ -119,6 +124,11 @@ namespace Modulr.Tester
             
             imageProcess.Start();
             imageProcess.WaitForExit();
+        }
+
+        private static void DownloadModulrStipulator()
+        {
+            
         }
 
         private static void ToLF(string file)

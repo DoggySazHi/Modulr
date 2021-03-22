@@ -2,6 +2,7 @@
   "JDKPath": "/path/to/jdk/home",
   "UseDocker": false,
   "DockerPath": "/usr/bin/docker",
+  "AutoUpdateDockerImage": true,
   "SaveLocation": "TestingInput",
   "SourceLocation": "TestingSource",
   "MySqlServer": "127.0.0.1",

@@ -29,7 +29,7 @@ if(!$success) {
 echo "$randomkey ========== BEGIN TEST =========="
 
 Get-ChildItem . -recurse -include *.java | remove-item
-& java --% -Djava.security.manager -Djava.security.policy=security.policy -Xmx64M -cp *;. org.junit.platform.console.ConsoleLauncher --disable-banner --include-engine=junit-jupiter --scan-class-path --details=tree --details-theme=ascii --disable-ansi-colors --fail-if-no-tests
+& java --% -Xmx64M -cp *;. com.williamle.modulr.stipulator.Startup --log-level INFO --use-to-string TRUE --allow-rw FALSE --real-time
 
 echo "$randomkey ========== END TEST =========="
 exit 0
