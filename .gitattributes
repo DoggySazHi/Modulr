@@ -1,2 +1,3 @@
 ﻿* linguist-vendored
 *.cs linguist-vendored=false
+StaticViews/js/signalr* -linguist-detectable

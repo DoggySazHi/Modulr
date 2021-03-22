@@ -2,6 +2,7 @@
 using System.Collections.Concurrent;
 using System.Diagnostics;
 using System.IO;
+using System.Net;
 using System.Text;
 using Modulr.Hubs.Workers;
 
@@ -21,7 +22,7 @@ namespace Modulr.Tester
         /**
          * This can be risky if auto-downloaded; we might add an option to disable auto-updates.
          */
-        private static readonly string DOWNLOAD_PATH = "https://github.com/DoggySazHi/Modulr.Stipulator/releases/latest/download/Modulr.Stipulator.jar";
+        private static readonly string MODULR_STIPULATOR_GITHUB = "https://github.com/DoggySazHi/Modulr.Stipulator/releases/latest/download/Modulr.Stipulator.jar";
 
         public ModulrJail(string sourceFolder, string connectionID = null, params string[] files)
         {
@@ -108,6 +109,8 @@ namespace Modulr.Tester
                 ToLF("Docker/CompileAndTest.sh");
                 ToLF("Docker/Dockerfile");
             }
+            
+            DownloadModulrStipulator();
 
             var imageProcess = new Process
             {
@@ -128,7 +131,8 @@ namespace Modulr.Tester
 
         private static void DownloadModulrStipulator()
         {
-            
+            using var client = new WebClient();
+            client.DownloadFile(MODULR_STIPULATOR_GITHUB, "Docker/Modulr.Stipulator.jar");
         }
 
         private static void ToLF(string file)

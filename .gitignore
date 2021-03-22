@@ -6,6 +6,7 @@ riderModule.iml
 config.json
 Docker/*.java
 Docker/*.class
+Docker/*.jar
 TestingInput
 TestingSource
 sqldialects.xml

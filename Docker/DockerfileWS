@@ -1,5 +1,5 @@
 FROM openjdk:14-windowsservercore
-COPY junit-platform-console-standalone-1.6.2.jar /src/
+COPY Modulr.Stipulator.jar /src/
 COPY CompileAndTest.sh /src/
 COPY CompileAndTest.ps1 /src/
 COPY security.policy /src/
