@@ -18,6 +18,8 @@ let testsRemaining = 0;
 let currentTest = 0;
 let websocketBuffer = [];
 
+let lastAnimatedBox = -1;
+
 function onInitTester() {
     bindButtons();
     bindUploads();
@@ -51,6 +53,8 @@ function initWebsocket(connection) {
         return;
     }
     connection.on("ReceiveUpdate", (data) => {
+        if (data == null)
+            return;
         websocketBuffer.push(data);
         displayOutput(websocketBuffer.join('\n'));
     });
@@ -60,6 +64,7 @@ function initWebsocket(connection) {
 async function submit() {
     let data = new FormData();
     websocketBuffer = [];
+    lastAnimatedBox = -1;
 
     let fileInputs = document.querySelectorAll("input[type='file']");
     for (let input of fileInputs) {
@@ -91,7 +96,11 @@ async function submit() {
             handleErrors(response.status, null);
         } else {
             let data = await response.text();
-            displayOutput(data);
+            if (!websocketBuffer.join('\n').includes(data)) {
+                displayOutput(data);
+            }
+            // Enable the animation for the last box.
+            document.getElementById("result").lastChild.style.transition = "";
         }
     }
     catch (e) {
@@ -132,16 +141,22 @@ function displayOutput(data) {
             content = document.createElement("div");
             content.className = "collapse-content";
 
-            if (i >= processed.length - 2)
+            if (i >= processed.length - 2) {
                 button.classList.toggle("active");
+            }
 
             output.appendChild(button);
             output.appendChild(content);
         }
 
         content.innerHTML += item;
-        if (button.classList.contains("active"))
+        if (button.classList.contains("active")) {
+            if (lastAnimatedBox < i)
+                lastAnimatedBox = i;
+            else
+                content.style.transition = "none";
             content.style.maxHeight = content.scrollHeight + "px";
+        }
     }
 
     registerCollapsibles();
