@@ -1,6 +1,6 @@
 ﻿"use strict";
 
-export { triggerPopup, triggerPopupButtons, disablePopup, registerCollapsibles, getUrl }
+export { triggerPopup, triggerPopupButtons, disablePopup, registerCollapsibles, getUrl, handleErrors }
 
 onInit();
 
@@ -16,7 +16,8 @@ function onInit() {
 
 function fixNavbar() {
     let height = document.getElementsByTagName("nav")[0].offsetHeight;
-    document.getElementsByClassName("nav-padding")[0].style.height = height + "px";
+    // Sometimes on reload, the browser reports wrong values (cached).
+    document.getElementsByClassName("nav-padding")[0].style.height = Math.max(height, 70) + "px";
 }
 
 function fixFooter() {
@@ -54,7 +55,7 @@ function getUrl(urlLink, params) {
 
 function triggerPopup(header, message) {
     let blocker = document.getElementsByClassName("blocker")[0];
-    blocker.style.height = document.body.scrollHeight + "px"
+    blocker.style.height = null; // Hm.
     document.getElementById("blocker-header").innerHTML = header;
     document.getElementById("blocker-message").innerHTML = message;
     blocker.getElementsByClassName("blocker-buttons")[0].classList.add("hidden");
@@ -103,4 +104,24 @@ function checkForCookieSupport() {
     let ret = document.cookie.indexOf("cookietest=") !== -1;
     document.cookie = "cookietest=1; expires=Thu, 01-Jan-1970 00:00:01 GMT";
     return ret;
+}
+
+function handleErrors(statusCode, error) {
+    switch (statusCode) {
+        case 403:
+            error = "Login credentials failed, try logging out and logging back in!";
+            break;
+        case 404:
+            error = "Could not locate test, please try another one!";
+            break;
+        case 500:
+        case 502:
+        case 504:
+            error = "The server decided that it wanted to die. Ask William about what the heck you did to kill it.";
+            break;
+    }
+    if (error != null) {
+        console.error("We had an error... ", error);
+        triggerPopup("Mukyu~", error);
+    }
 }

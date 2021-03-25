@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Concurrent;
 using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Net;
 using System.Text;
@@ -10,7 +11,7 @@ namespace Modulr.Tester
 {
     public class ModulrJail : IDisposable
     {
-        private readonly BlockingCollection<string> _logQueue = new();
+        private readonly BlockingCollection<string> _logQueue;
         private readonly Process _process;
         private string _connectionID;
         
@@ -28,8 +29,9 @@ namespace Modulr.Tester
         {
             if (!_selfInit)
                 Initialize();
-            _selfInit = true;
 
+            _logQueue = new BlockingCollection<string>();
+            
             var args = $"run --rm -v \"{Path.Join(Path.GetFullPath(sourceFolder), "\\source").ToLower().Replace("\\", "" + Path.DirectorySeparatorChar)}:/src/files\" modulrjail {string.Join(' ', files)}";
             if (_isEnterprise)
                 args =
@@ -79,8 +81,12 @@ namespace Modulr.Tester
             }
         }
 
-        private static void Initialize()
+        [SuppressMessage("ReSharper", "AccessToModifiedClosure")]
+        [SuppressMessage("ReSharper", "AccessToDisposedClosure")]
+        public static string Initialize()
         {
+            var logQueue = new BlockingCollection<string>();
+
             var versionProcess = new Process
             {
                 StartInfo = new ProcessStartInfo
@@ -93,15 +99,26 @@ namespace Modulr.Tester
                     WorkingDirectory = "Docker"
                 }
             };
-
+            
+            versionProcess.OutputDataReceived += (_, info) => logQueue.Add(info.Data);
+            versionProcess.ErrorDataReceived += (_, info) => logQueue.Add(info.Data);
+            
             versionProcess.Start();
-            var output = versionProcess.StandardOutput.ReadToEnd();
+            versionProcess.BeginOutputReadLine();
+            versionProcess.BeginErrorReadLine();
+            versionProcess.WaitForExit();
+
+            var output = GetAllOutput(logQueue);
+            logQueue.Dispose();
+            logQueue = new BlockingCollection<string>();
+            
             if (output.Contains("Enterprise"))
                 _isEnterprise = true;
-            versionProcess.WaitForExit();
-            
-            if (!Directory.Exists("Docker"))
-                return;
+
+            if (!Directory.Exists("Docker")) {
+                logQueue.Add("No Docker folder found; cannot rebuild!");
+                return GetAllOutput(logQueue);
+            }
 
             var dockerFile = _isEnterprise ? "DockerfileWS" : "Dockerfile";
             if (!_isEnterprise)
@@ -125,8 +142,21 @@ namespace Modulr.Tester
                 }
             };
             
+            imageProcess.OutputDataReceived += (_, info) => logQueue.Add(info.Data);
+            imageProcess.ErrorDataReceived += (_, info) => logQueue.Add(info.Data);
+            
             imageProcess.Start();
+            imageProcess.BeginOutputReadLine();
+            imageProcess.BeginErrorReadLine();
             imageProcess.WaitForExit();
+            
+            _selfInit = true;
+            var output2 = GetAllOutput(logQueue);
+            logQueue.Dispose();
+            versionProcess.Dispose();
+            imageProcess.Dispose();
+            
+            return output + "\n" + output2;
         }
 
         private static void DownloadModulrStipulator()
@@ -144,11 +174,11 @@ namespace Modulr.Tester
             File.Move($"{file}.lf", file);
         }
 
-        public string GetAllOutput()
+        private static string GetAllOutput(BlockingCollection<string> logQueue)
         {
             var output = new StringBuilder();
-            _logQueue.CompleteAdding();
-            foreach (var line in _logQueue.GetConsumingEnumerable())
+            logQueue.CompleteAdding();
+            foreach (var line in logQueue.GetConsumingEnumerable())
             {
                 if (line == null)
                     continue;
@@ -158,6 +188,8 @@ namespace Modulr.Tester
             
             return output.ToString();
         }
+
+        public string GetAllOutput() => GetAllOutput(_logQueue);
 
         public void Wait() => _process.WaitForExit();
 

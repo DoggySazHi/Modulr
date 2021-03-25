@@ -1,7 +1,7 @@
 ﻿"use strict";
 
 import {getLoginToken, onGoogleReady} from "/js/google.js";
-import {triggerPopup, triggerPopupButtons} from "/js/main.js";
+import {triggerPopup, triggerPopupButtons, handleErrors} from "/js/main.js";
 
 onInitAdmin();
 
@@ -531,23 +531,4 @@ function addBlankStipulatable() {
     document.getElementById("manager").classList.remove("hidden");
     document.getElementById("submit").disabled = false;
     document.getElementById("delete").disabled = false;
-}
-
-function handleErrors(statusCode, error) {
-    switch (statusCode) {
-        case 403:
-            error = "Login credentials failed, try logging out and logging back in!";
-            break;
-        case 404:
-            error = "Could not locate test, please try another one!";
-            break;
-        case 500:
-        case 502:
-            error = "The server decided that it wanted to die. Ask William about what the heck you did to kill it.";
-            break;
-    }
-    if (error != null) {
-        console.error("We had an error... ", error);
-        triggerPopup("Mukyu~", error);
-    }
 }

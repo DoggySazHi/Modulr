@@ -7,7 +7,7 @@
  */
 
 import {getLoginToken, onGoogleReady} from "./google.js";
-import {registerCollapsibles, triggerPopup} from "./main.js";
+import {registerCollapsibles, triggerPopup, handleErrors} from "./main.js";
 import {onSocketReady, connectionId} from "./websocket.js";
 
 onInitTester();
@@ -302,23 +302,4 @@ function updateAttemptsVisual() {
         document.getElementById("attempts").innerHTML = "";
     else
         document.getElementById("attempts").innerHTML = "Attempts Left: " + testsRemaining;
-}
-
-function handleErrors(statusCode, error) {
-    switch (statusCode) {
-        case 403:
-            error = "Login credentials failed, try logging out and logging back in!";
-            break;
-        case 404:
-            error = "Could not locate test, please try another one!";
-            break;
-        case 500:
-        case 502:
-            error = "The server decided that it wanted to die. Ask William about what the heck you did to kill it.";
-            break;
-    }
-    if (error != null) {
-        console.error("We had an error... ", error);
-        triggerPopup("Mukyu~", error);
-    }
 }

@@ -24,6 +24,7 @@ namespace Modulr.Controllers
             
             Router.Add("", "RestrictedViews/views/admin.html");
             Router.Add("home", "RestrictedViews/views/admin.html");
+            Router.Add("system", "RestrictedViews/views/settings.html");
             
             AddFolderToRouter("error", "StaticViews/views/error");
             AddFolderToRouter("", "RestrictedViews/views");

@@ -179,6 +179,7 @@ header {
     max-width:100%;
     margin: 0;
     padding: 0;
+    overflow: hidden;
 }
 
 .blocker-off {
@@ -349,6 +350,12 @@ footer a {
 
 .row.center, .column.center {
     align-items: center;
+}
+
+.scroll-view {
+    height: 60vh;
+    overflow-x: hidden;
+    overflow-y: scroll;
 }
 
 /* Collapsing stuff */

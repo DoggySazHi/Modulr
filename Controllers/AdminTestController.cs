@@ -137,6 +137,12 @@ namespace Modulr.Controllers
                 return "WARNING: No files were found, nothing was uploaded!";
             if (!input.IsLikelyValid())
                 return Fail(400, ">:[ not nice");
+            
+            if(!await this.IsAdmin(_query))
+            {
+                Response.StatusCode = 403;
+                return null;
+            }
 
             var auth = await _auth.Verify(input.AuthToken);
             if (auth.Status != GoogleAuth.LoginStatus.Success)
