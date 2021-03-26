@@ -26,11 +26,28 @@
         </div>
         <div class="column">
             <h3>User Settings</h3>
-            <form id="manager2" class="hidden" onsubmit="return false;">
-                <div class="form-control">
-                    <div id="usermod" class="list">
-
+            <form id="manager2" onsubmit="return false;">
+                <div id="usermod" class="form-control hidden">
+                    <span class="topic">Basic Info</span>
+                    <div>Username: <span id="usernameMod"></span></div>
+                    <div>Username: <span id="emailMod"></span></div>
+                    <div class="list"><label>Name: <input type="text" id="name"></label></div>
+                    <div>Modulr ID: <span id="modulrID"></span></div>
+                    <div>Google ID: <span id="googleID"></span></div>
+                    <hr/>
+                    <span class="topic">Reset Timer</span>
+                    <div>Remaining tests: <span id="remainingTestsMod"></span></div>
+                    <div>Time until reset: <span id="timeLeftMod"></span></div>
+                    <div>Last reset time: <span id="resetTimeMod"></span></div>
+                    <button id="resetTimeout" class="normal">Reset Test Timeout</button>
+                    <hr/>
+                    <div class="list">
+                        <span class="topic">Roles</span>
+                        <label>Admin: <input type="checkbox" id="admin"></label>
+                        <label>Banned: <input type="checkbox" id="banned"></label>
                     </div>
+                    <hr/>
+                    <button id="update" class="normal">Update</button>
                 </div>
             </form>
         </div>

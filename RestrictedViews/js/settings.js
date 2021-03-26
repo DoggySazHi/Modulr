@@ -4,6 +4,7 @@ import {getLoginToken, onGoogleReady} from "/js/google.js";
 import {triggerPopup, triggerPopupButtons, handleErrors} from "/js/main.js";
 
 let allUsers = [];
+let currentUser = -1;
 
 await onInitSettings();
 
@@ -21,6 +22,14 @@ function bindButtons() {
     document.getElementById("shutdown").addEventListener("click", async (e) => {
         e.preventDefault();
         await shutdownWarning();
+    }, false);
+    document.getElementById("resetTimeout").addEventListener("click", async (e) => {
+        e.preventDefault();
+        await resetTimeout();
+    }, false);
+    document.getElementById("update").addEventListener("click", async (e) => {
+        e.preventDefault();
+        await updateUserInfo();
     }, false);
 }
 
@@ -107,9 +116,12 @@ async function populateUsers() {
 }
 
 function addUsersToList() {
-    console.log(allUsers);
     let list = document.getElementById("users");
-    console.log(list);
+    let manager = document.getElementById("manager");
+    
+    manager.classList.add("hidden");
+    list.innerHTML = "";
+    
     for(let user of allUsers) {
         let userBtn = document.createElement("button");
         userBtn.className = "default form-control";
@@ -120,14 +132,119 @@ function addUsersToList() {
         })
         list.appendChild(userBtn);
     }
-    document.getElementById("manager").classList.remove("hidden");
+    
+    manager.classList.remove("hidden");
 }
 
 function loadUserInfo(id) {
+    id = parseInt(id);
+    
     let output = document.getElementById("usermod");
+    let record = allUsers.find((o) => o.id === id);
+    if (record === undefined || record == null) {
+        failUserNotFound(id);
+        return;
+    }
+    currentUser = id;
+    
     output.classList.add("hidden");
     
-    document.createElement("")
+    document.getElementById("usernameMod").innerHTML = record.username;
+    document.getElementById("emailMod").innerHTML = record.email;
+    document.getElementById("modulrID").innerHTML = record.id;
+    document.getElementById("googleID").innerHTML = record.googleID;
+    document.getElementById("name").value = record.name;
+    document.getElementById("remainingTestsMod").innerHTML = record.testsRemaining;
+    let resetDate = new Date(record.testsTimeout);
+    let diff = (resetDate - new Date()) / 1000;
+    if (diff <= 0)
+        diff = 0;
+    let hours = Math.floor(diff / 60 / 60);
+    let minutes = Math.floor(diff / 60) - hours * 60;
+    let seconds = Math.round(diff) - minutes * 60 - hours * 60 * 60;
     
+    document.getElementById("timeLeftMod").innerHTML = hours + ":" + ("" + minutes).padStart(2, "0") + ":" + ("" + seconds).padStart(2, "0");
+    document.getElementById("resetTimeMod").innerHTML = resetDate.toLocaleString();
+
+    document.getElementById("admin").checked = (record.role & 1) === 1;
+    document.getElementById("banned").checked = (record.role & 2) === 2;
+
     output.classList.remove("hidden");
+}
+
+async function resetTimeout() {
+    try {
+        let record = allUsers.find((o) => o.id === currentUser);
+        if (record === undefined || record == null) {
+            failUserNotFound(currentUser);
+            return;
+        }
+        let response = await fetch("/Admin/System/ResetUserTimeout", {
+            method: "POST",
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                "AuthToken": getLoginToken(),
+                "id": currentUser,
+                "googleID": record.googleID,
+                "email": record.email,
+                "username": record.username,
+                "name": document.getElementById("name").value,
+                "role": (document.getElementById("admin").checked ? 1 : 0) +
+                    (document.getElementById("banned").checked ? 2 : 0)
+            })
+        });
+        if (response.status >= 400 && response.status < 600)
+            handleErrors(response.status, null);
+        triggerPopup("Updated " + record.name + "!", "Modulr has reset " + record.name + "'s test counter.");
+        triggerPopupButtons(null);
+        await populateUsers();
+        await loadUserInfo(currentUser);
+    }
+    catch (e) {
+        handleErrors(0, e);
+    }
+}
+
+async function updateUserInfo() {
+    try {
+        let record = allUsers.find((o) => o.id === currentUser);
+        if (record === undefined || record == null) {
+            failUserNotFound(currentUser);
+            return;
+        }
+        let response = await fetch("/Admin/System/UpdateUser", {
+            method: "POST",
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                "AuthToken": getLoginToken(),
+                "id": currentUser,
+                "googleID": record.googleID,
+                "email": record.email,
+                "username": record.username,
+                "name": document.getElementById("name").value,
+                "role": (document.getElementById("admin").checked ? 1 : 0) +
+                    (document.getElementById("banned").checked ? 2 : 0)
+            })
+        });
+        if (response.status >= 400 && response.status < 600)
+            handleErrors(response.status, null);
+        triggerPopup("Updated " + record.name + "!", "Modulr has updated the user's information.");
+        triggerPopupButtons(null);
+        await populateUsers();
+        await loadUserInfo(currentUser);
+    }
+    catch (e) {
+        handleErrors(0, e);
+    }
+}
+
+function failUserNotFound(id) {
+    let error = "Cannot find user with ID " + id + "; refresh?";
+    console.error(error);
+    triggerPopup("Mukyu~", error);
+    triggerPopupButtons(null);
 }

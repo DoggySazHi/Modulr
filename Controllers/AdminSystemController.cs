@@ -82,5 +82,41 @@ namespace Modulr.Controllers
 
             return await _query.GetAllUsers();
         }
+        
+        [HttpPost("UpdateUser")]
+        public async Task UpdateUser([FromBody] UpdateUser user)
+        {
+            if(!await this.IsAdmin(_query))
+            {
+                Response.StatusCode = 403;
+                return;
+            }
+
+            if ((await _auth.Verify(user.AuthToken)).Status != GoogleAuth.LoginStatus.Success)
+            {
+                Response.StatusCode = 403;
+                return;
+            }
+
+            await _query.UpdateUser(user);
+        }
+        
+        [HttpPost("ResetUserTimeout")]
+        public async Task ResetUserTimeout([FromBody] UpdateUser user)
+        {
+            if(!await this.IsAdmin(_query))
+            {
+                Response.StatusCode = 403;
+                return;
+            }
+
+            if ((await _auth.Verify(user.AuthToken)).Status != GoogleAuth.LoginStatus.Success)
+            {
+                Response.StatusCode = 403;
+                return;
+            }
+
+            await _query.ResetTimeOut(user.ID);
+        }
     }
 }

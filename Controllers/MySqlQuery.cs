@@ -72,19 +72,17 @@ namespace Modulr.Controllers
         public async Task Register(string googleID, string name, string email, string username = null)
         {
             username ??= name;
-            var attempts = _config.TimeoutAttempts <= 0 ? -1 : _config.TimeoutAttempts;
             const string commandUserInsert =
                 "INSERT INTO Modulr.Users (google_id, name, username, email) VALUES (@GoogleID, @Name, @Username, @Email)";
             const string commandUserUpdate =
-                "UPDATE Modulr.Users SET name = @Name, username = @Username, email = @Email WHERE google_id = @GoogleID";
-            var commandUpdate = $"UPDATE Modulr.Users SET tests_remaining = {attempts} WHERE tests_timeout < CURRENT_TIMESTAMP()";
+                "UPDATE Modulr.Users SET username = @Username, email = @Email WHERE google_id = @GoogleID";
             if(!await UserExists(googleID))
                 await Connection.ExecuteAsync(commandUserInsert,
                     new {GoogleID = googleID, Name = name, Username = username, Email = email});
             else
                 await Connection.ExecuteAsync(commandUserUpdate,
                     new {GoogleID = googleID, Name = name, Username = username, Email = email});
-            await Connection.ExecuteAsync(commandUpdate);
+            await ResetTestsRemaining();
         }
 
         public async Task<bool> UserExists(string googleID)
@@ -103,6 +101,20 @@ namespace Modulr.Controllers
             if (results != null)
                 results.Milliseconds = (long) (results.TestsTimeout - DateTimeOffset.Now).TotalMilliseconds;
             return results;
+        }
+
+        private async Task ResetTestsRemaining()
+        {
+            var attempts = _config.TimeoutAttempts <= 0 ? -1 : _config.TimeoutAttempts;
+            var commandUpdate = $"UPDATE Modulr.Users SET tests_remaining = {attempts} WHERE tests_timeout < CURRENT_TIMESTAMP()";
+            await Connection.ExecuteAsync(commandUpdate);
+        }
+        
+        public async Task ResetTimeOut(int id)
+        {
+            const string command = "UPDATE Modulr.Users SET tests_timeout = CURRENT_TIMESTAMP() WHERE id = @ID";
+            await Connection.QuerySingleOrDefaultAsync<UserTimeout>(command, new {ID = id});
+            await ResetTestsRemaining();
         }
         
         public async Task<List<Stipulatable>> GetAllTests()
@@ -136,6 +148,12 @@ namespace Modulr.Controllers
         {
             const string command = "SELECT * FROM Modulr.Users;";
             return await Connection.QueryAsync<User>(command);
+        }
+
+        public async Task UpdateUser(User u)
+        {
+            const string command = "UPDATE Modulr.Users SET `name` = @Name, `role` = @Role WHERE id = @ID";
+            await Connection.ExecuteAsync(command, new {u.Name, Role = (int) u.Role, u.ID});
         }
     }
 }
