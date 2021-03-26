@@ -355,9 +355,9 @@ footer a {
 }
 
 .scroll-view {
-    height: 60vh;
+    height: 70vh;
     overflow-x: hidden;
-    overflow-y: scroll;
+    overflow-y: auto;
 }
 
 /* Collapsing stuff */

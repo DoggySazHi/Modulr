@@ -131,5 +131,11 @@ namespace Modulr.Controllers
             const string command = "SELECT role FROM Modulr.Users WHERE google_id = @GoogleID";
             return await Connection.QuerySingleOrDefaultAsync<Role>(command, new { GoogleID = googleID } );
         }
+        
+        public async Task<IEnumerable<User>> GetAllUsers()
+        {
+            const string command = "SELECT * FROM Modulr.Users;";
+            return await Connection.QueryAsync<User>(command);
+        }
     }
 }

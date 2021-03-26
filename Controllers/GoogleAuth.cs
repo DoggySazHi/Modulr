@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Threading.Tasks;
 using Google.Apis.Auth;
+using Modulr.Models;
 using Modulr.Tester;
 
 namespace Modulr.Controllers
@@ -24,6 +25,7 @@ namespace Modulr.Controllers
             BadIssuer,
             ExpiredToken,
             BadDomain,
+            Banned,
             Success
         }
         
@@ -53,7 +55,13 @@ namespace Modulr.Controllers
                 return (LoginStatus.ExpiredToken, null);
             if (!string.IsNullOrEmpty(_config.HostedDomain) && validation.HostedDomain != _config.HostedDomain)
                 return (LoginStatus.BadDomain, null);
+            
             await _query.Register(validation.Subject, validation.Name, validation.Email);
+            
+            var banStatus = await _query.GetRole(validation.Subject);
+            if (banStatus.HasFlag(Role.Banned))
+                return (LoginStatus.Banned, null);
+            
             return (LoginStatus.Success, validation);
         }
     }

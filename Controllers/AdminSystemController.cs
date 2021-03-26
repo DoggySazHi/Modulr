@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Hosting;
@@ -59,9 +60,27 @@ namespace Modulr.Controllers
 
             _ = Task.Run(async () =>
             {
-                await Task.Delay(5000);
+                await Task.Delay(1000);
                 _app.StopApplication();
             });
+        }
+        
+        [HttpPost("GetAllUsers")]
+        public async Task<IEnumerable<User>> GetAllUsers([FromBody] BasicAuth login)
+        {
+            if(!await this.IsAdmin(_query))
+            {
+                Response.StatusCode = 403;
+                return null;
+            }
+
+            if ((await _auth.Verify(login.AuthToken)).Status != GoogleAuth.LoginStatus.Success)
+            {
+                Response.StatusCode = 403;
+                return null;
+            }
+
+            return await _query.GetAllUsers();
         }
     }
 }

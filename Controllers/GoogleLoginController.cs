@@ -28,9 +28,11 @@ namespace Modulr.Controllers
             return result.Status switch
             {
                 GoogleAuth.LoginStatus.BadAudience => LoginResult(403, "Invalid audience!"),
-                GoogleAuth.LoginStatus.BadIssuer => LoginResult(403, "Invalid issuer!"),
-                GoogleAuth.LoginStatus.ExpiredToken => LoginResult(403, "Token is expired!"),
                 GoogleAuth.LoginStatus.BadDomain => LoginResult(403, "Invalid GSuite domain!"),
+                GoogleAuth.LoginStatus.BadIssuer => LoginResult(403, "Invalid issuer!"),
+                GoogleAuth.LoginStatus.Banned => LoginResult(403, "Account has been banned!"),
+                GoogleAuth.LoginStatus.ExpiredToken => LoginResult(403, "Token is expired!"),
+                GoogleAuth.LoginStatus.Invalid => LoginResult(400, "Invalid token!"),
                 GoogleAuth.LoginStatus.Success => LoginResult(200),
                 _ => LoginResult(400, "Invalid data!")
             };

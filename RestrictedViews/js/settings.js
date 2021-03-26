@@ -3,10 +3,13 @@
 import {getLoginToken, onGoogleReady} from "/js/google.js";
 import {triggerPopup, triggerPopupButtons, handleErrors} from "/js/main.js";
 
-onInitSettings();
+let allUsers = [];
 
-function onInitSettings() {
+await onInitSettings();
+
+async function onInitSettings() {
     bindButtons();
+    onGoogleReady.push(populateUsers);
     console.info("Initialized settings script!");
 }
 
@@ -78,4 +81,53 @@ async function shutdown() {
     catch (e) {
         handleErrors(0, e);
     }
+}
+
+async function populateUsers() {
+    try {
+        let response = await fetch("/Admin/System/GetAllUsers", {
+            method: "POST",
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                "AuthToken": getLoginToken()
+            })
+        });
+        if (response.status >= 400 && response.status < 600)
+            handleErrors(response.status, null);
+        else {
+            allUsers = await response.json();
+            addUsersToList();
+        }
+    }
+    catch (e) {
+        handleErrors(0, e);
+    }
+}
+
+function addUsersToList() {
+    console.log(allUsers);
+    let list = document.getElementById("users");
+    console.log(list);
+    for(let user of allUsers) {
+        let userBtn = document.createElement("button");
+        userBtn.className = "default form-control";
+        userBtn.innerHTML = user.name;
+        userBtn.name = user.id;
+        userBtn.addEventListener("click", async (e) => {
+            loadUserInfo(e.target.name);
+        })
+        list.appendChild(userBtn);
+    }
+    document.getElementById("manager").classList.remove("hidden");
+}
+
+function loadUserInfo(id) {
+    let output = document.getElementById("usermod");
+    output.classList.add("hidden");
+    
+    document.createElement("")
+    
+    output.classList.remove("hidden");
 }

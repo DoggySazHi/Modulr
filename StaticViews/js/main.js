@@ -17,7 +17,7 @@ function onInit() {
 function fixNavbar() {
     let height = document.getElementsByTagName("nav")[0].offsetHeight;
     // Sometimes on reload, the browser reports wrong values (cached).
-    document.getElementsByClassName("nav-padding")[0].style.height = Math.max(height, 70) + "px";
+    document.getElementsByClassName("nav-padding")[0].style.height = Math.min(height, 70) + "px";
 }
 
 function fixFooter() {
