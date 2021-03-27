@@ -7,8 +7,7 @@ export { onLoginEvent, onGoogleReady, getLoginToken };
 let onLoginEvent = [];
 let onGoogleReady = [];
 
-// noinspection JSIgnoredPromiseFromCall
-onInitGoogle();
+await onInitGoogle();
 
 async function onInitGoogle() {
     console.log("Waiting for Google...");
@@ -62,7 +61,7 @@ async function onSignIn(user)
     if (!message.success) {
         triggerPopup("Mukyu~", "The server didn't let us login.\nMessage: " + message.error);
         console.error("Server didn't like our Google login!\n" + message.error);
-        await signOut();
+        await signOut(false);
     } else {
         document.getElementById("username").innerHTML = "Hello " + user.getBasicProfile().getName() + "!";
         createSignOut();
@@ -83,21 +82,23 @@ function createSignOut() {
     let signOutButton = document.createElement("button");
     signOutButton.className = "button-compact danger";
     signOutButton.innerHTML = "Log Out";
-    signOutButton.addEventListener("click", signOut);
+    signOutButton.addEventListener("click", async (e) => {
+        e.preventDefault();
+        await signOut(true);
+    });
     button.appendChild(signOutButton);
 }
 
-async function signOut() {
+async function signOut(redirect) {
     let google = gapi.auth2.getAuthInstance();
-    await fetch(getUrl("/Users/LogOut", {})).then(() => {
-        google.signOut().then(function () {
-            console.info('Logged out!');
-            renderLogin();
-            window.location.replace(getUrl("/", {}));
-        });
-    })
+    await fetch(getUrl("/Users/LogOut", {}));
+    await google.signOut();
+    console.info('Logged out!');
+    if (redirect)
+        window.location.replace(getUrl("/", {}));
     document.getElementById("googleSignIn").innerHTML = "";
     document.getElementById("username").innerHTML = "";
+    await renderLogin();
 }
 
 function getLoginToken() {
