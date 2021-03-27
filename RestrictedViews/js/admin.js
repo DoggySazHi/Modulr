@@ -435,12 +435,21 @@ function addTester() {
     let input = document.createElement("input");
     input.type = "file";
     input.addEventListener("change", (e) => {
+        if ([...document.getElementById("required").children]
+            .map(o => o.getElementsByTagName("input")[0].value)
+            .find(o => o === e.target.files[0].name) !== undefined) {
+            triggerPopup("Mukyu~", "You cannot attach a file for something required from the user!");
+            e.target.parentNode.className = "input danger";
+            e.target.value = null;
+            return;
+        }
         if (e.target.value === "")
             e.target.parentNode.className = "input normal";
         else {
             e.target.parentNode.className = "input success";
             labelName.value = e.target.files[0].name;
         }
+        
     }, false);
 
     let dragChar = document.createElement("span");
