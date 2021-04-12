@@ -170,7 +170,7 @@ namespace Modulr.Controllers
                     output.AppendLine($"WARNING: {fileName} existed already, made a copy at {backupPath}.");
                 }
 
-                if (test.RequiredFiles.Contains(fileName))
+                if (test != null && test.RequiredFiles.Contains(fileName))
                     output.AppendLine(
                         $"WARNING: {fileName} is a required file; it will not be copied during stipulation!");
                 await using var stream = new FileStream(outputPath, FileMode.Create);

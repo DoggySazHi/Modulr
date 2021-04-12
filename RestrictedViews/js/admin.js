@@ -263,10 +263,30 @@ async function getTestAdmin(num) {
 }
 
 async function submit() {
-    let message = ["Now uploading files, if any..."];
+    let message = ["Now updating stipulatable information..."];
     triggerPopup("Updating...", message.join('\n'));
     document.getElementById("submit").disabled = true;
 
+    try {
+        message.push("---\n");
+        if (currentTest > 0)
+            await updateStipulatable(message);
+        else
+            await addStipulatable(message);
+        message.push("---\nNow uploading files, if any...");
+        triggerPopup("Updating...", message.join('\n'));
+        await uploadFiles(message);
+        triggerPopup("Finished updating!", message.join('\n'));
+        await getAllTestsAdmin();
+        await getTestAdmin(currentTest);
+    } catch (e) {
+        document.getElementById("submit").disabled = false;
+        message.push(e);
+        handleErrors(0, message.join('\n'))
+    }
+}
+
+async function uploadFiles(message) {
     let data = new FormData();
 
     data.append('AuthToken', getLoginToken());
@@ -283,29 +303,16 @@ async function submit() {
         data.append('IsTester', JSON.stringify(false));
     }
 
-    try {
-        let response = await fetch("/Admin/Tester/Upload", {
-            method: "POST",
-            body: data
-        });
-        if (response.status >= 400 && response.status < 600)
-            handleErrors(response.status, null)
-        else {
-            let data = await response.text();
-            let text = data.toString();
-            message.push("---\n");
-            message.push(text);
-            message.push("---\nNow updating stipulatable information...");
-            triggerPopup("Updating...", message.join('\n'));
-            if (currentTest > 0)
-                await updateStipulatable(message);
-            else
-                await addStipulatable(message);
-        }
-    } catch (e) {
-        document.getElementById("submit").disabled = false;
-        message.push(e);
-        handleErrors(0, message.join('\n'))
+    let response = await fetch("/Admin/Tester/Upload", {
+        method: "POST",
+        body: data
+    });
+    if (response.status >= 400 && response.status < 600)
+        handleErrors(response.status, null)
+    else {
+        let data = await response.text();
+        let text = data.toString();
+        message.push(text);
     }
 }
 
@@ -334,9 +341,6 @@ async function updateStipulatable(message) {
                 message.push("Server failed to find a record; was it deleted?");
             else
                 message.push("Successfully updated the stipulatable's information!\nDone!");
-            triggerPopup("Finished updating!", message.join('\n'));
-            await getAllTestsAdmin();
-            await getTestAdmin(currentTest);
         }
     }
     catch (e) {
@@ -370,9 +374,6 @@ async function addStipulatable(message) {
                 message.push("Successfully added the stipulatable (id " + data + ")!\nDone!");
             currentTest = data;
             triggerPopup("Finished updating!", message.join('\n'));
-            await getAllTestsAdmin();
-            if (currentTest > 0)
-                await getTestAdmin(currentTest);
         }
     }
     catch (e) {
