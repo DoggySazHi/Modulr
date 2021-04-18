@@ -1,0 +1,3 @@
+﻿.not-ready div:not(:first-child){
+    display: none;
+}

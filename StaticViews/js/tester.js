@@ -281,6 +281,7 @@ function generateInputs(names) {
         inputArea.appendChild(label);
     }
     document.getElementById("submit").disabled = false;
+    document.querySelectorAll(".row .column")[1].classList.remove("not-ready");
 }
 
 function generateList(tests) {

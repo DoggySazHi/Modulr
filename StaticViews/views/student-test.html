@@ -1,4 +1,7 @@
 ﻿{{"include": "StaticViews/views/template/_header.html"}}
+
+<link rel="stylesheet" href="/css/tester.css">
+
 {{"title": "Student Tester ~ Modulr"}}
 
 <div class="container">
@@ -13,9 +16,12 @@
                 </div>
             </form>
         </div>
-        <div class="column">
+        <div class="column not-ready">
             <div class="row center">
-                <h3>Upload Panel</h3>
+                <h3>Test Information</h3>
+            </div>
+            <div class="row center">
+                <h4>Upload Panel</h4>
                 <span id="loading-icon" class="hidden">
                     <span class="row center">
                         <img src="gohei.svg" alt="Modulr Loading" class="flip-animation nav-logo"/>
@@ -23,12 +29,14 @@
                     </span>
                 </span>
             </div>
-            <form onsubmit="return false;">
-                <div id="fileInputs" class="form-control"></div>
-
-                <button id="submit" class="default form-control" disabled>Submit!</button>
-                <div id="result" class="output"></div>
-            </form>
+            <div>
+                <form onsubmit="return false;">
+                    <div id="fileInputs" class="form-control"></div>
+    
+                    <button id="submit" class="default form-control" disabled>Submit!</button>
+                    <div id="result" class="output"></div>
+                </form>
+            </div>
         </div>
     </div>
 </div>

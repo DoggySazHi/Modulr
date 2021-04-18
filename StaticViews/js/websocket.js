@@ -1,5 +1,7 @@
 ﻿"use strict";
 
+import { triggerPopup, disablePopup } from "/js/main.js";
+
 export {connection, connectionId, onSocketReady}
 
 let connection;
@@ -28,8 +30,12 @@ async function connect() {
         .withAutomaticReconnect()
         .configureLogging(signalR.LogLevel.Information)
         .build();
-    await connection.start();
     try {
+        connection.onclose(e => {
+            triggerPopup("WebSocket failed!", "Lost connection to the Koumakan...\nWe're reconnecting, but try refreshing.\nError: " + e);
+        });
+        await connection.start();
+        console.log(connection);
         connectionId = connection.connectionId;
         console.log(`Connected to the Koumakan! Your connection ID is ${connectionId}. Have a nice day.`);
         for (let f of onSocketReady)
