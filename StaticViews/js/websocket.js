@@ -32,7 +32,7 @@ async function connect() {
         .build();
     try {
         connection.onclose(e => {
-            triggerPopup("WebSocket failed!", "Lost connection to the Koumakan...\nWe're reconnecting, but try refreshing.\nError: " + e);
+            triggerPopup("WebSocket failed!", "Lost connection to the Koumakan...\nWe've already tried reconnecting, so you'll need to refresh the page if you need live updates.\nError: " + (e === undefined ? "Unknown..." : e));
         });
         await connection.start();
         console.log(connection);
