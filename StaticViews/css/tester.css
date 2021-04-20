@@ -1,3 +1,8 @@
 ﻿.not-ready div:not(:first-child){
     display: none;
 }
+
+a.input {
+    text-decoration: none;
+    color: white;
+}
