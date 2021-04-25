@@ -11,6 +11,9 @@ using Newtonsoft.Json;
 
 namespace Modulr.Controllers
 {
+    /// <summary>
+    /// A class that manages database connections to the Modulr backend.
+    /// </summary>
     public class MySqlQuery : IDisposable
     {
         public MySqlConnection Connection { get; }
@@ -34,18 +37,50 @@ namespace Modulr.Controllers
             DefaultTypeMap.MatchNamesWithUnderscores = true;
         }
         
+        /// <summary>
+        /// Get a test from the database using the ID of the test, asynchronously.
+        /// </summary>
+        /// <param name="id">The ID of the test.</param>
+        /// <returns>An async task containing the <code>Stipulatable</code>.</returns>
         public async Task<Stipulatable> GetTest(int id)
         {
             const string command = "SELECT * FROM Modulr.Stipulatables WHERE id = @ID";
             var results = (await Connection.QueryAsync(command, new {ID = id})).FirstOrDefault();
             if (results == null)
                 return null;
+            var description = results.description;
             var testers = JsonConvert.DeserializeObject<IEnumerable<string>>(results.testers);
             var required = JsonConvert.DeserializeObject<IEnumerable<string>>(results.required);
-            return new Stipulatable(results.id, results.name, testers, required);
+            var included = JsonConvert.DeserializeObject<IEnumerable<string>>(results.provided);
+
+            return new Stipulatable(results.id, results.name, testers, required, description, included);
         }
 
+        /// <summary>
+        /// Add a test to the database with the following parameters.
+        /// </summary>
+        /// <param name="name">The name of the test.</param>
+        /// <param name="testers">The order of compilation, as well as files that should be included.</param>
+        /// <param name="required">Files that are requested from the user on the interface.</param>
+        /// <returns>An integer, representing the ID of the <code>Stipulatable</code>.</returns>
         public async Task<int> AddTest(string name, IEnumerable<string> testers, IEnumerable<string> required)
+        {
+            const string command = "INSERT INTO Modulr.Stipulatables (`name`, testers, required) VALUES (@Name, @Testers, @Required); SELECT LAST_INSERT_ID();";
+            var results = await Connection.QuerySingleOrDefaultAsync<int>(command,
+                new {Name = name, Testers = JsonConvert.SerializeObject(testers), Required = JsonConvert.SerializeObject(required)});
+            return results;
+        }
+
+        /// <summary>
+        /// Add a test to the database with the following parameters.
+        /// </summary>
+        /// <param name="name">The name of the test.</param>
+        /// <param name="testers">The order of compilation, as well as files that should be included.</param>
+        /// <param name="required">Files that are requested from the user on the interface.</param>
+        /// <param name="description">A short description of what the test is about.</param>
+        /// <param name="included">Files that are displayed for the user to download.</param>
+        /// <returns>An integer, representing the ID of the <code>Stipulatable</code>.</returns>
+        public async Task<int> AddTest(string name, IEnumerable<string> testers, IEnumerable<string> required, string description, IEnumerable<string> included)
         {
             const string command = "INSERT INTO Modulr.Stipulatables (`name`, testers, required) VALUES (@Name, @Testers, @Required); SELECT LAST_INSERT_ID();";
             var results = await Connection.QuerySingleOrDefaultAsync<int>(command,

@@ -20,9 +20,9 @@ namespace Modulr.Tester
         private static bool _selfInit;
         private static bool _isEnterprise;
         
-        /**
-         * This can be risky if auto-downloaded; we might add an option to disable auto-updates.
-         */
+        /// <summary>
+        /// This can be risky if auto-downloaded; we might add an option to disable auto-updates.
+        /// </summary>
         private static readonly string MODULR_STIPULATOR_GITHUB = "https://github.com/DoggySazHi/Modulr.Stipulator/releases/latest/download/Modulr.Stipulator.jar";
 
         public ModulrJail(string sourceFolder, string connectionID = null, params string[] files)
