@@ -25,6 +25,11 @@ namespace Modulr.Controllers
             _config = config;
         }
 
+        /// <summary>
+        /// Get information about a test.
+        /// </summary>
+        /// <param name="item">A POST request, consisting of an authentication token and test ID.</param>
+        /// <returns>Data about the test requested.</returns>
         [HttpPost("GetTest")]
         public async Task<Stipulatable> GetTest([FromBody] TestQuery item)
         {
@@ -40,6 +45,11 @@ namespace Modulr.Controllers
             return null;
         }
         
+        /// <summary>
+        /// Get all tests that are available for the user.
+        /// </summary>
+        /// <param name="login">A POST request, consisting of an authentication token.</param>
+        /// <returns>A list of tests available.</returns>
         [HttpPost("GetAllTests")]
         public async Task<IEnumerable<Stipulatable>> GetAllTests([FromBody] TestQuery login)
         {
@@ -55,6 +65,11 @@ namespace Modulr.Controllers
             return null;
         }
         
+        /// <summary>
+        /// Triggers when a user uploads their files.
+        /// </summary>
+        /// <param name="input">Data from a web form, consisting of the Test ID, files, websocket, and authentication token.</param>
+        /// <returns>A string, representing the tester output.</returns>
         [HttpPost("Upload")]
         [RequestSizeLimit(8388608)] // 8 MiB
         public async Task<string> FileUpload([FromForm] TesterFiles input)
