@@ -58,6 +58,7 @@ namespace Modulr.Tester
 
         private void VerifyConfig()
         {
+            bool dockerFound = false;
             var isWindows = RuntimeInformation.IsOSPlatform(OSPlatform.Windows);
             if (UseDocker && (DockerPath == null || !File.Exists(DockerPath)))
             {
@@ -66,10 +67,17 @@ namespace Modulr.Tester
                     if (File.Exists(path))
                     {
                         DockerPath = path;
+                        dockerFound = true;
+                        _logger.LogInformation($"Found Docker install at {DockerPath}");
                         break;
                     }
             }
-            _logger.LogInformation($"Found Docker install at {DockerPath}");
+
+            if (!dockerFound)
+            {
+                _logger.LogWarning("Docker executable not found! Falling back to local jails.");
+                UseDocker = false;
+            }
         }
     }
 }

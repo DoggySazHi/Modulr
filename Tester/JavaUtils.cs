@@ -31,7 +31,7 @@ namespace Modulr.Tester
             // Mainly because it's created within Modulr.
             // Probably requires to be relative as well.
             
-            var jail = new ModulrJail(sourceFolder, connectionID, files);
+            var jail = ModulrJail.Build(sourceFolder, connectionID, files);
             jail.Wait();
             var output = jail.GetAllOutput();
             jail.Dispose();
