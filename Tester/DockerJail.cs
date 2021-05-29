@@ -3,15 +3,12 @@ using System.Collections.Concurrent;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.IO;
-using System.Net;
 using System.Text;
-using Modulr.Hubs.Workers;
 
 namespace Modulr.Tester
 {
     public class DockerJail : ModulrJail
     {
-        private readonly BlockingCollection<string> _logQueue;
         private readonly Process _process;
         
         private static bool _selfInit;
@@ -21,8 +18,6 @@ namespace Modulr.Tester
         {
             if (!_selfInit)
                 Initialize();
-
-            _logQueue = new BlockingCollection<string>();
             
             var args = $"run --rm -v \"{Path.Join(Path.GetFullPath(sourceFolder), "\\source").ToLower().Replace("\\", "" + Path.DirectorySeparatorChar)}:/src/files\" modulrjail {string.Join(' ', files)}";
             if (_isEnterprise)
@@ -44,12 +39,12 @@ namespace Modulr.Tester
 
             _process.OutputDataReceived += (_, info) =>
             {
-                _logQueue.Add(info.Data);
+                LogQueue.Add(info.Data);
                 SendUpdate(info.Data);
             };
             _process.ErrorDataReceived += (_, info) =>
             {
-                _logQueue.Add(info.Data);
+                LogQueue.Add(info.Data);
                 SendUpdate(info.Data);
             };
 
@@ -58,22 +53,9 @@ namespace Modulr.Tester
             _process.BeginErrorReadLine();
         }
 
-        private void SendUpdate(string data)
-        {
-            if (ConnectionID == null) return;
-            try
-            {
-                WebSocket.SendUpdate(ConnectionID, data).ContinueWithoutAwait(_ => ConnectionID = null);
-            }
-            catch (Exception)
-            {
-                ConnectionID = null;
-            }
-        }
-
         [SuppressMessage("ReSharper", "AccessToModifiedClosure")]
         [SuppressMessage("ReSharper", "AccessToDisposedClosure")]
-        public override string Initialize()
+        public sealed override string Initialize()
         {
             var logQueue = new BlockingCollection<string>();
 
@@ -149,28 +131,11 @@ namespace Modulr.Tester
             return output + "\n" + output2;
         }
 
-        private static string GetAllOutput(BlockingCollection<string> logQueue)
-        {
-            var output = new StringBuilder();
-            logQueue.CompleteAdding();
-            foreach (var line in logQueue.GetConsumingEnumerable())
-            {
-                if (line == null)
-                    continue;
-                output.Append(line);
-                output.Append('\n');
-            }
-            
-            return output.ToString();
-        }
-
-        public override string GetAllOutput() => GetAllOutput(_logQueue);
-
         public override void Wait() => _process.WaitForExit();
 
         public override void Dispose()
         {
-            _logQueue?.Dispose();
+            LogQueue?.Dispose();
             _process?.Dispose();
             GC.SuppressFinalize(this);
         }

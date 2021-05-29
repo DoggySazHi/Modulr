@@ -31,6 +31,8 @@ namespace Modulr.Tester
         [JsonProperty] public string HostedDomain { get; private set; }
         [JsonProperty] public int TimeoutAttempts { get; private set; }
         [JsonIgnore] public JObject RawData { get; }
+        
+        [JsonIgnore] public bool IsWindows { get; private set; }
 
         [JsonIgnore] private readonly ILogger<ModulrConfig> _logger;
 
@@ -55,14 +57,33 @@ namespace Modulr.Tester
             @"/usr/bin/docker", 
             @"/usr/local/bin/docker"
         };
+        
+        private readonly string[] _javaWinPath = {
+            @"C:\Program Files\Docker\Docker\resources\docker.exe",
+            @"C:\Program Files\Docker\docker.exe",
+            @"C:\Program Files\Docker\Docker\resources\bin\com.docker.cli.exe"
+        };
+        
+        private readonly string[] _javaLinPath = {
+            @"/usr/lib/jvm/java-11-openjdk-amd64", 
+            @"/usr/local/bin/docker"
+        };
 
         private void VerifyConfig()
         {
-            bool dockerFound = false;
-            var isWindows = RuntimeInformation.IsOSPlatform(OSPlatform.Windows);
+            CheckDocker();
+        }
+
+        private void CheckDocker()
+        {
+            IsWindows = RuntimeInformation.IsOSPlatform(OSPlatform.Windows);
             if (UseDocker && (DockerPath == null || !File.Exists(DockerPath)))
             {
-                var dockerInstalls = isWindows ? _dockerWinPath : _dockerLinPath;
+                _logger.LogWarning($"Docker executable not set or found from config! Current value: {DockerPath}\n" +
+                                   "Searching for a valid executable...");
+                var dockerFound = false;
+                
+                var dockerInstalls = IsWindows ? _dockerWinPath : _dockerLinPath;
                 foreach (var path in dockerInstalls)
                     if (File.Exists(path))
                     {
@@ -71,12 +92,39 @@ namespace Modulr.Tester
                         _logger.LogInformation($"Found Docker install at {DockerPath}");
                         break;
                     }
+                
+                if (!dockerFound)
+                {
+                    _logger.LogWarning("Docker executable not found! Falling back to local jails.");
+                    UseDocker = false;
+                }
             }
+        }
 
-            if (!dockerFound)
+        private void CheckJava()
+        {
+            IsWindows = RuntimeInformation.IsOSPlatform(OSPlatform.Windows);
+            if (!UseDocker && (JDKPath == null || !Directory.Exists(JDKPath)))
             {
-                _logger.LogWarning("Docker executable not found! Falling back to local jails.");
-                UseDocker = false;
+                _logger.LogWarning($"JDK home not set or found from config! Current value: {JDKPath}\n" +
+                                   "Searching for a valid Java home...");
+                var dockerFound = false;
+                
+                var dockerInstalls = IsWindows ? _dockerWinPath : _dockerLinPath;
+                foreach (var path in dockerInstalls)
+                    if (File.Exists(path))
+                    {
+                        DockerPath = path;
+                        dockerFound = true;
+                        _logger.LogInformation($"Found Java install at {JDKPath}");
+                        break;
+                    }
+                
+                if (!dockerFound)
+                {
+                    _logger.LogCritical("Java home not found! Modulr will probably not function properly.");
+                    UseDocker = false;
+                }
             }
         }
     }
