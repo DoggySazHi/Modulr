@@ -1,5 +1,9 @@
-﻿using System.IO;
+﻿using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
 using System.Runtime.InteropServices;
+using System.Text.RegularExpressions;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
@@ -108,24 +112,75 @@ namespace Modulr.Tester
             {
                 _logger.LogWarning($"JDK home not set or found from config! Current value: {JDKPath}\n" +
                                    "Searching for a valid Java home...");
-                var dockerFound = false;
-                
-                var dockerInstalls = IsWindows ? _dockerWinPath : _dockerLinPath;
-                foreach (var path in dockerInstalls)
-                    if (File.Exists(path))
+
+                var javaHomes = new List<(string version, string dir)>();
+
+                if (!IsWindows)
+                {
+                    var directories = Directory.GetDirectories("/usr/lib/jvm");
+                    foreach (var home in directories)
                     {
-                        DockerPath = path;
-                        dockerFound = true;
-                        _logger.LogInformation($"Found Java install at {JDKPath}");
-                        break;
+                        var version = Regex.Match(home, @"(\d+)").Value;
+                        var bin = Path.Join(home, "bin");
+                        if (File.Exists(Path.Combine(bin, "java")) && File.Exists(Path.Combine(bin, "javac")))
+                            javaHomes.Add((version, home));
                     }
-                
-                if (!dockerFound)
+                }
+                else
+                {
+                    var directories = Directory.GetDirectories(@"C:\Program Files\Java");
+                    foreach (var home in directories)
+                    {
+                        var versionString = "";
+                        var subVersionString = "";
+
+                        foreach (Match match in Regex.Matches(home, @"([\d\.]+)"))
+                        {
+                            if (match.Value == string.Empty)
+                                continue;
+                            if (match.Value.Contains("."))
+                                versionString = match.Value;
+                            else
+                                subVersionString = match.Value;
+                        }
+                        
+                        var bin = Path.Join(home, "bin");
+                        if (File.Exists(Path.Combine(bin, "java")) && File.Exists(Path.Combine(bin, "javac")))
+                            javaHomes.Add((versionString + "." + subVersionString, home));
+                    }
+                }
+
+                if (javaHomes.Count > 0)
+                {
+                    JDKPath = javaHomes.Aggregate(
+                            (a, b) => CompareSemanticVersion(a.version, b.version) > 0 ? a : b)
+                        .dir;
+                    _logger.LogInformation($"Found JDK home at {JDKPath}");
+                }
+                else
                 {
                     _logger.LogCritical("Java home not found! Modulr will probably not function properly.");
-                    UseDocker = false;
                 }
             }
+        }
+
+        private int CompareSemanticVersion(string a, string b)
+        {
+            var verA = a.Split('.');
+            var verB = b.Split('.');
+
+            for (var i = 0; i < Math.Min(verA.Length, verB.Length); ++i)
+            {
+                var numATry = int.TryParse(verA[i], out var numA);
+                var numBTry = int.TryParse(verA[i], out var numB);
+                if (!numATry || !numBTry || numA == numB)
+                    continue;
+                if (numA < numB)
+                    return -1;
+                return 1;
+            }
+
+            return 0;
         }
     }
 }

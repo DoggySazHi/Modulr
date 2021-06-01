@@ -17,17 +17,17 @@ namespace Modulr.Tester
         public static ModulrConfig Config { private protected get; set; }
         public static TestWorker WebSocket { private protected get; set; }
         
-        private protected readonly BlockingCollection<string> LogQueue;
-        private protected string ConnectionID;
+        private readonly BlockingCollection<string> _logQueue;
+        private string _connectionID;
 
         private ModulrJail()
         {
-            LogQueue = new BlockingCollection<string>();
+            _logQueue = new BlockingCollection<string>();
         }
         
         private protected ModulrJail(string sourceFolder, string connectionID = null, params string[] files) : this()
         {
-            ConnectionID = connectionID;
+            _connectionID = connectionID;
         }
 
         public static ModulrJail Build(string sourceFolder, string connectionID = null, params string[] files)
@@ -49,8 +49,12 @@ namespace Modulr.Tester
         /// Block execution until the jail has finished running.
         /// </summary>
         public abstract void Wait();
-        
-        public abstract void Dispose();
+
+        public virtual void Dispose()
+        {
+            _logQueue?.Dispose();
+            GC.SuppressFinalize(this);
+        }
 
         /// <summary>
         /// Download the jar file which emulates JUnit.
@@ -84,14 +88,15 @@ namespace Modulr.Tester
         /// <param name="data">The new data to be pushed.</param>
         private protected void SendUpdate(string data)
         {
-            if (ConnectionID == null) return;
+            if (_connectionID == null) return;
+            _logQueue.Add(data);
             try
             {
-                WebSocket.SendUpdate(ConnectionID, data).ContinueWithoutAwait(_ => ConnectionID = null);
+                WebSocket.SendUpdate(_connectionID, data).ContinueWithoutAwait(_ => _connectionID = null);
             }
             catch (Exception)
             {
-                ConnectionID = null;
+                _connectionID = null;
             }
         }
         
@@ -110,6 +115,6 @@ namespace Modulr.Tester
             return output.ToString();
         }
 
-        public virtual string GetAllOutput() => GetAllOutput(LogQueue);
+        public virtual string GetAllOutput() => GetAllOutput(_logQueue);
     }
 }

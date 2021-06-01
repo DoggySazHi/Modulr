@@ -39,12 +39,10 @@ namespace Modulr.Tester
 
             _process.OutputDataReceived += (_, info) =>
             {
-                LogQueue.Add(info.Data);
                 SendUpdate(info.Data);
             };
             _process.ErrorDataReceived += (_, info) =>
             {
-                LogQueue.Add(info.Data);
                 SendUpdate(info.Data);
             };
 
@@ -135,7 +133,6 @@ namespace Modulr.Tester
 
         public override void Dispose()
         {
-            LogQueue?.Dispose();
             _process?.Dispose();
             GC.SuppressFinalize(this);
         }
