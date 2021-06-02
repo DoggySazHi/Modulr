@@ -61,21 +61,11 @@ namespace Modulr.Tester
             @"/usr/bin/docker", 
             @"/usr/local/bin/docker"
         };
-        
-        private readonly string[] _javaWinPath = {
-            @"C:\Program Files\Docker\Docker\resources\docker.exe",
-            @"C:\Program Files\Docker\docker.exe",
-            @"C:\Program Files\Docker\Docker\resources\bin\com.docker.cli.exe"
-        };
-        
-        private readonly string[] _javaLinPath = {
-            @"/usr/lib/jvm/java-11-openjdk-amd64", 
-            @"/usr/local/bin/docker"
-        };
 
         private void VerifyConfig()
         {
             CheckDocker();
+            CheckJava();
         }
 
         private void CheckDocker()
@@ -164,7 +154,7 @@ namespace Modulr.Tester
             }
         }
 
-        private int CompareSemanticVersion(string a, string b)
+        private static int CompareSemanticVersion(string a, string b)
         {
             var verA = a.Split('.');
             var verB = b.Split('.');
@@ -173,11 +163,14 @@ namespace Modulr.Tester
             {
                 var numATry = int.TryParse(verA[i], out var numA);
                 var numBTry = int.TryParse(verA[i], out var numB);
-                if (!numATry || !numBTry || numA == numB)
-                    continue;
+                if (!numATry)
+                    numA = 0;
+                if (!numBTry)
+                    numB = 0;
                 if (numA < numB)
                     return -1;
-                return 1;
+                if (numA > numB)
+                    return 1;
             }
 
             return 0;

@@ -20,13 +20,15 @@ namespace Modulr.Tester
         private readonly BlockingCollection<string> _logQueue;
         private string _connectionID;
 
-        private ModulrJail()
+        private protected ModulrJail()
         {
             _logQueue = new BlockingCollection<string>();
         }
         
         private protected ModulrJail(string sourceFolder, string connectionID = null, params string[] files) : this()
         {
+            _ = sourceFolder;
+            _ = files;
             _connectionID = connectionID;
         }
 
@@ -40,11 +42,16 @@ namespace Modulr.Tester
         /**
          * Override this method to initialize.
          */
-        public virtual string Initialize()
+        private protected virtual string InternalInit()
         {
             return "This jail does not override the static initialization method.";
         }
-        
+
+        public static string Initialize()
+        {
+            return Config.UseDocker ? new DockerJail().InternalInit() : new LocalJail().InternalInit();
+        }
+
         /// <summary>
         /// Block execution until the jail has finished running.
         /// </summary>

@@ -3,7 +3,6 @@ using System.Collections.Concurrent;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.IO;
-using System.Text;
 
 namespace Modulr.Tester
 {
@@ -13,11 +12,13 @@ namespace Modulr.Tester
         
         private static bool _selfInit;
         private static bool _isEnterprise;
+
+        public DockerJail() {}
         
         public DockerJail(string sourceFolder, string connectionID = null, params string[] files) : base(sourceFolder, connectionID, files)
         {
             if (!_selfInit)
-                Initialize();
+                InternalInit();
             
             var args = $"run --rm -v \"{Path.Join(Path.GetFullPath(sourceFolder), "\\source").ToLower().Replace("\\", "" + Path.DirectorySeparatorChar)}:/src/files\" modulrjail {string.Join(' ', files)}";
             if (_isEnterprise)
@@ -53,7 +54,7 @@ namespace Modulr.Tester
 
         [SuppressMessage("ReSharper", "AccessToModifiedClosure")]
         [SuppressMessage("ReSharper", "AccessToDisposedClosure")]
-        public sealed override string Initialize()
+        private protected sealed override string InternalInit()
         {
             var logQueue = new BlockingCollection<string>();
 

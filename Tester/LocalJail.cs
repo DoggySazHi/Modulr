@@ -7,36 +7,67 @@ namespace Modulr.Tester
 {
     public class LocalJail : ModulrJail
     {
-        private readonly string START_COMPILE = " ========== BEGIN COMPILING $var ==========";
-        private readonly string FAIL_COMPILE = "!! ======= FAILED COMPILATION!!! ======= !!";
-        private readonly string END_COMPILE = " ========== END COMPILING $var ==========";
-        private readonly string START_TEST = " ========== BEGIN TEST ==========";
-        private readonly string FAIL_TEST = " ========== FAILED COMPILATION - NO TEST ==========";
-        private readonly string END_TEST = "d ========== END TEST ==========";
+        private const string StartCompile = "{0} ========== BEGIN COMPILING {1} ==========";
+        private const string FailCompile = "!! ======= FAILED COMPILATION!!! ======= !!";
+        private const string EndCompile = "{0} ========== END COMPILING {1} ==========";
+        private const string StartTest = "{0} ========== BEGIN TEST ==========";
+        private const string FailTest = "{0} ========== FAILED COMPILATION - NO TEST ==========";
+        private const string EndTest = "{0} ========== END TEST ==========";
 
-        private readonly string JAVA_C_UNIX = "-cp *:. -Xlint:all -Xmaxwarns 100";
-        private readonly string JAVA_EXEC_UNIX =
-            "-Xmx64M -cp *:. com.williamle.modulr.stipulator.Startup --log-level INFO --use-to-string TRUE --allow-rw FALSE --real-time";
+        private const string JavaCUnix = "-cp *:. -Xlint:all -Xmaxwarns 100";
+        private const string JavaExecUnix = "-Xmx64M -cp *:. com.williamle.modulr.stipulator.Startup --log-level INFO --use-to-string TRUE --allow-rw FALSE --real-time";
 
-        private readonly string JAVA_C_WIN = "-cp *;. -Xlint:all -Xmaxwarns 100";
-        private readonly string JAVA_EXEC_WIN =
-            "-Xmx64M -cp *;. com.williamle.modulr.stipulator.Startup --log-level INFO --use-to-string TRUE --allow-rw FALSE --real-time";
+        private const string JavaCWin = "-cp *;. -Xlint:all -Xmaxwarns 100";
+        private const string JavaExecWin = "-Xmx64M -cp *;. com.williamle.modulr.stipulator.Startup --log-level INFO --use-to-string TRUE --allow-rw FALSE --real-time";
 
-        private Task _task;
+        private readonly Task _task;
         private Process _process;
-        private string _sourceFolder;
-        private string _findFolder;
+        private readonly string _sourceFolder;
+        private readonly string[] _files;
         private string _randomKey;
+        
+        public LocalJail() {}
 
         public LocalJail(string sourceFolder, string connectionID = null, params string[] files) : base(sourceFolder, connectionID, files)
         {
             _sourceFolder = sourceFolder;
-            _task = Task.Run(Main);
+            _files = files;
+            _task = Task.Run(async () => await Main());
         }
 
-        private void Main()
+        private async Task Main()
         {
             GenerateKey();
+
+            var src = Path.Join(_sourceFolder, "source");
+            foreach (var file in Directory.EnumerateFiles(src))
+                File.Move(file, Path.Combine(_sourceFolder, Path.GetFileName(file)));
+
+            var stipulator = Path.Combine(_sourceFolder, "Modulr.Stipulator.jar");
+            File.Copy("Docker/Modulr.Stipulator.jar", stipulator);
+            
+            var compile = true;
+            foreach (var file in _files)
+            {
+                if (!compile)
+                    break;
+                if (file.EndsWith(".java"))
+                    compile &= await Compile(file);
+            }
+            
+            foreach (var file in Directory.EnumerateFiles(_sourceFolder))
+                if (file.EndsWith(".java"))
+                    File.Delete(file);
+
+            if (!compile)
+            {
+                SendUpdate(string.Format(FailTest, _randomKey));
+                return;
+            }
+
+            await Run();
+            
+            File.Delete(stipulator);
         }
 
         private void GenerateKey()
@@ -53,19 +84,19 @@ namespace Modulr.Tester
 
         private async Task Run()
         {
-            SendUpdate(_randomKey + START_TEST);
+            SendUpdate(string.Format(StartTest, _randomKey));
             await Execute(Path.Combine(Path.Join(Config.JDKPath, "bin"), "java"),
-                $"{(Config.IsWindows ? JAVA_EXEC_WIN : JAVA_EXEC_UNIX)}");
-            SendUpdate(_randomKey + END_TEST);
+                $"{(Config.IsWindows ? JavaExecWin : JavaExecUnix)}");
+            SendUpdate(string.Format(EndTest, _randomKey));
         }
 
         private async Task<bool> Compile(string file)
         {
-            SendUpdate(_randomKey + START_COMPILE);
-            var pass = await Execute(Path.Combine(Path.Join(Config.JDKPath, "bin"), "javac"), $"{(Config.IsWindows ? JAVA_C_WIN : JAVA_C_UNIX)} {file}");
+            SendUpdate(string.Format(StartCompile, _randomKey, file));
+            var pass = await Execute(Path.Combine(Path.Join(Config.JDKPath, "bin"), "javac"), $"{(Config.IsWindows ? JavaCWin : JavaCUnix)} \"{file}\"");
             if (!pass)
-                SendUpdate(FAIL_COMPILE);
-            SendUpdate(_randomKey + END_COMPILE);
+                SendUpdate(FailCompile);
+            SendUpdate(string.Format(EndCompile, _randomKey, file));
             return pass;
         }
         
@@ -80,7 +111,7 @@ namespace Modulr.Tester
                     UseShellExecute = false,
                     RedirectStandardOutput = true,
                     RedirectStandardError = true,
-                    WorkingDirectory = _sourceFolder
+                    WorkingDirectory = Path.GetFullPath(_sourceFolder)
                 }
             };
 
@@ -111,6 +142,16 @@ namespace Modulr.Tester
             _task?.Dispose();
             _process?.Dispose();
             GC.SuppressFinalize(this);
+        }
+
+        private protected override string InternalInit()
+        {
+            if (Config.AutoUpdateDockerImage)
+                DownloadModulrStipulator();
+            if (File.Exists("Docker/Modulr.Stipulator.jar"))
+                return "Modulr.Stipulator jar available.";
+            return
+                "Modulr.Stipulator not available. Please enable AutoUpdateDockerImage or place Modulr.Stipulator.jar in the Docker folder.";
         }
     }
 }
