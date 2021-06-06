@@ -187,7 +187,7 @@ async function getTest(num) {
                 console.error("Could not find the required files from tester!");
                 return;
             }
-            generateInputs(data.requiredFiles);
+            generateInputs(data);
             bindUploads();
             currentTest = id;
         }
@@ -268,9 +268,15 @@ function clearInputs() {
     document.getElementById("submit").disabled = true;
 }
 
-function generateInputs(names) {
+function generateInputs(data) {
+    generateProvided(data.includedFiles);
+    generateUploads(data.requiredFiles);
+    document.querySelector(".test-info").innerHTML = data.description;
+}
+
+function generateUploads(uploads) {
     let inputArea = document.getElementById("fileInputs");
-    for (let file of names) {
+    for (let file of uploads) {
         let label = document.createElement("label");
         label.className = "input normal";
         let input = document.createElement("input");
@@ -282,6 +288,23 @@ function generateInputs(names) {
     }
     document.getElementById("submit").disabled = false;
     document.querySelectorAll(".row .column")[1].classList.remove("not-ready");
+}
+
+function generateProvided(provided) {
+    if (provided === undefined || provided == null)
+        return;
+    
+    let providedArea = document.querySelector("#provided");
+    providedArea.querySelector(".row h4").innerHTML = "Provided Files (" + provided.length + ")";
+    let providedList = providedArea.querySelector(".center");
+    providedList.innerHTML = "";
+    for (let file of provided) {
+        let link = document.createElement("a");
+        link.href = "javascript:alert('Download link for " + file + "')";
+        link.className = "input normal";
+        link.innerHTML = file;
+        providedList.appendChild(link);
+    }
 }
 
 function generateList(tests) {
