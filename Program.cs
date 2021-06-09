@@ -1,3 +1,4 @@
+using System;
 using System.IO;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Hosting;
@@ -20,7 +21,8 @@ namespace Modulr
                     var port = 5001;
                     if (File.Exists("config.json"))
                     {
-                        var configPortToken = JToken.Parse(File.ReadAllText("config.json"))["port"];
+                        var configPortToken = JObject.Parse(File.ReadAllText("config.json"))
+                            .GetValue("port", StringComparison.OrdinalIgnoreCase);
                         if (configPortToken != null)
                         {
                             var configPort = configPortToken.ToObject<int>();
