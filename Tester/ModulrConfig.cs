@@ -38,7 +38,7 @@ namespace Modulr.Tester
                     Password = SqlPassword,
                     Database = "Modulr"
                 };
-                return output.ToString();
+                return output.ConnectionString;
             }
         }
 
@@ -48,13 +48,14 @@ namespace Modulr.Tester
             {
                 var output = new SqlConnectionStringBuilder
                 {
+                    DataSource = $"{SqlServer},{SqlPort}",
                     IntegratedSecurity = true,
                     UserID = "modulr",
                     Password = SqlPassword,
                     InitialCatalog = "Modulr"
                 };
 
-                return output.ToString();
+                return output.ConnectionString;
             }
         }
 
