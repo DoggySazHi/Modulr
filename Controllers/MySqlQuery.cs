@@ -32,6 +32,11 @@ namespace Modulr.Controllers
             Dispose();
         }
 
+        static MySqlQuery()
+        {
+            DefaultTypeMap.MatchNamesWithUnderscores = true;
+        }
+
         public MySqlQuery(ModulrConfig config)
         {
             _config = config;
@@ -39,7 +44,6 @@ namespace Modulr.Controllers
                 Connection = new MySqlConnection(_config.MySqlConnection);
             else
                 Connection = new SqlConnection(_config.SqlConnection);
-            DefaultTypeMap.MatchNamesWithUnderscores = true;
         }
         
         /// <summary>
@@ -137,10 +141,10 @@ namespace Modulr.Controllers
             const string commandUserUpdateMySql =
                 "UPDATE Modulr.Users SET username = @Username, email = @Email WHERE google_id = @GoogleID";
             if(!await UserExists(googleID))
-                await Connection.ExecuteAsync(commandUserInsertMySql,
+                await Connection.ExecuteAsync(ConvertSql(commandUserInsertMySql),
                     new {GoogleID = googleID, Name = name, Username = username, Email = email});
             else
-                await Connection.ExecuteAsync(commandUserUpdateMySql,
+                await Connection.ExecuteAsync(ConvertSql(commandUserUpdateMySql),
                     new {GoogleID = googleID, Name = name, Username = username, Email = email});
             await ResetTestsRemaining();
         }
@@ -180,7 +184,7 @@ namespace Modulr.Controllers
         {
             var attempts = _config.TimeoutAttempts <= 0 ? -1 : _config.TimeoutAttempts;
             var commandUpdateMySql = $"UPDATE Modulr.Users SET tests_remaining = {attempts} WHERE tests_timeout < CURRENT_TIMESTAMP()";
-            await Connection.ExecuteAsync(commandUpdateMySql);
+            await Connection.ExecuteAsync(ConvertSql(commandUpdateMySql));
         }
         
         /// <summary>
@@ -265,8 +269,10 @@ namespace Modulr.Controllers
                 return commandMySql;
             return commandMySql
                 .Replace("Modulr", "Tester")
+                .Replace("ADDTIME(CURRENT_TIMESTAMP(), '00:30:00')", "DATEADD(MINUTE, 30, SYSDATETIMEOFFSET())")
                 .Replace("CURRENT_TIMESTAMP()", "SYSDATETIMEOFFSET()")
-                .Replace("LAST_INSERT_ID()", "SCOPE_IDENTITY()");
+                .Replace("LAST_INSERT_ID()", "SCOPE_IDENTITY()")
+                .Replace("`", "");
         }
     }
 }

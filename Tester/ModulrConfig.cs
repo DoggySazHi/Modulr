@@ -27,6 +27,7 @@ namespace Modulr.Tester
         [JsonProperty] public string SqlPassword { get; private set; }
         [JsonProperty] public bool UseMySql { get; private set; }
 
+        [JsonIgnore]
         public string MySqlConnection
         {
             get
@@ -42,6 +43,7 @@ namespace Modulr.Tester
             }
         }
 
+        [JsonIgnore]
         public string SqlConnection
         {
             get
@@ -54,7 +56,6 @@ namespace Modulr.Tester
                     Password = SqlPassword,
                     InitialCatalog = "Modulr"
                 };
-
                 return output.ConnectionString;
             }
         }

@@ -10,7 +10,7 @@ namespace Modulr.Models
         public string Username { get; set; }
         public string Email { get; set; }
         public int TestsRemaining { get; set; }
-        public DateTime TestsTimeout { get; set; }
+        public DateTimeOffset TestsTimeout { get; set; }
         public Role Role { get; set; }
     }
 }

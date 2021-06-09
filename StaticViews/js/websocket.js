@@ -35,7 +35,6 @@ async function connect() {
             triggerPopup("WebSocket failed!", "Lost connection to the Koumakan...\nWe've already tried reconnecting, so you'll need to refresh the page if you need live updates.\nError: " + (e === undefined ? "Unknown..." : e));
         });
         await connection.start();
-        console.log(connection);
         connectionId = connection.connectionId;
         console.log(`Connected to the Koumakan! Your connection ID is ${connectionId}. Have a nice day.`);
         for (let f of onSocketReady)
