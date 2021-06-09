@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Threading.Tasks;
 using Dapper;
@@ -16,13 +17,14 @@ namespace Modulr.Controllers
     /// </summary>
     public class MySqlQuery : IDisposable
     {
-        public MySqlConnection Connection { get; }
+        private IDbConnection Connection { get; }
         private readonly ModulrConfig _config;
 
         public void Dispose()
         {
             if(Connection.State != ConnectionState.Closed)
                 Connection.Close();
+            GC.SuppressFinalize(this);
         }
 
         ~MySqlQuery()
@@ -33,7 +35,10 @@ namespace Modulr.Controllers
         public MySqlQuery(ModulrConfig config)
         {
             _config = config;
-            Connection = new MySqlConnection(_config.MySqlConnection);
+            if (config.UseMySql)
+                Connection = new MySqlConnection(_config.MySqlConnection);
+            else
+                Connection = new SqlConnection(_config.SqlConnection);
             DefaultTypeMap.MatchNamesWithUnderscores = true;
         }
         
@@ -44,8 +49,8 @@ namespace Modulr.Controllers
         /// <returns>An async task containing the <code>Stipulatable</code>.</returns>
         public async Task<Stipulatable> GetTest(int id)
         {
-            const string command = "SELECT * FROM Modulr.Stipulatables WHERE id = @ID";
-            var results = (await Connection.QueryAsync(command, new {ID = id})).FirstOrDefault();
+            const string commandMySql = "SELECT * FROM Modulr.Stipulatables WHERE id = @ID";
+            var results = (await Connection.QueryAsync(ConvertSql(commandMySql), new {ID = id})).FirstOrDefault();
             if (results == null)
                 return null;
             var description = results.description;
@@ -65,8 +70,8 @@ namespace Modulr.Controllers
         /// <returns>An integer, representing the ID of the <code>Stipulatable</code>.</returns>
         public async Task<int> AddTest(string name, IEnumerable<string> testers, IEnumerable<string> required)
         {
-            const string command = "INSERT INTO Modulr.Stipulatables (`name`, testers, required) VALUES (@Name, @Testers, @Required); SELECT LAST_INSERT_ID();";
-            var results = await Connection.QuerySingleOrDefaultAsync<int>(command,
+            const string commandMySql = "INSERT INTO Modulr.Stipulatables (`name`, testers, required) VALUES (@Name, @Testers, @Required); SELECT LAST_INSERT_ID();";
+            var results = await Connection.QuerySingleOrDefaultAsync<int>(ConvertSql(commandMySql),
                 new {Name = name, Testers = JsonConvert.SerializeObject(testers), Required = JsonConvert.SerializeObject(required)});
             return results;
         }
@@ -82,8 +87,8 @@ namespace Modulr.Controllers
         /// <returns>An integer, representing the ID of the <code>Stipulatable</code>.</returns>
         public async Task<int> AddTest(string name, IEnumerable<string> testers, IEnumerable<string> required, string description, IEnumerable<string> included)
         {
-            const string command = "INSERT INTO Modulr.Stipulatables (`name`, testers, required) VALUES (@Name, @Testers, @Required); SELECT LAST_INSERT_ID();";
-            var results = await Connection.QuerySingleOrDefaultAsync<int>(command,
+            const string commandMySql = "INSERT INTO Modulr.Stipulatables (`name`, testers, required) VALUES (@Name, @Testers, @Required); SELECT LAST_INSERT_ID();";
+            var results = await Connection.QuerySingleOrDefaultAsync<int>(ConvertSql(commandMySql),
                 new {Name = name, Testers = JsonConvert.SerializeObject(testers), Required = JsonConvert.SerializeObject(required)});
             return results;
         }
@@ -98,8 +103,8 @@ namespace Modulr.Controllers
         /// <returns>Whether a test was updated or not.</returns>
         public async Task<bool> UpdateTest(int id, string name, IEnumerable<string> testers, IEnumerable<string> required)
         {
-            const string command = "UPDATE Modulr.Stipulatables SET `name` = @Name, testers = @Testers, required = @Required WHERE id = @ID";
-            return await Connection.ExecuteAsync(command,
+            const string commandMySql = "UPDATE Modulr.Stipulatables SET `name` = @Name, testers = @Testers, required = @Required WHERE id = @ID";
+            return await Connection.ExecuteAsync(ConvertSql(commandMySql),
                 new {Name = name,
                     Testers = JsonConvert.SerializeObject(testers),
                     Required = JsonConvert.SerializeObject(required),
@@ -113,8 +118,8 @@ namespace Modulr.Controllers
         /// <returns>Whether a deletion occurred or not.</returns>
         public async Task<bool> DeleteTest(int id)
         {
-            const string command = "DELETE FROM Modulr.Stipulatables WHERE id = @ID";
-            return await Connection.ExecuteAsync(command,new {ID = id}) != 0;
+            const string commandMySql = "DELETE FROM Modulr.Stipulatables WHERE id = @ID";
+            return await Connection.ExecuteAsync(ConvertSql(commandMySql),new {ID = id}) != 0;
         }
         
         /// <summary>
@@ -127,15 +132,15 @@ namespace Modulr.Controllers
         public async Task Register(string googleID, string name, string email, string username = null)
         {
             username ??= name;
-            const string commandUserInsert =
+            const string commandUserInsertMySql =
                 "INSERT INTO Modulr.Users (google_id, name, username, email) VALUES (@GoogleID, @Name, @Username, @Email)";
-            const string commandUserUpdate =
+            const string commandUserUpdateMySql =
                 "UPDATE Modulr.Users SET username = @Username, email = @Email WHERE google_id = @GoogleID";
             if(!await UserExists(googleID))
-                await Connection.ExecuteAsync(commandUserInsert,
+                await Connection.ExecuteAsync(commandUserInsertMySql,
                     new {GoogleID = googleID, Name = name, Username = username, Email = email});
             else
-                await Connection.ExecuteAsync(commandUserUpdate,
+                await Connection.ExecuteAsync(commandUserUpdateMySql,
                     new {GoogleID = googleID, Name = name, Username = username, Email = email});
             await ResetTestsRemaining();
         }
@@ -147,8 +152,8 @@ namespace Modulr.Controllers
         /// <returns>Whether the user exists or not.</returns>
         public async Task<bool> UserExists(string googleID)
         {
-            const string command = "SELECT COUNT(1) FROM Modulr.Users WHERE google_id = @GoogleID;";
-            var results = await Connection.QuerySingleOrDefaultAsync<int>(command,
+            const string commandMySql = "SELECT COUNT(1) FROM Modulr.Users WHERE google_id = @GoogleID;";
+            var results = await Connection.QuerySingleOrDefaultAsync<int>(ConvertSql(commandMySql),
                 new {GoogleID = googleID});
             return results == 1;
         }
@@ -160,8 +165,8 @@ namespace Modulr.Controllers
         /// <returns></returns>
         public async Task<UserTimeout> GetTimeOut(string googleID)
         {
-            const string command = "SELECT tests_remaining, tests_timeout FROM Modulr.Users WHERE google_id = @GoogleID";
-            var results = await Connection.QuerySingleOrDefaultAsync<UserTimeout>(command,
+            const string commandMySql = "SELECT tests_remaining, tests_timeout FROM Modulr.Users WHERE google_id = @GoogleID";
+            var results = await Connection.QuerySingleOrDefaultAsync<UserTimeout>(ConvertSql(commandMySql),
                 new {GoogleID = googleID});
             if (results != null)
                 results.Milliseconds = (long) (results.TestsTimeout - DateTimeOffset.Now).TotalMilliseconds;
@@ -174,8 +179,8 @@ namespace Modulr.Controllers
         private async Task ResetTestsRemaining()
         {
             var attempts = _config.TimeoutAttempts <= 0 ? -1 : _config.TimeoutAttempts;
-            var commandUpdate = $"UPDATE Modulr.Users SET tests_remaining = {attempts} WHERE tests_timeout < CURRENT_TIMESTAMP()";
-            await Connection.ExecuteAsync(commandUpdate);
+            var commandUpdateMySql = $"UPDATE Modulr.Users SET tests_remaining = {attempts} WHERE tests_timeout < CURRENT_TIMESTAMP()";
+            await Connection.ExecuteAsync(commandUpdateMySql);
         }
         
         /// <summary>
@@ -184,8 +189,8 @@ namespace Modulr.Controllers
         /// <param name="id">The Modulr ID of the user.</param>
         public async Task ResetTimeOut(int id)
         {
-            const string command = "UPDATE Modulr.Users SET tests_timeout = CURRENT_TIMESTAMP() WHERE id = @ID";
-            await Connection.QuerySingleOrDefaultAsync<UserTimeout>(command, new {ID = id});
+            const string commandMySql = "UPDATE Modulr.Users SET tests_timeout = CURRENT_TIMESTAMP() WHERE id = @ID";
+            await Connection.QuerySingleOrDefaultAsync<UserTimeout>(ConvertSql(commandMySql), new {ID = id});
             await ResetTestsRemaining();
         }
         
@@ -195,8 +200,8 @@ namespace Modulr.Controllers
         /// <returns>A list of all available tests.</returns>
         public async Task<List<Stipulatable>> GetAllTests()
         {
-            const string command = "SELECT * FROM Modulr.Stipulatables";
-            return (await Connection.QueryAsync(command)).ToList().Select(o =>
+            const string commandMySql = "SELECT * FROM Modulr.Stipulatables";
+            return (await Connection.QueryAsync(ConvertSql(commandMySql))).ToList().Select(o =>
             {
                 var testers = JsonConvert.DeserializeObject<List<string>>(o.testers);
                 var required = JsonConvert.DeserializeObject<List<string>>(o.required);
@@ -212,10 +217,10 @@ namespace Modulr.Controllers
         {
             if (_config.TimeoutAttempts < 1)
                 return;
-            const string command =
+            const string commandMySql =
                 "UPDATE Modulr.Users SET tests_timeout = ADDTIME(CURRENT_TIMESTAMP(), '00:30:00') WHERE google_id = @GoogleID AND tests_remaining = @MaxTests;" +
                 "UPDATE Modulr.Users SET tests_remaining = tests_remaining - 1 WHERE google_id = @GoogleID;";
-            await Connection.ExecuteAsync(command, new { MaxTests = _config.TimeoutAttempts, GoogleID = googleID } );
+            await Connection.ExecuteAsync(ConvertSql(commandMySql), new { MaxTests = _config.TimeoutAttempts, GoogleID = googleID } );
         }
         
         /// <summary>
@@ -225,8 +230,8 @@ namespace Modulr.Controllers
         /// <returns>The role(s) the user possesses.</returns>
         public async Task<Role> GetRole(string googleID)
         {
-            const string command = "SELECT role FROM Modulr.Users WHERE google_id = @GoogleID";
-            return await Connection.QuerySingleOrDefaultAsync<Role>(command, new { GoogleID = googleID } );
+            const string commandMySql = "SELECT role FROM Modulr.Users WHERE google_id = @GoogleID";
+            return await Connection.QuerySingleOrDefaultAsync<Role>(ConvertSql(commandMySql), new { GoogleID = googleID } );
         }
         
         /// <summary>
@@ -235,8 +240,8 @@ namespace Modulr.Controllers
         /// <returns>A list of all user data.</returns>
         public async Task<IEnumerable<User>> GetAllUsers()
         {
-            const string command = "SELECT * FROM Modulr.Users;";
-            return await Connection.QueryAsync<User>(command);
+            const string commandMySql = "SELECT * FROM Modulr.Users;";
+            return await Connection.QueryAsync<User>(ConvertSql(commandMySql));
         }
 
         /// <summary>
@@ -245,8 +250,23 @@ namespace Modulr.Controllers
         /// <param name="u">A user. Only the ID will be used to search the database.</param>
         public async Task UpdateUser(User u)
         {
-            const string command = "UPDATE Modulr.Users SET `name` = @Name, `role` = @Role WHERE id = @ID";
-            await Connection.ExecuteAsync(command, new {u.Name, Role = (int) u.Role, u.ID});
+            const string commandMySql = "UPDATE Modulr.Users SET `name` = @Name, `role` = @Role WHERE id = @ID";
+            await Connection.ExecuteAsync(ConvertSql(commandMySql), new {u.Name, Role = (int) u.Role, u.ID});
+        }
+
+        /// <summary>
+        /// Convert the MySQL command into whatever the database requires.
+        /// </summary>
+        /// <param name="commandMySql">The command normally used for MySQL.</param>
+        /// <returns>The same command or converted for MS-SQL.</returns>
+        private string ConvertSql(string commandMySql)
+        {
+            if (_config.UseMySql)
+                return commandMySql;
+            return commandMySql
+                .Replace("Modulr", "Tester")
+                .Replace("CURRENT_TIMESTAMP()", "SYSDATETIMEOFFSET()")
+                .Replace("LAST_INSERT_ID()", "SCOPE_IDENTITY()");
         }
     }
 }

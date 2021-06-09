@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.SqlClient;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text.RegularExpressions;
 using Microsoft.Extensions.Logging;
+using MySql.Data.MySqlClient;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
@@ -20,12 +22,41 @@ namespace Modulr.Tester
         [JsonProperty] public bool AutoUpdateDockerImage { get; private set; }
         [JsonProperty] public string SaveLocation { get; private set; }
         [JsonProperty] public string SourceLocation { get; private set; }
-        [JsonProperty] public string MySqlServer { get; private set; }
-        [JsonProperty] public int MySqlPort { get; private set; }
-        [JsonProperty] public string MySqlPassword { get; private set; }
+        [JsonProperty] public string SqlServer { get; private set; }
+        [JsonProperty] public int SqlPort { get; private set; }
+        [JsonProperty] public string SqlPassword { get; private set; }
+        [JsonProperty] public bool UseMySql { get; private set; }
 
-        public string MySqlConnection =>
-            $"server={MySqlServer};user=modulr;database=Modulr;port={MySqlPort};password={MySqlPassword}";
+        public string MySqlConnection
+        {
+            get
+            {
+                var output = new MySqlConnectionStringBuilder {
+                    Server = SqlServer,
+                    UserID = "modulr",
+                    Port = Convert.ToUInt32(SqlPort),
+                    Password = SqlPassword,
+                    Database = "Modulr"
+                };
+                return output.ToString();
+            }
+        }
+
+        public string SqlConnection
+        {
+            get
+            {
+                var output = new SqlConnectionStringBuilder
+                {
+                    IntegratedSecurity = true,
+                    UserID = "modulr",
+                    Password = SqlPassword,
+                    InitialCatalog = "Modulr"
+                };
+
+                return output.ToString();
+            }
+        }
 
         [JsonProperty] public string GoogleClientKey { get; private set; }
         [JsonProperty] public string GoogleSecret { get; private set; }
