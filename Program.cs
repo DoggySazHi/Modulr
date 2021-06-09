@@ -1,5 +1,7 @@
+using System.IO;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Hosting;
+using Newtonsoft.Json.Linq;
 
 namespace Modulr
 {
@@ -12,6 +14,21 @@ namespace Modulr
 
         private static IHostBuilder CreateHostBuilder(string[] args) =>
             Host.CreateDefaultBuilder(args)
-                .ConfigureWebHostDefaults(webBuilder => { webBuilder.UseStartup<Startup>().UseUrls("https://*:5001"); });
+                .ConfigureWebHostDefaults(webBuilder =>
+                {
+                    // We have to read it once before the services are loaded...
+                    var port = 5001;
+                    if (File.Exists("config.json"))
+                    {
+                        var configPortToken = JToken.Parse(File.ReadAllText("config.json"))["port"];
+                        if (configPortToken != null)
+                        {
+                            var configPort = configPortToken.ToObject<int>();
+                            if (configPort is >= 1 and <= 65535)
+                                port = configPort;
+                        }
+                    }
+                    webBuilder.UseStartup<Startup>().UseUrls($"https://*:{port}");
+                });
     }
 }

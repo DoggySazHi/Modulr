@@ -16,6 +16,7 @@ namespace Modulr.Tester
 {
     public class ModulrConfig
     {
+        [JsonProperty] public int Port { get; private set; }
         [JsonProperty] public string JDKPath { get; private set; }
         [JsonProperty] public bool UseDocker { get; private set; }
         [JsonProperty] public string DockerPath { get; private set; }
