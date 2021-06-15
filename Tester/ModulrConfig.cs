@@ -53,7 +53,7 @@ namespace Modulr.Tester
                 {
                     DataSource = $"{SqlServer},{SqlPort}",
                     IntegratedSecurity = true,
-                    UserID = "modulr",
+                    UserID = "Modulr",
                     Password = SqlPassword,
                     InitialCatalog = "Modulr"
                 };
@@ -68,6 +68,7 @@ namespace Modulr.Tester
         [JsonProperty] public string reCAPCHASecretKey { get; private set; }
         [JsonProperty] public string HostedDomain { get; private set; }
         [JsonProperty] public int TimeoutAttempts { get; private set; }
+        [JsonProperty] public string[] WebSocketDomains { get; private set; }
         [JsonIgnore] public JObject RawData { get; }
         
         [JsonIgnore] public bool IsWindows { get; private set; }
@@ -77,12 +78,25 @@ namespace Modulr.Tester
         public ModulrConfig(ILogger<ModulrConfig> logger, string file = "config.json", bool verify = true)
         {
             var json = File.ReadAllText(file);
+            SetDefaultConfig();
             JsonConvert.PopulateObject(json, this);
             RawData = JObject.Parse(json);
             File.WriteAllText(file, JsonConvert.SerializeObject(this, Formatting.Indented));
             _logger = logger;
             if (verify)
                 VerifyConfig();
+        }
+
+        /// <summary>
+        /// Only applies to items that should have a value.
+        /// </summary>
+        private void SetDefaultConfig()
+        {
+            Port = 5001;
+            SqlPort = 1433;
+            SqlServer = "localhost";
+            UseMySql = true;
+            TimeoutAttempts = -1;
         }
 
         private readonly string[] _dockerWinPath = {

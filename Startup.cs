@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.Google;
 using Microsoft.AspNetCore.Builder;
@@ -58,12 +59,18 @@ namespace Modulr
             {
                 endpoints.MapControllers();
             });
+
+            var config = new ModulrConfig(null, verify: false);
             
             var webSocketOptions = new WebSocketOptions
             {
-                KeepAliveInterval = TimeSpan.FromSeconds(120),
-                AllowedOrigins = { "https://modulr.williamle.com", "https://modulrdev.williamle.com" }
+                KeepAliveInterval = TimeSpan.FromSeconds(120)
             };
+            
+            foreach (var configWebSocketDomain in config.WebSocketDomains)
+            {
+                webSocketOptions.AllowedOrigins.Add(configWebSocketDomain);
+            }
 
             app.UseWebSockets(webSocketOptions);
             

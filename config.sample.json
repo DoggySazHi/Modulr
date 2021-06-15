@@ -16,5 +16,6 @@
   "reCAPCHASiteKey": "SOMETHING_SOMETHING_SOMETHING",
   "reCAPCHASecretKey": "SOMETHING_SOMETHING_ELSE",
   "HostedDomain": "mukyu.org",
-  "TimeoutAttempts": -1
+  "TimeoutAttempts": -1,
+  "WebSocketDomains": [ "yourwebsite.com" ]
 }
