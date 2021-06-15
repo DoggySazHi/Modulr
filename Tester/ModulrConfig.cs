@@ -10,8 +10,6 @@ using MySql.Data.MySqlClient;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
-// ReSharper disable UnusedAutoPropertyAccessor.Local
-
 namespace Modulr.Tester
 {
     public class ModulrConfig
