@@ -12,7 +12,7 @@ namespace Modulr.Tester
     /// </summary>
     public abstract class ModulrJail : IDisposable
     {
-        private static readonly string MODULR_STIPULATOR_GITHUB = "https://github.com/DoggySazHi/Modulr.Stipulator/releases/latest/download/Modulr.Stipulator.jar";
+        private const string MODULR_STIPULATOR_GITHUB = "https://github.com/DoggySazHi/Modulr.Stipulator/releases/latest/download/Modulr.Stipulator.jar";
 
         public static ModulrConfig Config { private protected get; set; }
         public static TestWorker WebSocket { private protected get; set; }

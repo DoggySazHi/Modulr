@@ -91,9 +91,9 @@ namespace Modulr.Controllers
         /// <returns>An integer, representing the ID of the <code>Stipulatable</code>.</returns>
         public async Task<int> AddTest(string name, IEnumerable<string> testers, IEnumerable<string> required, string description, IEnumerable<string> included)
         {
-            const string commandMySql = "INSERT INTO Modulr.Stipulatables (`name`, testers, required) VALUES (@Name, @Testers, @Required); SELECT LAST_INSERT_ID();";
+            const string commandMySql = "INSERT INTO Modulr.Stipulatables (`name`, testers, required, provided, description) VALUES (@Name, @Testers, @Required, @Provided, @Description); SELECT LAST_INSERT_ID();";
             var results = await Connection.QuerySingleOrDefaultAsync<int>(ConvertSql(commandMySql),
-                new {Name = name, Testers = JsonConvert.SerializeObject(testers), Required = JsonConvert.SerializeObject(required)});
+                new { Name = name, Testers = JsonConvert.SerializeObject(testers), Required = JsonConvert.SerializeObject(required), Provided = JsonConvert.SerializeObject(included), Description = description });
             return results;
         }
         
@@ -109,10 +109,10 @@ namespace Modulr.Controllers
         {
             const string commandMySql = "UPDATE Modulr.Stipulatables SET `name` = @Name, testers = @Testers, required = @Required WHERE id = @ID";
             return await Connection.ExecuteAsync(ConvertSql(commandMySql),
-                new {Name = name,
+                new { Name = name,
                     Testers = JsonConvert.SerializeObject(testers),
                     Required = JsonConvert.SerializeObject(required),
-                    ID = id}) != 0;
+                    ID = id }) != 0;
         }
         
         /// <summary>

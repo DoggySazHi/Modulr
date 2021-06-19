@@ -219,6 +219,7 @@ async function getAllTests() {
         handleErrors(0, e);
     }
 }
+
 async function getAttemptsLeft() {
     try {
         let response = await fetch("/Users/GetTimeout", {
@@ -299,11 +300,57 @@ function generateProvided(provided) {
     let providedList = providedArea.querySelector(".center");
     providedList.innerHTML = "";
     for (let file of provided) {
-        let link = document.createElement("a");
-        link.href = "javascript:alert('Download link for " + file + "')";
-        link.className = "input normal";
-        link.innerHTML = file;
-        providedList.appendChild(link);
+        //<label class="input normal">GQ_Decimal_Converter.java<input type="file" name="GQ_Decimal_Converter.java"></label>
+        let button = document.createElement("button");
+        button.className = "input normal";
+        button.innerHTML = file;
+        button.addEventListener("click", async (e) => {
+            e.preventDefault();
+            await downloadFile(file);
+        });
+        providedList.appendChild(button);
+    }
+}
+
+async function downloadFile(file) {
+    try {
+        let response = await fetch("/Tester/Download", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                "AuthToken": getLoginToken(),
+                "TestID": currentTest,
+                "File": file
+            })
+        });
+        if (response.status >= 400 && response.status < 600) {
+            handleErrors(response.status, null);
+        } else {
+            // What's compatibility? And can I eat it?
+            const newBlob = new Blob([ await response.blob() ], { type: response.headers.get("Content-Type") });
+
+            if (window.navigator && window.navigator.msSaveOrOpenBlob)
+                window.navigator.msSaveOrOpenBlob(newBlob);
+            else {
+                const data = URL.createObjectURL(newBlob);
+                /* const newPanel = open(data, "_blank");
+                if (newPanel !== null)
+                    newPanel.focus(); */
+
+                let link = document.createElement("a");
+                link.href = data;
+                link.download = file;
+                link.click();
+                
+                // I saw this somewhere, apparently for Firefox.
+                setTimeout(() => { URL.revokeObjectURL(data); }, 250);
+            }
+        }
+    }
+    catch (e) {
+        handleErrors(0, e);
     }
 }
 

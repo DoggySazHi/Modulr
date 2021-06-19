@@ -9,6 +9,7 @@ Docker/*.class
 Docker/*.jar
 TestingInput
 TestingSource
+TestingInclude
 sqldialects.xml
 contentModel.xml
 workspace.xml

@@ -10,6 +10,7 @@
         <Content Include="StaticViews\**\*.*" Exclude="StaticViews\img\manifest.json">
             <CopyToOutputDirectory>Always</CopyToOutputDirectory>
         </Content>
+        <Content Remove="TestingIncluded\**" />
     </ItemGroup>
 
     <ItemGroup>
@@ -28,5 +29,17 @@
       <Folder Include="RestrictedViews\css" />
       <Folder Include="RestrictedViews\img" />
       <Folder Include="TestingSource\hidden" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Compile Remove="TestingIncluded\**" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <EmbeddedResource Remove="TestingIncluded\**" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <None Remove="TestingIncluded\**" />
     </ItemGroup>
 </Project>

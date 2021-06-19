@@ -116,6 +116,34 @@ namespace Modulr.Controllers
             await _query.DecrementAttempts(user.Subject);
             return output;
         }
+        
+        /// <summary>
+        /// Allow a user to download a provided file.
+        /// </summary>
+        /// <param name="file">A file requested from the user.</param>
+        /// <returns>Data representing the file, or an error message.</returns>
+        [HttpPost("Download")]
+        public async Task<IActionResult> FileDownload([FromBody] DownloadFile file)
+        {
+            if (file.File == null)
+                return BadRequest("Bad Filename!!");
+
+            var (status, _) = await _auth.Verify(file.AuthToken);
+            if (status != GoogleAuth.LoginStatus.Success)
+                return Forbid();
+
+            var test = await _query.GetTest(file.TestID);
+            if (test == null)
+                return NotFound("Failed to find Test ID!");
+
+            var fileName = Path.GetFileName(file.File);
+            var path = Path.Combine(Path.Join(_config.IncludeLocation, "" + file.TestID), fileName!);
+            if (!System.IO.File.Exists(path))
+                return NotFound("File not found!");
+
+            var stream = System.IO.File.OpenRead(path);
+            return new FileStreamResult(stream, HTMLController.GetMIME(fileName));
+        }
 
         /// <summary>
         /// A simple way to fail with a HTTP status.

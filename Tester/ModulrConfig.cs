@@ -21,6 +21,7 @@ namespace Modulr.Tester
         [JsonProperty] public bool AutoUpdateDockerImage { get; private set; }
         [JsonProperty] public string SaveLocation { get; private set; }
         [JsonProperty] public string SourceLocation { get; private set; }
+        [JsonProperty] public string IncludeLocation { get; private set; }
         [JsonProperty] public string SqlServer { get; private set; }
         [JsonProperty] public int SqlPort { get; private set; }
         [JsonProperty] public string SqlPassword { get; private set; }
@@ -95,6 +96,10 @@ namespace Modulr.Tester
             SqlServer = "localhost";
             UseMySql = true;
             TimeoutAttempts = -1;
+
+            SourceLocation = "TestingSource";
+            SaveLocation = "TestingInput";
+            IncludeLocation = "TestingInclude";
         }
 
         private readonly string[] _dockerWinPath = {

@@ -1,8 +1,7 @@
 ﻿namespace Modulr.Models
 {
-    public class TestQuery
+    public class TestQuery : BasicAuth
     {
-        public string AuthToken { get; set; }
         public int TestID { get; set; }
     }
 }

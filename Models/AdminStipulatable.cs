@@ -17,8 +17,8 @@ namespace Modulr.Models
         public bool Valid { get; set; }
         public IReadOnlyCollection<TesterFile> TesterFiles => _testerFiles;
         public IReadOnlyCollection<string> RequiredFiles => _requiredFiles;
-        private readonly List<TesterFile> _testerFiles = new List<TesterFile>();
-        private readonly List<string> _requiredFiles = new List<string>();
+        private readonly List<TesterFile> _testerFiles = new();
+        private readonly List<string> _requiredFiles = new();
 
         public AdminStipulatable(Stipulatable sp)
         {

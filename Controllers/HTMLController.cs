@@ -73,7 +73,7 @@ namespace Modulr.Controllers
             }
         }
 
-        private static string GetMIME(string file)
+        public static string GetMIME(string file)
         {
             var provider = new FileExtensionContentTypeProvider();
             return !provider.TryGetContentType(file, out var contentType) ? "application/octet-stream" : contentType;
