@@ -58,13 +58,16 @@ function bindUploads() {
 function clearInputs() {
     modified = false;
     document.getElementById("manager").classList.add("hidden");
+    document.getElementById("included").innerHTML = "";
     document.getElementById("testers").innerHTML = "";
     document.getElementById("required").innerHTML = "";
 }
 
 function generateFileExplorer(formatted) {
     let fileManager = document.getElementById("manager");
-    fileManager.getElementsByTagName("input")[0].value = formatted.name;
+    fileManager.querySelector("input").value = formatted.name;
+    fileManager.querySelector("textarea").value = formatted.description;
+    generateInputs(formatted.includedFiles, document.getElementById("included"));
     generateInputs(formatted.testerFiles, document.getElementById("testers"));
     generateInputs(formatted.requiredFiles, document.getElementById("required"));
     fileManager.classList.remove("hidden");
@@ -95,7 +98,7 @@ function generateInputs(names, inputArea) {
             let statusChar = document.createElement("span");
             if(!file.exists) {
                 label.classList.add("danger");
-                statusChar.innerHTML = "&#10060;";
+                statusChar.innerHTML = "&#10008;";
             }
             else {
                 label.classList.add("success");
@@ -164,7 +167,7 @@ function generateList(tests) {
         testBtn.name = test.id;
         if(!test.valid) {
             testBtn.classList.add("danger");
-            testBtn.innerHTML += " &#10060;";
+            testBtn.innerHTML += " &#10008;";
         }
         else {
             testBtn.classList.add("normal");
@@ -273,9 +276,12 @@ async function submit() {
             await updateStipulatable(message);
         else
             await addStipulatable(message);
-        message.push("---\nNow uploading files, if any...");
+        message.push("---\nNow uploading source files, if any...");
         triggerPopup("Updating...", message.join('\n'));
-        await uploadFiles(message);
+        await uploadSourceFiles(message);
+        message.push("---\nNow uploading included files, if any...");
+        triggerPopup("Updating...", message.join('\n'));
+        await uploadIncludeFiles(message);
         triggerPopup("Finished updating!", message.join('\n'));
         await getAllTestsAdmin();
         await getTestAdmin(currentTest);
@@ -286,7 +292,7 @@ async function submit() {
     }
 }
 
-async function uploadFiles(message) {
+async function uploadSourceFiles(message) {
     let data = new FormData();
 
     data.append('AuthToken', getLoginToken());
@@ -303,7 +309,37 @@ async function uploadFiles(message) {
         data.append('IsTester', JSON.stringify(false));
     }
 
-    let response = await fetch("/Admin/Tester/Upload", {
+    let response = await fetch("/Admin/Tester/UploadSource", {
+        method: "POST",
+        body: data
+    });
+    if (response.status >= 400 && response.status < 600)
+        handleErrors(response.status, null)
+    else {
+        let data = await response.text();
+        let text = data.toString();
+        message.push(text);
+    }
+}
+
+async function uploadIncludeFiles(message) {
+    let data = new FormData();
+
+    data.append('AuthToken', getLoginToken());
+    data.append('ConnectionID', "no");
+    if (currentTest == null)
+        currentTest = 0;
+    data.append('TestID', JSON.stringify(currentTest));
+    let fileInputs = document.querySelectorAll("input[type='file']");
+    for (let input of fileInputs) {
+        if (input.files.length === 0)
+            continue;
+        data.append('FileNames', input.parentElement.querySelector("input:not([type])").value);
+        data.append('Files', input.files[0]);
+        data.append('IsTester', JSON.stringify(false));
+    }
+
+    let response = await fetch("/Admin/Tester/UploadInclude", {
         method: "POST",
         body: data
     });
@@ -327,10 +363,12 @@ async function updateStipulatable(message) {
                 "AuthToken": getLoginToken(),
                 "TestID": currentTest,
                 "TestName": document.querySelector("input[autocorrect]").value,
+                "TestDescription": document.querySelector("textarea").value,
                 // William, what the heck? (Gets all children, extracts name from each input element)
                 "Required": [...document.getElementById("required").children].map(o => o.getElementsByTagName("input")[0].value),
                 // ... (Get all children under the testers, sort by flexbox order for draggables, then grab the names of each tester)
-                "Testers": [...document.getElementById("testers").children].sort((p, q) => parseInt(p.style.order) - parseInt(q.style.order)).map(o => o.getElementsByTagName("input")[1].value)
+                "Testers": [...document.getElementById("testers").children].sort((p, q) => parseInt(p.style.order) - parseInt(q.style.order)).map(o => o.getElementsByTagName("input")[1].value),
+                "Included": [...document.getElementById("included").children].sort((p, q) => parseInt(p.style.order) - parseInt(q.style.order)).map(o => o.getElementsByTagName("input")[1].value)
             })
         });
         if (response.status >= 400 && response.status < 600)
@@ -360,8 +398,10 @@ async function addStipulatable(message) {
             body: JSON.stringify({
                 "AuthToken": getLoginToken(),
                 "TestName": document.querySelector("input[autocorrect]").value,
+                "TestDescription": document.querySelector("textarea").value,
                 "Required": [...document.getElementById("required").children].map(o => o.getElementsByTagName("input")[0].value),
-                "Testers": [...document.getElementById("testers").children].sort((p, q) => parseInt(p.style.order) - parseInt(q.style.order)).map(o => o.getElementsByTagName("input")[1].value)
+                "Testers": [...document.getElementById("testers").children].sort((p, q) => parseInt(p.style.order) - parseInt(q.style.order)).map(o => o.getElementsByTagName("input")[1].value),
+                "Included": [...document.getElementById("included").children].sort((p, q) => parseInt(p.style.order) - parseInt(q.style.order)).map(o => o.getElementsByTagName("input")[1].value)
             })
         })
         if (response.status >= 400 && response.status < 600)

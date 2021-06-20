@@ -13,11 +13,11 @@ namespace Modulr.Controllers
     [Route("/Admin/System")]
     public class AdminSystemController : ControllerBase
     {
-        private readonly MySqlQuery _query;
+        private readonly SqlQuery _query;
         private readonly GoogleAuth _auth;
         private readonly IHostApplicationLifetime _app;
         
-        public AdminSystemController(MySqlQuery query, ModulrConfig config, GoogleAuth auth, IHostApplicationLifetime app)
+        public AdminSystemController(SqlQuery query, ModulrConfig config, GoogleAuth auth, IHostApplicationLifetime app)
         {
             _query = query;
             ModulrJail.Config = config;

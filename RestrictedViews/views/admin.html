@@ -20,14 +20,26 @@
             <h3>File Manager</h3>
             <form id="manager" class="hidden" onsubmit="return false;">
                 <div class="form-control">
-                    <div class="row center">
-                        <label>
+                    <div class="row list">
+                        <label class="split-ui">
                             <span class="topic">Name</span>
-                            <input autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="true"/>
+                            <input type="text" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="true"/>
+                        </label>
+                        <label class="split-ui">
+                            <span class="topic">Description</span>
+                            <textarea></textarea>
                         </label>
                     </div>
                     <hr/>
-                    <label>
+                    <label class="split-ui">
+                        <span class="topic">Included Files</span>
+                        <button id="included-add" class="success modifier-btn">&plus;</button>
+                    </label>
+                    <div id="included" class="list">
+
+                    </div>
+                    <hr/>
+                    <label class="split-ui">
                         <span class="topic">Compile Order</span>
                         <button id="tester-add" class="success modifier-btn">&plus;</button>
                     </label>
@@ -35,7 +47,7 @@
                         
                     </div>
                     <hr/>
-                    <label>
+                    <label class="split-ui">
                         <span class="topic">Required</span>
                         <button id="required-add" class="success modifier-btn">&plus;</button>
                     </label>

@@ -15,11 +15,11 @@ namespace Modulr.Controllers
     [Route("/Admin/Tester")]
     public class AdminTestController : ControllerBase
     {
-        private readonly MySqlQuery _query;
+        private readonly SqlQuery _query;
         private readonly ModulrConfig _config;
         private readonly GoogleAuth _auth;
         
-        public AdminTestController(MySqlQuery query, ModulrConfig config, GoogleAuth auth)
+        public AdminTestController(SqlQuery query, ModulrConfig config, GoogleAuth auth)
         {
             _query = query;
             _config = config;
@@ -41,7 +41,7 @@ namespace Modulr.Controllers
                 return -1;
             }
             
-            return await _query.AddTest(input.TestName, input.Testers, input.Required);
+            return await _query.AddTest(input.TestName, input.TestDescription, input.Included, input.Testers, input.Required);
         }
 
         [HttpPost("GetAll")]
@@ -114,7 +114,7 @@ namespace Modulr.Controllers
                 return false;
             }
 
-            return await _query.UpdateTest(input.TestID, input.TestName, input.Testers, input.Required);
+            return await _query.UpdateTest(input.TestID, input.TestName, input.TestDescription, input.Included, input.Testers, input.Required);
         }
 
         [HttpDelete("Delete")]
@@ -128,10 +128,18 @@ namespace Modulr.Controllers
 
             return await _query.DeleteTest(id);
         }
-        
-        [HttpPost("Upload")]
+
+        [HttpPost("UploadSource")]
         [RequestSizeLimit(33554432)] // 32 MiB max
-        public async Task<string> FileUpload([FromForm] TesterFiles input)
+        public async Task<string> FileUploadSource([FromForm] TesterFiles input)
+            => await FileUpload(input, _config.SourceLocation, true);
+
+        [HttpPost("UploadInclude")]
+        [RequestSizeLimit(33554432)] // 32 MiB max
+        public async Task<string> FileUploadInclude([FromForm] TesterFiles input)
+            => await FileUpload(input, _config.IncludeLocation);
+
+        private async Task<string> FileUpload(TesterFiles input, string baseLocation, bool verify = false)
         {
             if (input.IsEmpty())
                 return "WARNING: No files were found, nothing was uploaded!";
@@ -154,9 +162,11 @@ namespace Modulr.Controllers
             for (var i = 0; i < input.Files.Count; i++)
             {
                 var file = input.Files[i];
-                if (file.Length > 8 * 1024 * 1024) continue;
+
                 var fileName = input.FileNames[i] ?? Path.GetFileName(file.FileName);
-                var outputPath = Path.Join(_config.SourceLocation, fileName);
+                var sourcePath = Path.Join(baseLocation, "" + input.TestID);
+                Directory.CreateDirectory(sourcePath);
+                var outputPath = Path.Combine(sourcePath, fileName);
                 var backupPath = outputPath;
                 if (System.IO.File.Exists(backupPath))
                 {
@@ -164,13 +174,13 @@ namespace Modulr.Controllers
                     do
                     {
                         counter++;
-                        backupPath = Path.Join(_config.SourceLocation, $"old-{counter}-{fileName}");
+                        backupPath = Path.Combine(sourcePath, $"old-{counter}-{fileName}");
                     } while (System.IO.File.Exists(backupPath));
                     System.IO.File.Move(outputPath, backupPath);
                     output.AppendLine($"WARNING: {fileName} existed already, made a copy at {backupPath}.");
                 }
 
-                if (test != null && test.RequiredFiles.Contains(fileName))
+                if (verify && test != null && test.RequiredFiles.Contains(fileName))
                     output.AppendLine(
                         $"WARNING: {fileName} is a required file; it will not be copied during stipulation!");
                 await using var stream = new FileStream(outputPath, FileMode.Create);

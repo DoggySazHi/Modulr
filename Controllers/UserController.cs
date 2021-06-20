@@ -9,10 +9,10 @@ namespace Modulr.Controllers
     [Route("/Users")]
     public class UserController : ControllerBase
     {
-        private readonly MySqlQuery _query;
+        private readonly SqlQuery _query;
         private readonly GoogleAuth _auth;
 
-        public UserController(MySqlQuery query, GoogleAuth auth)
+        public UserController(SqlQuery query, GoogleAuth auth)
         {
             _query = query;
             _auth = auth;

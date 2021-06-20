@@ -270,7 +270,7 @@ function clearInputs() {
 }
 
 function generateInputs(data) {
-    generateProvided(data.includedFiles);
+    generateIncluded(data.includedFiles);
     generateUploads(data.requiredFiles);
     document.querySelector(".test-info").innerHTML = data.description;
 }
@@ -291,16 +291,15 @@ function generateUploads(uploads) {
     document.querySelectorAll(".row .column")[1].classList.remove("not-ready");
 }
 
-function generateProvided(provided) {
-    if (provided === undefined || provided == null)
+function generateIncluded(included) {
+    if (included === undefined || included == null)
         return;
     
-    let providedArea = document.querySelector("#provided");
-    providedArea.querySelector(".row h4").innerHTML = "Provided Files (" + provided.length + ")";
-    let providedList = providedArea.querySelector(".center");
-    providedList.innerHTML = "";
-    for (let file of provided) {
-        //<label class="input normal">GQ_Decimal_Converter.java<input type="file" name="GQ_Decimal_Converter.java"></label>
+    let includedArea = document.querySelector("#included");
+    includedArea.querySelector(".row h4").innerHTML = "Included Files (" + included.length + ")";
+    let includedList = includedArea.querySelector(".center");
+    includedList.innerHTML = "";
+    for (let file of included) {
         let button = document.createElement("button");
         button.className = "input normal";
         button.innerHTML = file;
@@ -308,7 +307,7 @@ function generateProvided(provided) {
             e.preventDefault();
             await downloadFile(file);
         });
-        providedList.appendChild(button);
+        includedList.appendChild(button);
     }
 }
 

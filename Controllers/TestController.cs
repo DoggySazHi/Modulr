@@ -13,11 +13,11 @@ namespace Modulr.Controllers
     public class TestReceivedController : ControllerBase
     {
         private readonly JavaUtils _java;
-        private readonly MySqlQuery _query;
+        private readonly SqlQuery _query;
         private readonly GoogleAuth _auth;
         private readonly ModulrConfig _config;
 
-        public TestReceivedController(JavaUtils java, MySqlQuery query, GoogleAuth auth, ModulrConfig config)
+        public TestReceivedController(JavaUtils java, SqlQuery query, GoogleAuth auth, ModulrConfig config)
         {
             _java = java;
             _query = query;
@@ -90,22 +90,23 @@ namespace Modulr.Controllers
                 return Fail(404, "Failed to find Test ID!");
             
             var path = _java.GetDummyFolder();
-            var srcPath = Path.Join(path, "source");
-            Directory.CreateDirectory(srcPath);
+            var inputPath = Path.Join(path, "source");
+            Directory.CreateDirectory(inputPath);
             for (var i = 0; i < input.Files.Count; i++)
             {
                 var file = input.Files[i];
                 if (file.Length > 8 * 1024 * 1024) continue;
                 var fileName = input.FileNames[i];
-                var outputPath = Path.Join(srcPath, fileName);
+                var outputPath = Path.Combine(inputPath, fileName);
                 await using var stream = new FileStream(outputPath, FileMode.Create);
                 await file.CopyToAsync(stream);
             }
             
             foreach (var file in test.TesterFiles)
             {
-                var tester = Path.Join(_config.SourceLocation, file);
-                var testerOut = Path.Join(srcPath, file);
+                var sourcePath = Path.Join(_config.SourceLocation, "" + input.TestID);
+                var tester = Path.Combine(sourcePath, file);
+                var testerOut = Path.Combine(inputPath, file);
                 if (!System.IO.File.Exists(tester) || System.IO.File.Exists(testerOut))
                     continue;
                 System.IO.File.Copy(tester, testerOut);
@@ -118,7 +119,7 @@ namespace Modulr.Controllers
         }
         
         /// <summary>
-        /// Allow a user to download a provided file.
+        /// Allow a user to download an included file.
         /// </summary>
         /// <param name="file">A file requested from the user.</param>
         /// <returns>Data representing the file, or an error message.</returns>

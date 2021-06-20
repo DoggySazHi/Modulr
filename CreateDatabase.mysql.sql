@@ -6,7 +6,7 @@ CREATE TABLE IF NOT EXISTS Modulr.Stipulatables
 	name VARCHAR(255) NOT NULL,
 	testers JSON DEFAULT '[]' NOT NULL,
 	required JSON DEFAULT '[]' NOT NULL,
-    provided JSON default '[]' null,
+    included JSON default '[]' null,
     description VARCHAR(2048) default '' not null,
 	
     PRIMARY KEY (id)

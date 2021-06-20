@@ -17,18 +17,7 @@ namespace Modulr.Models
         private readonly List<string> _includedFiles = new();
 
         [JsonConstructor]
-        public Stipulatable(int id, string name, IEnumerable<string> testerFiles, IEnumerable<string> requiredFiles)
-        {
-            ID = id;
-            Name = name;
-            foreach(var file in testerFiles)
-                _testerFiles.Add(Path.GetFileName(file));
-            foreach(var file in requiredFiles)
-                _requiredFiles.Add(Path.GetFileName(file));
-        }
-        
-        [JsonConstructor]
-        public Stipulatable(int id, string name, IEnumerable<string> testerFiles, IEnumerable<string> requiredFiles, string description, IEnumerable<string> includedFiles)
+        public Stipulatable(int id, string name, string description, IEnumerable<string> includedFiles, IEnumerable<string> testerFiles, IEnumerable<string> requiredFiles)
         {
             ID = id;
             Name = name;

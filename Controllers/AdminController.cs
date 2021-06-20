@@ -11,9 +11,9 @@ namespace Modulr.Controllers
     [Route("/Admin/{**page}")]
     public class AdminController : HTMLController
     {
-        private readonly MySqlQuery _query;
+        private readonly SqlQuery _query;
         
-        public AdminController(ILogger<HTMLController> logger, MySqlQuery query, ModulrConfig config) : base(logger, config)
+        public AdminController(ILogger<HTMLController> logger, SqlQuery query, ModulrConfig config) : base(logger, config)
         {
             _query = query;
         }

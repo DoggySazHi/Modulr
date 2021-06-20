@@ -10,9 +10,9 @@ namespace Modulr.Controllers
     public class GoogleAuth
     {
         private readonly ModulrConfig _config;
-        private readonly MySqlQuery _query;
+        private readonly SqlQuery _query;
         
-        public GoogleAuth(ModulrConfig config, MySqlQuery query)
+        public GoogleAuth(ModulrConfig config, SqlQuery query)
         {
             _config = config;
             _query = query;

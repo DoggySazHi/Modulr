@@ -15,7 +15,7 @@ namespace Modulr.Controllers
     /// <summary>
     /// A class that manages database connections to the Modulr backend.
     /// </summary>
-    public class MySqlQuery : IDisposable
+    public class SqlQuery : IDisposable
     {
         private IDbConnection Connection { get; }
         private readonly ModulrConfig _config;
@@ -27,17 +27,17 @@ namespace Modulr.Controllers
             GC.SuppressFinalize(this);
         }
 
-        ~MySqlQuery()
+        ~SqlQuery()
         {
             Dispose();
         }
 
-        static MySqlQuery()
+        static SqlQuery()
         {
             DefaultTypeMap.MatchNamesWithUnderscores = true;
         }
 
-        public MySqlQuery(ModulrConfig config)
+        public SqlQuery(ModulrConfig config)
         {
             _config = config;
             if (config.UseMySql)
@@ -58,26 +58,11 @@ namespace Modulr.Controllers
             if (results == null)
                 return null;
             var description = results.description;
+            var included = JsonConvert.DeserializeObject<IEnumerable<string>>(results.included);
             var testers = JsonConvert.DeserializeObject<IEnumerable<string>>(results.testers);
             var required = JsonConvert.DeserializeObject<IEnumerable<string>>(results.required);
-            var included = JsonConvert.DeserializeObject<IEnumerable<string>>(results.provided);
 
-            return new Stipulatable(results.id, results.name, testers, required, description, included);
-        }
-
-        /// <summary>
-        /// Add a test to the database with the following parameters.
-        /// </summary>
-        /// <param name="name">The name of the test.</param>
-        /// <param name="testers">The order of compilation, as well as files that should be included.</param>
-        /// <param name="required">Files that are requested from the user on the interface.</param>
-        /// <returns>An integer, representing the ID of the <code>Stipulatable</code>.</returns>
-        public async Task<int> AddTest(string name, IEnumerable<string> testers, IEnumerable<string> required)
-        {
-            const string commandMySql = "INSERT INTO Modulr.Stipulatables (`name`, testers, required) VALUES (@Name, @Testers, @Required); SELECT LAST_INSERT_ID();";
-            var results = await Connection.QuerySingleOrDefaultAsync<int>(ConvertSql(commandMySql),
-                new {Name = name, Testers = JsonConvert.SerializeObject(testers), Required = JsonConvert.SerializeObject(required)});
-            return results;
+            return new Stipulatable(results.id, results.name, description, included, testers, required);
         }
 
         /// <summary>
@@ -89,27 +74,31 @@ namespace Modulr.Controllers
         /// <param name="description">A short description of what the test is about.</param>
         /// <param name="included">Files that are displayed for the user to download.</param>
         /// <returns>An integer, representing the ID of the <code>Stipulatable</code>.</returns>
-        public async Task<int> AddTest(string name, IEnumerable<string> testers, IEnumerable<string> required, string description, IEnumerable<string> included)
+        public async Task<int> AddTest(string name, string description, IEnumerable<string> included, IEnumerable<string> testers, IEnumerable<string> required)
         {
-            const string commandMySql = "INSERT INTO Modulr.Stipulatables (`name`, testers, required, provided, description) VALUES (@Name, @Testers, @Required, @Provided, @Description); SELECT LAST_INSERT_ID();";
+            const string commandMySql = "INSERT INTO Modulr.Stipulatables (`name`, testers, required, included, description) VALUES (@Name, @Testers, @Required, @Included, @Description); SELECT LAST_INSERT_ID();";
             var results = await Connection.QuerySingleOrDefaultAsync<int>(ConvertSql(commandMySql),
-                new { Name = name, Testers = JsonConvert.SerializeObject(testers), Required = JsonConvert.SerializeObject(required), Provided = JsonConvert.SerializeObject(included), Description = description });
+                new { Name = name, Testers = JsonConvert.SerializeObject(testers), Required = JsonConvert.SerializeObject(required), Included = JsonConvert.SerializeObject(included), Description = description });
             return results;
         }
-        
+
         /// <summary>
         /// Update a test's information by its ID.
         /// </summary>
         /// <param name="id">The ID of the test.</param>
         /// <param name="name">The new name of the test.</param>
+        /// <param name="description">The description associated with the test</param>
+        /// <param name="included">The files that are available for the user to download.</param>
         /// <param name="testers">The new compile/include order for the test.</param>
-        /// <param name="required">The new files</param>
+        /// <param name="required">The files that are requested from the user.</param>
         /// <returns>Whether a test was updated or not.</returns>
-        public async Task<bool> UpdateTest(int id, string name, IEnumerable<string> testers, IEnumerable<string> required)
+        public async Task<bool> UpdateTest(int id, string name, string description, IEnumerable<string> included, IEnumerable<string> testers, IEnumerable<string> required)
         {
-            const string commandMySql = "UPDATE Modulr.Stipulatables SET `name` = @Name, testers = @Testers, required = @Required WHERE id = @ID";
+            const string commandMySql = "UPDATE Modulr.Stipulatables SET `name` = @Name, `description` = @Description, included = @Included, testers = @Testers, required = @Required WHERE id = @ID";
             return await Connection.ExecuteAsync(ConvertSql(commandMySql),
                 new { Name = name,
+                    Description = description,
+                    Included = JsonConvert.SerializeObject(included),
                     Testers = JsonConvert.SerializeObject(testers),
                     Required = JsonConvert.SerializeObject(required),
                     ID = id }) != 0;
@@ -207,9 +196,10 @@ namespace Modulr.Controllers
             const string commandMySql = "SELECT * FROM Modulr.Stipulatables";
             return (await Connection.QueryAsync(ConvertSql(commandMySql))).ToList().Select(o =>
             {
+                var included = JsonConvert.DeserializeObject<List<string>>(o.included);
                 var testers = JsonConvert.DeserializeObject<List<string>>(o.testers);
                 var required = JsonConvert.DeserializeObject<List<string>>(o.required);
-                return new Stipulatable(o.id, o.name, testers, required);
+                return new Stipulatable(o.id, o.name, o.description, included, testers, required);
             }).ToList();
         }
 

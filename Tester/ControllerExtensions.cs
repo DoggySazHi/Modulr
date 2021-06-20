@@ -8,7 +8,7 @@ namespace Modulr.Tester
 {
     public static class ControllerExtensions
     {
-        public static async Task<bool> IsAdmin(this ControllerBase controller, MySqlQuery query)
+        public static async Task<bool> IsAdmin(this ControllerBase controller, SqlQuery query)
             => await query.GetRole(GetIdentity(controller)) == Role.Admin;
 
         public static string GetIdentity(this ControllerBase controller)

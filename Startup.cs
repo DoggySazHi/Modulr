@@ -20,7 +20,7 @@ namespace Modulr
             services.AddControllers();
             services.AddSingleton<ModulrConfig>();
             services.AddSingleton<JavaUtils>();
-            services.AddScoped<MySqlQuery>();
+            services.AddScoped<SqlQuery>();
             services.AddScoped<GoogleAuth>();
 
             var tempConfig = new ModulrConfig(null, verify: false);
