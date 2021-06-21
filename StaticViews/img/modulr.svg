@@ -1,17 +1,15 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!-- Generator: Adobe Illustrator 25.2.3, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
-<svg version="1.1" id="Layer_2" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+<svg version="1.1" class="modulr-logo" xmlns="http://www.w3.org/2000/svg" x="0px" y="0px"
 	 viewBox="0 0 640 640" style="enable-background:new 0 0 640 640;" xml:space="preserve">
 <style type="text/css">
 	.st0{fill:#5D843F;}
 	.st1{fill:#93CD68;}
 	.st2{fill:#94CB68;}
 	.st3{fill:#1CBA0A;}
+	.st4{fill:#1CBA0A;}
 </style>
-<polygon id="five" class="st0" points="640,180.5 242.1,578.4 217.6,553.8 217.7,553.7 311.9,459.5 584.8,186.6 615.5,155.9 "/>
-<rect id="four" x="531.3" y="57.4" transform="matrix(0.7072 -0.707 0.707 0.7072 74.1486 427.2669)" class="st1" width="43.4" height="133.4"/>
-<polygon id="three" class="st2" points="265.5,317.3 217.6,365.2 93.8,241.3 93.7,241.3 141.6,193.4 265.5,317.3 "/>
-<polygon id="two" class="st3" points="584.8,186.6 311.9,459.5 311.7,459.2 217.6,365.2 265.5,317.3 265.5,317.3 490.5,92.3 "/>
-<polygon id="one" class="st3" points="311.9,459.5 217.7,553.7 217.6,553.8 0,335.1 93.7,241.3 93.8,241.3 217.6,365.2 311.7,459.2 
-	"/>
+<polygon class="st0" points="640,180.5 242.1,578.4 217.6,553.8 217.7,553.7 311.9,459.5 584.8,186.6 615.5,155.9 "/>
+<rect x="531.3" y="57.4" transform="matrix(0.7072 -0.707 0.707 0.7072 74.1486 427.2669)" class="st1" width="43.4" height="133.4"/>
+<polygon class="st2" points="265.5,317.3 217.6,365.2 93.8,241.3 93.7,241.3 141.6,193.4 265.5,317.3 "/>
+<polygon class="st3" points="584.8,186.6 311.9,459.5 311.7,459.2 217.6,365.2 265.5,317.3 265.5,317.3 490.5,92.3 "/>
+<polygon class="st4" points="311.9,459.5 217.7,553.7 217.6,553.8 0,335.1 93.7,241.3 93.8,241.3 217.6,365.2 311.7,459.2 "/>
 </svg>

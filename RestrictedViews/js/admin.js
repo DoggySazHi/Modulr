@@ -25,6 +25,10 @@ function bindButtons() {
         e.preventDefault();
         await remove();
     }, false);
+    document.getElementById("included-add").addEventListener("click", (e) => {
+        e.preventDefault();
+        addIncluded();
+    }, false);
     document.getElementById("tester-add").addEventListener("click", (e) => {
         e.preventDefault();
         addTester();
@@ -116,11 +120,12 @@ function generateInputs(names, inputArea) {
             })
             label.addEventListener("drop", (e) => {
                 if(e.target !== startSwap) {
-                    for (let label of document.getElementById("testers").children) {
+                    for (let label of inputArea.children) {
                         if (label === e.target || label.contains(e.target)) {
                             let oldOrder = label.style.order;
                             label.style.order = startSwap.style.order;
                             startSwap.style.order = oldOrder;
+                            modified = true;
                         }
                     }
                 }
@@ -293,36 +298,16 @@ async function submit() {
 }
 
 async function uploadSourceFiles(message) {
-    let data = new FormData();
-
-    data.append('AuthToken', getLoginToken());
-    data.append('ConnectionID', "no");
-    if (currentTest == null)
-        currentTest = 0;
-    data.append('TestID', JSON.stringify(currentTest));
-    let fileInputs = document.querySelectorAll("input[type='file']");
-    for (let input of fileInputs) {
-        if (input.files.length === 0)
-            continue;
-        data.append('FileNames', input.parentElement.querySelector("input:not([type])").value);
-        data.append('Files', input.files[0]);
-        data.append('IsTester', JSON.stringify(false));
-    }
-
-    let response = await fetch("/Admin/Tester/UploadSource", {
-        method: "POST",
-        body: data
-    });
-    if (response.status >= 400 && response.status < 600)
-        handleErrors(response.status, null)
-    else {
-        let data = await response.text();
-        let text = data.toString();
-        message.push(text);
-    }
+    let fileInputs = document.querySelectorAll("#testers input[type='file']");
+    await upload(message, fileInputs, "/Admin/Tester/UploadInclude");
 }
 
 async function uploadIncludeFiles(message) {
+    let fileInputs = document.querySelectorAll("#included input[type='file']");
+    await upload(message, fileInputs, "/Admin/Tester/UploadInclude");
+}
+
+async function upload(message, fileInputs, uploadTo) {
     let data = new FormData();
 
     data.append('AuthToken', getLoginToken());
@@ -330,7 +315,6 @@ async function uploadIncludeFiles(message) {
     if (currentTest == null)
         currentTest = 0;
     data.append('TestID', JSON.stringify(currentTest));
-    let fileInputs = document.querySelectorAll("input[type='file']");
     for (let input of fileInputs) {
         if (input.files.length === 0)
             continue;
@@ -339,7 +323,7 @@ async function uploadIncludeFiles(message) {
         data.append('IsTester', JSON.stringify(false));
     }
 
-    let response = await fetch("/Admin/Tester/UploadInclude", {
+    let response = await fetch(uploadTo, {
         method: "POST",
         body: data
     });
@@ -462,13 +446,52 @@ async function actuallyDelete() {
     }
 }
 
-function addTester() {
-    modified = true;
-    let inputArea = document.getElementById("testers")
+function addIncluded() {
+    let inputArea = document.getElementById("included");
+    addDragButton(inputArea, false);
+}
 
-    let order = [...document.getElementById("testers").children].sort((p, q) =>  parseInt(q.style.order) - parseInt(p.style.order));
-    order = order.length === 0 ? 0 : parseInt(order[0].style.order) + 1; // If there are no items, the first order is zero, otherwise it's the greatest order (by sort), then +1.
+function addTester() {
+    let inputArea = document.getElementById("testers");
+    addDragButton(inputArea, true);
+}
+
+function addRequired() {
+    modified = true;
+    let inputArea = document.getElementById("required")
+    let label = document.createElement("label");
+    let labelName = document.createElement("input");
+    label.className = "input";
+    let removeButton = document.createElement("button");
     
+    let input = document.createElement("div");
+    label.appendChild(input);
+
+    label.classList.add("normal");
+
+    label.appendChild(labelName);
+
+    removeButton.className = "danger modifier-btn";
+    removeButton.innerHTML = "&minus;";
+    removeButton.addEventListener("click", (e) => {
+        e.preventDefault();
+        e.target.parentElement.remove();
+        modified = true;
+    });
+    labelName.addEventListener("change", (e) => {
+        e.preventDefault();
+        modified = true;
+    })
+    label.appendChild(removeButton);
+    inputArea.appendChild(label);
+}
+
+function addDragButton(inputArea, warn) {
+    modified = true;
+
+    let order = [...inputArea.children].sort((p, q) =>  parseInt(q.style.order) - parseInt(p.style.order));
+    order = order.length === 0 ? 0 : parseInt(order[0].style.order) + 1; // If there are no items, the first order is zero, otherwise it's the greatest order (by sort), then +1.
+
     let label = document.createElement("label");
     let labelName = document.createElement("input");
     label.className = "input";
@@ -476,7 +499,7 @@ function addTester() {
     let input = document.createElement("input");
     input.type = "file";
     input.addEventListener("change", (e) => {
-        if ([...document.getElementById("required").children]
+        if (warn && [...document.getElementById("required").children]
             .map(o => o.getElementsByTagName("input")[0].value)
             .find(o => o === e.target.files[0].name) !== undefined) {
             triggerPopup("Mukyu~", "You cannot attach a file for something required from the user!");
@@ -490,7 +513,7 @@ function addTester() {
             e.target.parentNode.className = "input success";
             labelName.value = e.target.files[0].name;
         }
-        
+
     }, false);
 
     let dragChar = document.createElement("span");
@@ -514,46 +537,17 @@ function addTester() {
     })
     label.addEventListener("drop", (e) => {
         if(e.target !== startSwap) {
-            for (let label of document.getElementById("testers").children) {
+            for (let label of inputArea.children) {
                 if (label === e.target || label.contains(e.target)) {
                     let oldOrder = label.style.order;
                     label.style.order = startSwap.style.order;
                     startSwap.style.order = oldOrder;
+                    modified = true;
                 }
             }
         }
         startSwap = null;
     })
-
-    removeButton.className = "danger modifier-btn";
-    removeButton.innerHTML = "&minus;";
-    removeButton.addEventListener("click", (e) => {
-        e.preventDefault();
-        e.target.parentElement.remove();
-        modified = true;
-    });
-    labelName.addEventListener("change", (e) => {
-        e.preventDefault();
-        modified = true;
-    })
-    label.appendChild(removeButton);
-    inputArea.appendChild(label);
-}
-
-function addRequired() {
-    modified = true;
-    let inputArea = document.getElementById("required")
-    let label = document.createElement("label");
-    let labelName = document.createElement("input");
-    label.className = "input";
-    let removeButton = document.createElement("button");
-    
-    let input = document.createElement("div");
-    label.appendChild(input);
-
-    label.classList.add("normal");
-
-    label.appendChild(labelName);
 
     removeButton.className = "danger modifier-btn";
     removeButton.innerHTML = "&minus;";

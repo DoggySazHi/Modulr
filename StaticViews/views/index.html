@@ -1,11 +1,22 @@
 ﻿{{"include": "StaticViews/views/template/_header.html"}}
+
+<link rel="stylesheet" href="/css/modulr.css">
+
 {{"title": "Home ~ Modulr"}}
 
-<div class="container">
-    <header>Welcome to Modulr!</header>
-    <p>Please login using your own GSuite account on the top right.</p>
-    <p>If you cannot see a login button, please enable cookies and JavaScript in your browser.</p>
-</div>
+<main>
+    <div class="container">
+        <header>Welcome to Modulr!</header>
+        {{"include": "StaticViews/img/modulr-stroke.svg"}}
+        <p>Please login using your own GSuite account on the top right.</p>
+        
+        <noscript>
+            <h2 class="danger">
+                You appear to not have JavaScript enabled. Google logins will probably not work.
+            </h2>
+        </noscript>
+    </div>
+</main>
 
 {{"include": "StaticViews/views/template/_gutter.html"}}
 

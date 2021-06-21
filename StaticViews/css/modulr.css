@@ -1,0 +1,64 @@
+﻿.modulr-logo {
+    stroke-width: 2.5;
+    stroke: #000;
+    fill: none;
+    stroke-dasharray: 0 1000;
+    
+    width: 25vw;
+}
+
+.st0 {
+    fill: none;
+    stroke: #1CBA0A;
+    stroke-width: 131;
+
+    animation: 0.5s one cubic-bezier(0.37, 0.1, 0.9, 0.25) forwards;
+}
+
+.st1 {
+    fill: none;
+    stroke: #93CD68;
+    stroke-width: 75;
+
+    animation: 0.25s 0.5s two cubic-bezier(0.37, 0.1, 0.9, 0.25) forwards;
+}
+
+.st2 {
+    fill: none;
+    stroke: #94CB68;
+    stroke-width: 50;
+
+    animation: 0.25s 0.75s three cubic-bezier(0.37, 0.1, 0.9, 0.25) forwards;
+}
+
+.st3 {
+    fill: none;
+    stroke: #5D843F;
+    stroke-width: 32;
+
+    animation: 0.4s 1.0s four cubic-bezier(0.37, 0.1, 0.9, 0.25) forwards;
+}
+
+@keyframes one {
+    to {
+        stroke-dasharray: 1000 0;
+    }
+}
+
+@keyframes two {
+    to {
+        stroke-dasharray: 1000 0;
+    }
+}
+
+@keyframes three {
+    to {
+        stroke-dasharray: 1000 0;
+    }
+}
+
+@keyframes four {
+    to {
+        stroke-dasharray: 1000 0;
+    }
+}
