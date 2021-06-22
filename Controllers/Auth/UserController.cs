@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Mvc;
 using Modulr.Models;
 
-namespace Modulr.Controllers
+namespace Modulr.Controllers.Auth
 {
     [ApiController]
     [Route("/Users")]
@@ -28,10 +28,17 @@ namespace Modulr.Controllers
             return null;
         }
 
-        [HttpGet("LogOut")]
-        public async Task Logout()
+        [HttpPost("LogOut")]
+        public async Task Logout([FromBody] string token)
         {
-            await HttpContext.SignOutAsync();
+            var (status, user) = await _auth.Verify(token);
+            if (status == GoogleAuth.LoginStatus.Success)
+            {
+                var modulrUser = await _query.ResolveUser(user.Subject);
+                await HttpContext.SignOutAsync();
+                await _query.LogoutUser(modulrUser.ID);
+            }
+            Response.StatusCode = 403;
         }
     }
 }

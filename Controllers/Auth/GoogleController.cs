@@ -3,16 +3,16 @@ using Microsoft.AspNetCore.Mvc;
 using Modulr.Models;
 using Modulr.Tester;
 
-namespace Modulr.Controllers
+namespace Modulr.Controllers.Auth
 {
     [ApiController]
     [Route("/Google")]
-    public class GoogleLoginController : ControllerBase
+    public class GoogleController : ControllerBase
     {
         private readonly ModulrConfig _config;
         private readonly GoogleAuth _auth;
 
-        public GoogleLoginController(ModulrConfig config, GoogleAuth auth)
+        public GoogleController(ModulrConfig config, GoogleAuth auth)
         {
             _config = config;
             _auth = auth;
@@ -20,6 +20,9 @@ namespace Modulr.Controllers
 
         [HttpGet("GetKey")]
         public string GetClientKey() => $"{{\"client_id\": \"{_config.GoogleClientKey}\"}}";
+        
+        [HttpGet("GetCapchaKey")]
+        public string GetCAPCHAKey() => $"{{\"site_key\": \"{_config.reCAPCHASiteKey}\"}}";
 
         [HttpPost("Login")]
         public async Task<LoginMessage> Login([FromBody] string token)

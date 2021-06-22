@@ -5,7 +5,7 @@ using Google.Apis.Auth;
 using Modulr.Models;
 using Modulr.Tester;
 
-namespace Modulr.Controllers
+namespace Modulr.Controllers.Auth
 {
     public class GoogleAuth
     {

@@ -237,6 +237,61 @@ namespace Modulr.Controllers
             const string commandMySql = "SELECT * FROM Modulr.Users;";
             return await Connection.QueryAsync<User>(ConvertSql(commandMySql));
         }
+        
+        /// <summary>
+        /// Get a user by their Google ID or their login cookie.
+        /// </summary>
+        /// <param name="id">The Google ID or login cookie.</param>
+        /// <returns>The user associated with the parameter.</returns>
+        public async Task<User> ResolveUser(string id)
+        {
+            const string commandMySql = "SELECT * FROM Modulr.Users WHERE google_id = @Token OR login_cookie = @Token;";
+            return await Connection.QuerySingleAsync<User>(ConvertSql(commandMySql), new { Token = id });
+        }
+
+        /// <summary>
+        /// Get login information (password, salt, etc.) about a specific user.
+        /// Note: fields can be null, especially if they are using Google logins.
+        /// </summary>
+        /// <param name="id">The Modulr ID of the user.</param>
+        /// <returns>A <code>UserLogin</code> that contains the fields representing login information.</returns>
+        public async Task<UserLogin> GetUserLogin(int id)
+        {
+            const string commandMySql = "SELECT password, salt, login_cookie, login_expire FROM Modulr.Users WHERE id = @ID;";
+            return await Connection.QuerySingleAsync<UserLogin>(ConvertSql(commandMySql), new { ID = id });
+        }
+        
+        /// <summary>
+        /// Logout a user by resetting their login cookie.
+        /// </summary>
+        /// <param name="id">The Modulr ID of the user.</param>
+        public async Task LogoutUser(int id)
+        {
+            const string commandMySql = "UPDATE Modulr.Users SET login_expiration = CURRENT_TIMESTAMP() WHERE id = @ID;";
+            await Connection.ExecuteAsync(ConvertSql(commandMySql), new { ID = id });
+        }
+        
+        /// <summary>
+        /// Update the password and salt for the user. Other fields in the <code>UserLogin</code> are ignored.
+        /// </summary>
+        /// <param name="id">The Modulr ID of the user.</param>
+        /// <param name="login">A <code>UserLogin</code> that contains both the password hash and the salt.</param>
+        public async Task UpdateUserLogin(int id, UserLogin login)
+        {
+            const string commandMySql = "UPDATE Modulr.Users SET password = @Password, salt = @Salt WHERE id = @ID;";
+            await Connection.ExecuteAsync(ConvertSql(commandMySql), new { login.Password, login.Salt, ID = id });
+        }
+
+        /// <summary>
+        /// Update the cookie key and expiration for the user. Other fields in the <code>UserLogin</code> are ignored.
+        /// </summary>
+        /// <param name="id">The Modulr ID of the user.</param>
+        /// <param name="login">A <code>UserLogin</code> that contains both the cookie key and expiration.</param>
+        public async Task UpdateUserCookie(int id, UserLogin login)
+        {
+            const string commandMySql = "UPDATE Modulr.Users SET login_cookie = @LoginCookie, login_expiration = @LoginExpiration WHERE id = @ID;";
+            await Connection.ExecuteAsync(ConvertSql(commandMySql), new { login.LoginCookie, login.LoginExpiration, ID = id });
+        }
 
         /// <summary>
         /// Update a user's name and role. Usernames and emails cannot be updated through this method.

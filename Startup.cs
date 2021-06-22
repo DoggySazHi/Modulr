@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Modulr.Controllers;
+using Modulr.Controllers.Auth;
 using Modulr.Hubs;
 using Modulr.Hubs.Workers;
 using Modulr.Tester;
@@ -21,7 +22,9 @@ namespace Modulr
             services.AddSingleton<ModulrConfig>();
             services.AddSingleton<JavaUtils>();
             services.AddScoped<SqlQuery>();
+            services.AddScoped<PasswordManager>();
             services.AddScoped<GoogleAuth>();
+            services.AddHttpClient<Capcha>();
 
             var tempConfig = new ModulrConfig(null, verify: false);
             services.AddAuthentication(o =>
@@ -33,6 +36,7 @@ namespace Modulr
                 o.ClientId = tempConfig.GoogleClientKey;
                 o.ClientSecret = tempConfig.GoogleSecret;
             });
+
             services.AddSignalR();
             services.AddSingleton<TestWorker>();
         }
@@ -53,7 +57,7 @@ namespace Modulr
 
             app.UseAuthentication();
             app.UseAuthorization();
-            
+
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();

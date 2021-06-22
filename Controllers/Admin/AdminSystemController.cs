@@ -3,10 +3,11 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Hosting;
+using Modulr.Controllers.Auth;
 using Modulr.Models;
 using Modulr.Tester;
 
-namespace Modulr.Controllers
+namespace Modulr.Controllers.Admin
 {
     [ApiController]
     [Authorize]

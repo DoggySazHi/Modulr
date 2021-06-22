@@ -2,7 +2,7 @@
 using Microsoft.Extensions.Logging;
 using Modulr.Tester;
 
-namespace Modulr.Controllers
+namespace Modulr.Controllers.View
 {
     [ApiController]
     [Route("/{**page}")]
