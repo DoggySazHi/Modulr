@@ -40,11 +40,15 @@ function bindButtons() {
     document.getElementById("stipulatable-add").addEventListener("click", (e) => {
         e.preventDefault();
         addBlankStipulatable();
-    })
+    });
     document.querySelector("input[autocorrect]").addEventListener("change", (e) => {
         e.preventDefault();
-        modified = true;
-    })
+        setModified();
+    });
+    document.querySelector("textarea").addEventListener("change", (e) => {
+        e.preventDefault();
+        setModified();
+    });
 }
 
 function bindUploads() {
@@ -59,8 +63,21 @@ function bindUploads() {
     document.getElementById("submit").classList.remove("hidden");
 }
 
-function clearInputs() {
+function setModified() {
+    modified = true;
+    window.onbeforeunload = (e) => {
+        // Like any browser is going to show this.
+        e.returnValue = "Stipulatable has been modified! Are you sure you want to discard changes?";
+    };
+}
+
+function clearModified() {
     modified = false;
+    window.onbeforeunload = null;
+}
+
+function clearInputs() {
+    clearModified();
     document.getElementById("manager").classList.add("hidden");
     document.getElementById("included").innerHTML = "";
     document.getElementById("testers").innerHTML = "";
@@ -125,7 +142,7 @@ function generateInputs(names, inputArea) {
                             let oldOrder = label.style.order;
                             label.style.order = startSwap.style.order;
                             startSwap.style.order = oldOrder;
-                            modified = true;
+                            setModified();
                         }
                     }
                 }
@@ -149,11 +166,11 @@ function generateInputs(names, inputArea) {
         removeButton.addEventListener("click", (e) => {
             e.preventDefault();
             e.target.parentElement.remove();
-            modified = true;
+            setModified();
         });
         labelName.addEventListener("change", (e) => {
             e.preventDefault();
-            modified = true;
+            setModified();
         })
         label.appendChild(removeButton);
         inputArea.appendChild(label);
@@ -221,7 +238,7 @@ function warnModified(callback) {
     discardBtn.innerHTML = "Discard";
     discardBtn.addEventListener("click", (e) => {
         e.preventDefault();
-        modified = false;
+        clearModified();
         callback();
     }, false);
     triggerPopupButtons([discardBtn]);
@@ -457,7 +474,7 @@ function addTester() {
 }
 
 function addRequired() {
-    modified = true;
+    setModified();
     let inputArea = document.getElementById("required")
     let label = document.createElement("label");
     let labelName = document.createElement("input");
@@ -476,18 +493,18 @@ function addRequired() {
     removeButton.addEventListener("click", (e) => {
         e.preventDefault();
         e.target.parentElement.remove();
-        modified = true;
+        setModified();
     });
     labelName.addEventListener("change", (e) => {
         e.preventDefault();
-        modified = true;
+        setModified();
     })
     label.appendChild(removeButton);
     inputArea.appendChild(label);
 }
 
 function addDragButton(inputArea, warn) {
-    modified = true;
+    setModified();
 
     let order = [...inputArea.children].sort((p, q) =>  parseInt(q.style.order) - parseInt(p.style.order));
     order = order.length === 0 ? 0 : parseInt(order[0].style.order) + 1; // If there are no items, the first order is zero, otherwise it's the greatest order (by sort), then +1.
@@ -542,7 +559,7 @@ function addDragButton(inputArea, warn) {
                     let oldOrder = label.style.order;
                     label.style.order = startSwap.style.order;
                     startSwap.style.order = oldOrder;
-                    modified = true;
+                    setModified();
                 }
             }
         }
@@ -554,11 +571,11 @@ function addDragButton(inputArea, warn) {
     removeButton.addEventListener("click", (e) => {
         e.preventDefault();
         e.target.parentElement.remove();
-        modified = true;
+        setModified();
     });
     labelName.addEventListener("change", (e) => {
         e.preventDefault();
-        modified = true;
+        setModified();
     })
     label.appendChild(removeButton);
     inputArea.appendChild(label);
