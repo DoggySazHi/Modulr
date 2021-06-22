@@ -6,22 +6,22 @@ using Newtonsoft.Json.Linq;
 
 namespace Modulr.Controllers.Auth
 {
-    public class Capcha
+    public class Captcha
     {
         private readonly HttpClient _client;
         private readonly ModulrConfig _config;
         
-        public Capcha(HttpClient client, ModulrConfig config)
+        public Captcha(HttpClient client, ModulrConfig config)
         {
             _client = client;
             _config = config;
         }
 
-        public async Task<bool> VerifyCapcha(string token)
+        public async Task<bool> VerifyCaptcha(string token)
         {
             var parameters = new Dictionary<string, string>
             {
-                { "secret", _config.reCAPCHASecretKey },
+                { "secret", _config.reCAPTCHASecretKey },
                 { "response", token }
             };
 

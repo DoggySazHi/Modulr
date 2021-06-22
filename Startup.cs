@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.Google;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Modulr.Controllers;
@@ -24,7 +25,7 @@ namespace Modulr
             services.AddScoped<SqlQuery>();
             services.AddScoped<PasswordManager>();
             services.AddScoped<GoogleAuth>();
-            services.AddHttpClient<Capcha>();
+            services.AddHttpClient<Captcha>();
 
             var tempConfig = new ModulrConfig(null, verify: false);
             services.AddAuthentication(o =>
@@ -81,6 +82,14 @@ namespace Modulr
             {
                 endpoints.MapHub<TestQueryHub>("/koumakan");
             });
+            
+            var cookiePolicyOptions = new CookiePolicyOptions
+            {
+                MinimumSameSitePolicy = SameSiteMode.Strict,
+                Secure = CookieSecurePolicy.Always
+            };
+
+            app.UseCookiePolicy(cookiePolicyOptions);
         }
     }
 }

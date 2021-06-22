@@ -21,8 +21,8 @@ namespace Modulr.Controllers.Auth
         [HttpGet("GetKey")]
         public string GetClientKey() => $"{{\"client_id\": \"{_config.GoogleClientKey}\"}}";
         
-        [HttpGet("GetCapchaKey")]
-        public string GetCAPCHAKey() => _config.reCAPCHASiteKey;
+        [HttpGet("GetCaptchaKey")]
+        public string GetCAPTCHAKey() => _config.reCAPTCHASiteKey;
 
         [HttpPost("Login")]
         public async Task<LoginMessage> Login([FromBody] string token)

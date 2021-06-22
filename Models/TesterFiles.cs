@@ -8,42 +8,27 @@ namespace Modulr.Models
     public class TesterFiles
     {
         public string AuthToken { get; set; }
+        public string CaptchaToken { get; set; }
         public string ConnectionID { get; set; }
         public int TestID { get; set; }
         public List<string> FileNames { get; set; }
         public List<IFormFile> Files { get; set; }
-        // If this is a file for JUnit (aka compile last)
-        public List<bool> IsTester { get; set; }
 
         public bool IsLikelyValid()
         {
-            if (FileNames == null || Files == null || IsTester == null)
+            if (FileNames == null || Files == null)
                 return false;
             var fileCount = FileNames.Count;
-            if (fileCount == 0 || Files.Count != fileCount || IsTester.Count != fileCount)
+            if (fileCount == 0 || Files.Count != fileCount)
                 return false;
             for (var i = 0; i < fileCount; i++)
                 FileNames[i] = Path.GetFileName(FileNames[i]);
-            var hasTester = IsTester.IndexOf(true);
-            while (hasTester >= 0)
-            {
-                IsTester.RemoveAt(hasTester);
-                var tempFile = Files[hasTester];
-                var tempFileName = FileNames[hasTester];
-                Files.RemoveAt(hasTester);
-                FileNames.RemoveAt(hasTester);
-                Files.Add(tempFile);
-                FileNames.Add(tempFileName);
-                IsTester.Add(false);
-                hasTester = IsTester.IndexOf(true);
-            }
             return true;
         }
 
         public bool IsEmpty()
         {
-            return FileNames == null || Files == null || IsTester == null || FileNames.Count == 0 || Files.Count == 0 ||
-                   IsTester.Count == 0;
+            return FileNames == null || Files == null || FileNames.Count == 0 || Files.Count == 0;
         }
     }
 }

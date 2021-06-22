@@ -9,7 +9,7 @@
 import { getLoginToken, onGoogleReady } from "./google.js";
 import { registerCollapsibles, triggerPopup, handleErrors } from "./main.js";
 import { onSocketReady, connectionId } from "./websocket.js";
-import { bindCapcha } from "./capcha.js"
+import { bindCaptcha, resetCaptcha } from "./captcha.js"
 
 onInitTester();
 
@@ -32,7 +32,7 @@ function onInitTester() {
 
 function bindButtons() {
     let submitBtn = document.getElementById("submit");
-    bindCapcha(submitBtn, submit);
+    bindCaptcha(submitBtn, submit);
 }
 
 function bindUploads() {
@@ -60,9 +60,7 @@ function initWebsocket(connection) {
     console.log("Bound WebSocket!")
 }
 
-async function submit(capcha) {
-    console.log(capcha);
-    
+async function submit(captchaToken) {
     let data = new FormData();
     websocketBuffer = [];
     lastAnimatedBox = -1;
@@ -77,10 +75,11 @@ async function submit(capcha) {
         }
         for (let i = 0; i < input.files.length; i++)
             data.append("Files", input.files[i]);
-        data.append("IsTester", JSON.stringify(false));
     }
     data.append("TestID", JSON.stringify(currentTest));
     data.append("AuthToken", getLoginToken());
+    data.append("CaptchaToken", captchaToken);
+
     if (typeof connectionId !== "undefined")
         data.append("ConnectionID", connectionId);
 
@@ -110,6 +109,7 @@ async function submit(capcha) {
     
     document.getElementById("submit").disabled = false;
     document.getElementById("loading-icon").classList.add("hidden");
+    resetCaptcha();
     await getAttemptsLeft();
 }
 

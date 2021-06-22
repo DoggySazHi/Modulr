@@ -18,13 +18,15 @@ namespace Modulr.Controllers
         private readonly SqlQuery _query;
         private readonly GoogleAuth _auth;
         private readonly ModulrConfig _config;
+        private readonly Captcha _captcha;
 
-        public TestReceivedController(JavaUtils java, SqlQuery query, GoogleAuth auth, ModulrConfig config)
+        public TestReceivedController(JavaUtils java, SqlQuery query, GoogleAuth auth, ModulrConfig config, Captcha captcha)
         {
             _java = java;
             _query = query;
             _auth = auth;
             _config = config;
+            _captcha = captcha;
         }
 
         /// <summary>
@@ -82,6 +84,9 @@ namespace Modulr.Controllers
             var (status, user) = await _auth.Verify(input.AuthToken);
             if (status != GoogleAuth.LoginStatus.Success)
                 return Fail(403, "Login needed!");
+            
+            if (!await _captcha.VerifyCaptcha(input.CaptchaToken))
+                return Fail(403, "reCAPTCHA token invalid!");
 
             var attempts = await _query.GetTimeOut(user.Subject);
             if (_config.TimeoutAttempts >= 1 && attempts.TestsRemaining <= 0)

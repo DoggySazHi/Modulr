@@ -63,8 +63,8 @@ namespace Modulr.Tester
         [JsonProperty] public string GoogleClientKey { get; private set; }
         [JsonProperty] public string GoogleSecret { get; private set; }
         // ReSharper disable twice InconsistentNaming
-        [JsonProperty] public string reCAPCHASiteKey { get; private set; }
-        [JsonProperty] public string reCAPCHASecretKey { get; private set; }
+        [JsonProperty] public string reCAPTCHASiteKey { get; private set; }
+        [JsonProperty] public string reCAPTCHASecretKey { get; private set; }
         [JsonProperty] public string HostedDomain { get; private set; }
         [JsonProperty] public int TimeoutAttempts { get; private set; }
         [JsonProperty] public string[] WebSocketDomains { get; private set; }
