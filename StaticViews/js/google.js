@@ -18,7 +18,7 @@ async function waitForGoogle() {
     if(typeof gapi !== "undefined")
         await googleInit();
     else
-        setTimeout(waitForGoogle, 250);
+        setTimeout(waitForGoogle, 100);
 }
 
 async function googleInit() {

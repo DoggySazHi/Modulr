@@ -6,9 +6,10 @@
  * mukyu~
  */
 
-import {getLoginToken, onGoogleReady} from "./google.js";
-import {registerCollapsibles, triggerPopup, handleErrors} from "./main.js";
-import {onSocketReady, connectionId} from "./websocket.js";
+import { getLoginToken, onGoogleReady } from "./google.js";
+import { registerCollapsibles, triggerPopup, handleErrors } from "./main.js";
+import { onSocketReady, connectionId } from "./websocket.js";
+import { bindCapcha } from "./capcha.js"
 
 onInitTester();
 
@@ -30,10 +31,8 @@ function onInitTester() {
 }
 
 function bindButtons() {
-    document.getElementById("submit").addEventListener("click", async (e) => {
-        e.preventDefault();
-        await submit();
-    }, false);
+    let submitBtn = document.getElementById("submit");
+    bindCapcha(submitBtn, submit);
 }
 
 function bindUploads() {
@@ -61,7 +60,9 @@ function initWebsocket(connection) {
     console.log("Bound WebSocket!")
 }
 
-async function submit() {
+async function submit(capcha) {
+    console.log(capcha);
+    
     let data = new FormData();
     websocketBuffer = [];
     lastAnimatedBox = -1;

@@ -22,7 +22,7 @@ namespace Modulr.Controllers.Auth
         public string GetClientKey() => $"{{\"client_id\": \"{_config.GoogleClientKey}\"}}";
         
         [HttpGet("GetCapchaKey")]
-        public string GetCAPCHAKey() => $"{{\"site_key\": \"{_config.reCAPCHASiteKey}\"}}";
+        public string GetCAPCHAKey() => _config.reCAPCHASiteKey;
 
         [HttpPost("Login")]
         public async Task<LoginMessage> Login([FromBody] string token)
