@@ -193,7 +193,7 @@ namespace Modulr.Controllers
         /// <returns>A list of all available tests.</returns>
         public async Task<List<Stipulatable>> GetAllTests()
         {
-            const string commandMySql = "SELECT * FROM Modulr.Stipulatables";
+            const string commandMySql = "SELECT * FROM Modulr.Stipulatables ORDER BY id";
             return (await Connection.QueryAsync(ConvertSql(commandMySql))).ToList().Select(o =>
             {
                 var included = JsonConvert.DeserializeObject<List<string>>(o.included);
@@ -234,7 +234,7 @@ namespace Modulr.Controllers
         /// <returns>A list of all user data.</returns>
         public async Task<IEnumerable<User>> GetAllUsers()
         {
-            const string commandMySql = "SELECT * FROM Modulr.Users;";
+            const string commandMySql = "SELECT * FROM Modulr.Users ORDER BY id;";
             return await Connection.QueryAsync<User>(ConvertSql(commandMySql));
         }
         

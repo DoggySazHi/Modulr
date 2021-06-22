@@ -346,6 +346,13 @@ footer {
     z-index: 100000;
 }
 
+a:link, a:visited {
+    color: #2394e0;
+}
+a:hover {
+    color: #84eeb4;
+}
+
 .nav-container a {
     text-decoration: none;
     color: white;
