@@ -116,20 +116,20 @@ namespace Modulr.Controllers
         }
         
         /// <summary>
-        /// Update a user by their ID.
+        /// Put the user in the database.
         /// </summary>
-        /// <param name="googleID">The user's Google ID.</param>
         /// <param name="name">The name of the user.</param>
-        /// <param name="email">The email of the user.</param>
+        /// <param name="email">The email of the user. Must be unique.</param>
+        /// <param name="googleID">The user's Google ID. May be optional, especially if they're using Modulr login.</param>
         /// <param name="username">The username of the user. May be optional, however it shouldn't change.</param>
-        public async Task Register(string googleID, string name, string email, string username = null)
+        public async Task Register(string name, string email, string googleID = null, string username = null)
         {
             username ??= name;
             const string commandUserInsertMySql =
                 "INSERT INTO Modulr.Users (google_id, name, username, email) VALUES (@GoogleID, @Name, @Username, @Email)";
             const string commandUserUpdateMySql =
                 "UPDATE Modulr.Users SET username = @Username, email = @Email WHERE google_id = @GoogleID";
-            if(!await UserExists(googleID))
+            if(!await UserExists(email))
                 await Connection.ExecuteAsync(ConvertSql(commandUserInsertMySql),
                     new {GoogleID = googleID, Name = name, Username = username, Email = email});
             else
@@ -141,13 +141,13 @@ namespace Modulr.Controllers
         /// <summary>
         /// Check whether a user exists.
         /// </summary>
-        /// <param name="googleID">The user's Google ID (NOT their Modulr ID).</param>
+        /// <param name="email">The user's email.</param>
         /// <returns>Whether the user exists or not.</returns>
-        public async Task<bool> UserExists(string googleID)
+        public async Task<bool> UserExists(string email)
         {
-            const string commandMySql = "SELECT COUNT(1) FROM Modulr.Users WHERE google_id = @GoogleID;";
+            const string commandMySql = "SELECT COUNT(1) FROM Modulr.Users WHERE email = @Email;";
             var results = await Connection.QuerySingleOrDefaultAsync<int>(ConvertSql(commandMySql),
-                new {GoogleID = googleID});
+                new { Email = email });
             return results == 1;
         }
         
@@ -205,12 +205,12 @@ namespace Modulr.Controllers
         /// <summary>
         /// Get a role of a user.
         /// </summary>
-        /// <param name="googleID">The user's Google ID (NOT their Modulr ID).</param>
+        /// <param name="id">The user's Modulr ID.</param>
         /// <returns>The role(s) the user possesses.</returns>
-        public async Task<Role> GetRole(string googleID)
+        public async Task<Role> GetRole(int id)
         {
-            const string commandMySql = "SELECT role FROM Modulr.Users WHERE google_id = @GoogleID";
-            return await Connection.QuerySingleOrDefaultAsync<Role>(ConvertSql(commandMySql), new { GoogleID = googleID } );
+            const string commandMySql = "SELECT role FROM Modulr.Users WHERE id = @ID";
+            return await Connection.QuerySingleOrDefaultAsync<Role>(ConvertSql(commandMySql), new { ID = id } );
         }
         
         /// <summary>
@@ -242,8 +242,9 @@ namespace Modulr.Controllers
         /// <returns>A <code>UserLogin</code> that contains the fields representing login information.</returns>
         public async Task<UserLogin> GetUserLogin(int id)
         {
-            const string commandMySql = "SELECT password, salt, login_cookie, login_expire FROM Modulr.Users WHERE id = @ID;";
-            return await Connection.QuerySingleAsync<UserLogin>(ConvertSql(commandMySql), new { ID = id });
+            // Do not return the login if they're banned (bit-wise operation on 2)
+            const string commandMySql = "SELECT password, salt, login_cookie, login_expire FROM Modulr.Users WHERE id = @ID AND role & 2 != 2;";
+            return await Connection.QuerySingleOrDefaultAsync<UserLogin>(ConvertSql(commandMySql), new { ID = id });
         }
         
         /// <summary>

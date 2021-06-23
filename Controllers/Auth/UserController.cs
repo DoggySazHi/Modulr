@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Mvc;
 using Modulr.Models;
+using Modulr.Tester;
 
 namespace Modulr.Controllers.Auth
 {
@@ -20,35 +21,36 @@ namespace Modulr.Controllers.Auth
         }
 
         [HttpPost("GetTimeout")]
-        public async Task<UserTimeout> GetTimeout([FromBody] string token)
+        public async Task<UserTimeout> GetTimeout()
         {
-            var user = _manager.VerifySession()
-            if (status == GoogleAuth.LoginStatus.Success)
+            if (await this.VerifySession(_manager))
+            {
+                var user = await _query.ResolveUser(this.GetLoginCookie());
                 return new UserTimeout(user.TestsTimeout, user.TestsRemaining);
+            }
+
             Response.StatusCode = 403;
             return null;
         }
 
         [HttpPost("LogOut")]
-        public async Task Logout([FromBody] string token)
+        public async Task Logout()
         {
-            var (status, user) = await _auth.Verify(token);
-            if (status == GoogleAuth.LoginStatus.Success)
+            if (await this.VerifySession(_manager))
             {
                 await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
-                await _query.LogoutUser(user.ID);
+                await _query.LogoutUser(this.GetModulrID());
             }
             Response.StatusCode = 403;
         }
         
         [HttpPost("Login")]
-        public async Task Login([FromBody] string token)
+        public async Task Login()
         {
-            var (status, user) = await _auth.Verify(token);
-            if (status == GoogleAuth.LoginStatus.Success)
+            if (await this.VerifySession(_manager))
             {
                 await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
-                await _query.LogoutUser(user.ID);
+                await _query.LogoutUser(this.GetModulrID());
             }
             Response.StatusCode = 403;
         }

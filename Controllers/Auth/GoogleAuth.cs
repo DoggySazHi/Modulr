@@ -57,12 +57,12 @@ namespace Modulr.Controllers.Auth
                 return (LoginStatus.BadDomain, null);
             
             await _query.Register(validation.Subject, validation.Name, validation.Email);
-            
-            var banStatus = await _query.GetRole(validation.Subject);
-            if (banStatus.HasFlag(Role.Banned))
-                return (LoginStatus.Banned, null);
 
             var user = await _query.ResolveUser(validation.Subject);
+            
+            var banStatus = await _query.GetRole(user.ID);
+            if (banStatus.HasFlag(Role.Banned))
+                return (LoginStatus.Banned, null);
 
             return (LoginStatus.Success, user);
         }

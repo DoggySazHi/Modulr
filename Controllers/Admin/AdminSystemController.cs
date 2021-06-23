@@ -15,27 +15,21 @@ namespace Modulr.Controllers.Admin
     public class AdminSystemController : ControllerBase
     {
         private readonly SqlQuery _query;
-        private readonly GoogleAuth _auth;
+        private readonly PasswordManager _manager;
         private readonly IHostApplicationLifetime _app;
         
-        public AdminSystemController(SqlQuery query, ModulrConfig config, GoogleAuth auth, IHostApplicationLifetime app)
+        public AdminSystemController(SqlQuery query, ModulrConfig config, PasswordManager manager, IHostApplicationLifetime app)
         {
             _query = query;
             ModulrJail.Config = config;
-            _auth = auth;
+            _manager = manager;
             _app = app;
         }
 
         [HttpPost("RebuildContainer")]
-        public async Task<string> RebuildContainer([FromBody] BasicAuth login)
+        public async Task<string> RebuildContainer()
         {
-            if(!await this.IsAdmin(_query))
-            {
-                Response.StatusCode = 403;
-                return null;
-            }
-            
-            if ((await _auth.Verify(login.AuthToken)).Status != GoogleAuth.LoginStatus.Success)
+            if (!await this.VerifySession(_manager) || !await this.VerifyAdmin(_query))
             {
                 Response.StatusCode = 403;
                 return null;
@@ -45,15 +39,9 @@ namespace Modulr.Controllers.Admin
         }
         
         [HttpPost("Shutdown")]
-        public async Task Shutdown([FromBody] BasicAuth login)
+        public async Task Shutdown()
         {
-            if(!await this.IsAdmin(_query))
-            {
-                Response.StatusCode = 403;
-                return;
-            }
-
-            if ((await _auth.Verify(login.AuthToken)).Status != GoogleAuth.LoginStatus.Success)
+            if (!await this.VerifySession(_manager) || !await this.VerifyAdmin(_query))
             {
                 Response.StatusCode = 403;
                 return;
@@ -67,15 +55,9 @@ namespace Modulr.Controllers.Admin
         }
         
         [HttpPost("GetAllUsers")]
-        public async Task<IEnumerable<User>> GetAllUsers([FromBody] BasicAuth login)
+        public async Task<IEnumerable<User>> GetAllUsers()
         {
-            if(!await this.IsAdmin(_query))
-            {
-                Response.StatusCode = 403;
-                return null;
-            }
-
-            if ((await _auth.Verify(login.AuthToken)).Status != GoogleAuth.LoginStatus.Success)
+            if (!await this.VerifySession(_manager) || !await this.VerifyAdmin(_query))
             {
                 Response.StatusCode = 403;
                 return null;
@@ -87,13 +69,7 @@ namespace Modulr.Controllers.Admin
         [HttpPost("UpdateUser")]
         public async Task UpdateUser([FromBody] UpdateUser user)
         {
-            if(!await this.IsAdmin(_query))
-            {
-                Response.StatusCode = 403;
-                return;
-            }
-
-            if ((await _auth.Verify(user.AuthToken)).Status != GoogleAuth.LoginStatus.Success)
+            if (!await this.VerifySession(_manager) || !await this.VerifyAdmin(_query))
             {
                 Response.StatusCode = 403;
                 return;
@@ -105,13 +81,7 @@ namespace Modulr.Controllers.Admin
         [HttpPost("ResetUserTimeout")]
         public async Task ResetUserTimeout([FromBody] UpdateUser user)
         {
-            if(!await this.IsAdmin(_query))
-            {
-                Response.StatusCode = 403;
-                return;
-            }
-
-            if ((await _auth.Verify(user.AuthToken)).Status != GoogleAuth.LoginStatus.Success)
+            if (!await this.VerifySession(_manager) || !await this.VerifyAdmin(_query))
             {
                 Response.StatusCode = 403;
                 return;

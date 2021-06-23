@@ -52,9 +52,17 @@ namespace Modulr.Controllers.Auth
             return loginKey;
         }
         
+        /// <summary>
+        /// Determine whether the user's cookie is valid.
+        /// </summary>
+        /// <param name="id">The user's Modulr ID.</param>
+        /// <param name="cookie">The user's cookie.</param>
+        /// <returns>Whether their cookie is still valid or not.</returns>
         public async Task<bool> VerifySession(int id, string cookie)
         {
             var user = await _query.GetUserLogin(id);
+            if (user == null)
+                return false;
             return user.LoginExpiration >= DateTimeOffset.Now && SlowEquals(cookie, user.LoginCookie);
         }
 

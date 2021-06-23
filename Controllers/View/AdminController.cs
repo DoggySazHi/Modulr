@@ -39,7 +39,7 @@ namespace Modulr.Controllers.View
             if(Router.Count == 0)
                 SetupRouter();
             
-            if (!await this.IsAdmin(_query))
+            if (!await this.VerifyAdmin(_query))
             {
                 Response.StatusCode = 403;
                 return await base.Get("error/403.html");

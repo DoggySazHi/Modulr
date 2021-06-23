@@ -16,15 +16,15 @@ namespace Modulr.Controllers
     {
         private readonly JavaUtils _java;
         private readonly SqlQuery _query;
-        private readonly GoogleAuth _auth;
+        private readonly PasswordManager _manager;
         private readonly ModulrConfig _config;
         private readonly Captcha _captcha;
 
-        public TestReceivedController(JavaUtils java, SqlQuery query, GoogleAuth auth, ModulrConfig config, Captcha captcha)
+        public TestReceivedController(JavaUtils java, SqlQuery query, PasswordManager manager, ModulrConfig config, Captcha captcha)
         {
             _java = java;
             _query = query;
-            _auth = auth;
+            _manager = manager;
             _config = config;
             _captcha = captcha;
         }
@@ -37,7 +37,7 @@ namespace Modulr.Controllers
         [HttpPost("GetTest")]
         public async Task<Stipulatable> GetTest([FromBody] TestQuery item)
         {
-            if ((await _auth.Verify(item.AuthToken)).Status != GoogleAuth.LoginStatus.Success)
+            if (!await this.VerifySession(_manager))
             {
                 Response.StatusCode = 403;
                 return null;
@@ -57,11 +57,12 @@ namespace Modulr.Controllers
         [HttpPost("GetAllTests")]
         public async Task<IEnumerable<Stipulatable>> GetAllTests([FromBody] TestQuery login)
         {
-            if ((await _auth.Verify(login.AuthToken)).Status != GoogleAuth.LoginStatus.Success)
+            if (!await this.VerifySession(_manager))
             {
                 Response.StatusCode = 403;
                 return null;
             }
+            
             var test = await _query.GetAllTests();
             if(test != null)
                 return test;
@@ -81,13 +82,13 @@ namespace Modulr.Controllers
             if (input == null || !input.IsLikelyValid())
                 return Fail(400, ">:[ not nice");
 
-            var (status, user) = await _auth.Verify(input.AuthToken);
-            if (status != GoogleAuth.LoginStatus.Success)
+            if (!await this.VerifySession(_manager))
                 return Fail(403, "Login needed!");
             
             if (!await _captcha.VerifyCaptcha(input.CaptchaToken))
                 return Fail(403, "reCAPTCHA token invalid!");
 
+            var user = await _query.ResolveUser(this.GetLoginCookie());
             if (_config.TimeoutAttempts >= 1 && user.TestsRemaining <= 0)
                 return Fail(403, "You are on a cooldown!");
 
@@ -135,8 +136,7 @@ namespace Modulr.Controllers
             if (file.File == null)
                 return BadRequest("Bad Filename!!");
 
-            var (status, _) = await _auth.Verify(file.AuthToken);
-            if (status != GoogleAuth.LoginStatus.Success)
+            if (!await this.VerifySession(_manager))
                 return Forbid();
 
             var test = await _query.GetTest(file.TestID);

@@ -18,19 +18,19 @@ namespace Modulr.Controllers.Admin
     {
         private readonly SqlQuery _query;
         private readonly ModulrConfig _config;
-        private readonly GoogleAuth _auth;
+        private readonly PasswordManager _manager;
         
-        public AdminTestController(SqlQuery query, ModulrConfig config, GoogleAuth auth)
+        public AdminTestController(SqlQuery query, ModulrConfig config, PasswordManager manager)
         {
             _query = query;
             _config = config;
-            _auth = auth;
+            _manager = manager;
         }
         
         [HttpPost("Add")]
         public async Task<int> OnAdd([FromBody] UpdateTesterFiles input)
         {
-            if(!await this.IsAdmin(_query))
+            if (!await this.VerifySession(_manager) || !await this.VerifyAdmin(_query))
             {
                 Response.StatusCode = 403;
                 return -1;
@@ -48,13 +48,7 @@ namespace Modulr.Controllers.Admin
         [HttpPost("GetAll")]
         public async Task<List<AdminStipulatable>> GetTests([FromBody] TestQuery login)
         {
-            if(!await this.IsAdmin(_query))
-            {
-                Response.StatusCode = 403;
-                return null;
-            }
-            
-            if ((await _auth.Verify(login.AuthToken)).Status != GoogleAuth.LoginStatus.Success)
+            if (!await this.VerifySession(_manager) || !await this.VerifyAdmin(_query))
             {
                 Response.StatusCode = 403;
                 return null;
@@ -75,13 +69,7 @@ namespace Modulr.Controllers.Admin
         [HttpPost("Get")]
         public async Task<AdminStipulatable> GetTest([FromBody] TestQuery login)
         {
-            if(!await this.IsAdmin(_query))
-            {
-                Response.StatusCode = 403;
-                return null;
-            }
-            
-            if ((await _auth.Verify(login.AuthToken)).Status != GoogleAuth.LoginStatus.Success)
+            if (!await this.VerifySession(_manager) || !await this.VerifyAdmin(_query))
             {
                 Response.StatusCode = 403;
                 return null;
@@ -103,15 +91,9 @@ namespace Modulr.Controllers.Admin
         [HttpPut("Update")]
         public async Task<bool> UpdateTest([FromBody] UpdateTesterFiles input)
         {
-            if(!await this.IsAdmin(_query))
+            if (!await this.VerifySession(_manager) || !await this.VerifyAdmin(_query))
             {
                 Response.StatusCode = 403;
-                return false;
-            }
-
-            if (!input.IsLikelyValid())
-            {
-                Response.StatusCode = 400;
                 return false;
             }
 
@@ -121,7 +103,7 @@ namespace Modulr.Controllers.Admin
         [HttpDelete("Delete")]
         public async Task<bool> DeleteTest([FromBody] int id)
         {
-            if(!await this.IsAdmin(_query))
+            if(!await this.VerifyAdmin(_query))
             {
                 Response.StatusCode = 403;
                 return false;
@@ -147,15 +129,10 @@ namespace Modulr.Controllers.Admin
             if (!input.IsLikelyValid())
                 return Fail(400, ">:[ not nice");
             
-            if(!await this.IsAdmin(_query))
+            if (!await this.VerifySession(_manager) || !await this.VerifyAdmin(_query))
             {
-                Response.StatusCode = 403;
-                return null;
+                Fail(403, "Authentication required!");
             }
-
-            var auth = await _auth.Verify(input.AuthToken);
-            if (auth.Status != GoogleAuth.LoginStatus.Success)
-                return Fail(403, "Login needed!");
 
             var test = await _query.GetTest(input.TestID);
             var output = new StringBuilder();
