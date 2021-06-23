@@ -45,6 +45,8 @@ function signInPopup() {
 function checkSignIn() {
     if (getLoginToken() !== undefined) {
         createSignOut();
+    } else {
+        createSignIn();
     }
 }
 

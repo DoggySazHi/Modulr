@@ -56,7 +56,7 @@ namespace Modulr.Controllers.Auth
             if (!string.IsNullOrEmpty(_config.HostedDomain) && validation.HostedDomain != _config.HostedDomain)
                 return (LoginStatus.BadDomain, null);
             
-            await _query.Register(validation.Subject, validation.Name, validation.Email);
+            await _query.Register(validation.Name, validation.Email, validation.Subject);
 
             var user = await _query.ResolveUser(validation.Subject);
             

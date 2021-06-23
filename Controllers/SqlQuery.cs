@@ -243,7 +243,7 @@ namespace Modulr.Controllers
         public async Task<UserLogin> GetUserLogin(int id)
         {
             // Do not return the login if they're banned (bit-wise operation on 2)
-            const string commandMySql = "SELECT password, salt, login_cookie, login_expire FROM Modulr.Users WHERE id = @ID AND role & 2 != 2;";
+            const string commandMySql = "SELECT password, salt, login_cookie, login_expiration FROM Modulr.Users WHERE id = @ID AND role & 2 != 2;";
             return await Connection.QuerySingleOrDefaultAsync<UserLogin>(ConvertSql(commandMySql), new { ID = id });
         }
         
