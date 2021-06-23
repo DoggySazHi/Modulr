@@ -129,7 +129,7 @@ namespace Modulr.Controllers
                 "INSERT INTO Modulr.Users (google_id, name, username, email) VALUES (@GoogleID, @Name, @Username, @Email)";
             const string commandUserUpdateMySql =
                 "UPDATE Modulr.Users SET username = @Username, email = @Email WHERE google_id = @GoogleID";
-            if(!await UserExists(email))
+            if(await UserExists(email) == 0)
                 await Connection.ExecuteAsync(ConvertSql(commandUserInsertMySql),
                     new {GoogleID = googleID, Name = name, Username = username, Email = email});
             else
@@ -142,13 +142,13 @@ namespace Modulr.Controllers
         /// Check whether a user exists.
         /// </summary>
         /// <param name="email">The user's email.</param>
-        /// <returns>Whether the user exists or not.</returns>
-        public async Task<bool> UserExists(string email)
+        /// <returns>The Modulr ID if they exist, otherwise 0.</returns>
+        public async Task<int> UserExists(string email)
         {
-            const string commandMySql = "SELECT COUNT(1) FROM Modulr.Users WHERE email = @Email;";
+            const string commandMySql = "SELECT id FROM Modulr.Users WHERE email = @Email;";
             var results = await Connection.QuerySingleOrDefaultAsync<int>(ConvertSql(commandMySql),
                 new { Email = email });
-            return results == 1;
+            return results;
         }
         
         /// <summary>
@@ -282,11 +282,11 @@ namespace Modulr.Controllers
         /// <summary>
         /// Update a user's name and role. Usernames and emails cannot be updated through this method.
         /// </summary>
-        /// <param name="u">A user. Only the ID will be used to search the database.</param>
-        public async Task UpdateUser(User u)
+        /// <param name="user">A user. Only the ID will be used to search the database.</param>
+        public async Task UpdateUser(User user)
         {
             const string commandMySql = "UPDATE Modulr.Users SET `name` = @Name, `role` = @Role WHERE id = @ID";
-            await Connection.ExecuteAsync(ConvertSql(commandMySql), new {u.Name, Role = (int) u.Role, u.ID});
+            await Connection.ExecuteAsync(ConvertSql(commandMySql), new { user.Name, Role = (int) user.Role, user.ID });
         }
 
         /// <summary>

@@ -1,5 +1,9 @@
-﻿using System.Security.Claims;
+﻿using System;
+using System.Collections.Generic;
+using System.Security.Claims;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Mvc;
 using Modulr.Controllers;
 using Modulr.Controllers.Auth;
@@ -23,5 +27,33 @@ namespace Modulr.Tester
 
         public static string GetLoginCookie(this ControllerBase controller)
             => controller.User.FindFirstValue("Token");
+
+        public static async Task LoginUser(this ControllerBase controller, User user, string cookie)
+        {
+            const string cookieScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+            
+            var identity = new ClaimsIdentity(new List<Claim>
+            {
+                new("ModulrID", "" + user.ID),
+                new(ClaimTypes.Email, user.Email),
+                new(ClaimTypes.Name, user.Username),
+                new(ClaimTypes.Role, $"{(int) user.Role}"),
+                new("Token", cookie)
+            }, cookieScheme);
+            
+            var authProperties = new AuthenticationProperties
+            {
+                AllowRefresh = true,
+                IsPersistent = true,
+                IssuedUtc = DateTimeOffset.UtcNow,
+                ExpiresUtc = DateTimeOffset.UtcNow.AddDays(14),
+                RedirectUri = ""
+            };
+            
+            await controller.HttpContext.SignInAsync(
+                cookieScheme, 
+                new ClaimsPrincipal(identity), 
+                authProperties);
+        }
     }
 }

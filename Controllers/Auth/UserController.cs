@@ -45,14 +45,32 @@ namespace Modulr.Controllers.Auth
         }
         
         [HttpPost("Login")]
-        public async Task Login()
+        public async Task Login(LoginEvent login)
         {
-            if (await this.VerifySession(_manager))
+            if (!login.IsLikelyValid())
             {
-                await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
-                await _query.LogoutUser(this.GetModulrID());
+                Response.StatusCode = 400;
+                return;
             }
-            Response.StatusCode = 403;
+
+            var modulrID = await _query.UserExists(login.Email);
+
+            if (modulrID == 0)
+            {
+                Response.StatusCode = 403;
+                return;
+            }
+
+            var loginCookie = await _manager.Login(modulrID, login.Password);
+            
+            if (loginCookie == null)
+            {
+                Response.StatusCode = 403;
+                return;
+            }
+
+            var user = await _query.ResolveUser(loginCookie);
+            await this.LoginUser(user, loginCookie);
         }
     }
 }
