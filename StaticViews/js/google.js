@@ -2,7 +2,7 @@
 
 import { triggerPopup, getUrl } from "/js/main.js";
 
-export { onLoginEvent, onGoogleReady, getLoginToken };
+export { onLoginEvent, onGoogleReady, getLoginToken, renderLogin, signOut };
 
 let onLoginEvent = [];
 let onGoogleReady = [];
@@ -27,15 +27,14 @@ async function googleInit() {
 
     gapi.load('auth2', function() {
         gapi.auth2.init(key).then(() => {
-            renderLogin();
             for (let f of onGoogleReady)
                 f(gapi.auth2.getAuthInstance().currentUser.get());
         });
     });
 }
 
-async function renderLogin() {
-    gapi.signin2.render('googleSignIn', {
+function renderLogin(field) {
+    gapi.signin2.render(field, {
         'scope': 'profile email',
         'width': 160,
         'height': 32,
@@ -61,13 +60,17 @@ async function onSignIn(user)
     if (!message.success) {
         triggerPopup("Mukyu~", "The server didn't let us login.\nMessage: " + message.error);
         console.error("Server didn't like our Google login!\n" + message.error);
-        await signOut(false);
+        await signOut();
+        
+        return false;
     } else {
         document.getElementById("username").innerHTML = "Hello " + user.getBasicProfile().getName() + "!";
-        createSignOut();
     }
+    
     for (let f of onLoginEvent)
         f(gapi.auth2.getAuthInstance().currentUser.get());
+    
+    return true;
 }
 
 function onSignInError(error)
@@ -76,29 +79,9 @@ function onSignInError(error)
         console.error("Failed to sign-in with Google...", error);
 }
 
-function createSignOut() {
-    let button = document.getElementById("googleSignIn");
-    button.innerHTML = "";
-    let signOutButton = document.createElement("button");
-    signOutButton.className = "button-compact danger";
-    signOutButton.innerHTML = "Log Out";
-    signOutButton.addEventListener("click", async (e) => {
-        e.preventDefault();
-        await signOut(true);
-    });
-    button.appendChild(signOutButton);
-}
-
-async function signOut(redirect) {
+async function signOut() {
     let google = gapi.auth2.getAuthInstance();
-    await fetch(getUrl("/Users/LogOut", {}));
     await google.signOut();
-    console.info('Logged out!');
-    if (redirect)
-        window.location.replace(getUrl("/", {}));
-    document.getElementById("googleSignIn").innerHTML = "";
-    document.getElementById("username").innerHTML = "";
-    await renderLogin();
 }
 
 function getLoginToken() {

@@ -30,6 +30,13 @@ function fixPopup() {
         e.preventDefault();
         disablePopup();
     }));
+    document.querySelector(".blocker").addEventListener("click", (e) => {
+        e.preventDefault();
+        disablePopup();
+    });
+    document.querySelector(".blocker-message").addEventListener("click", (e) => {
+        e.stopPropagation();
+    });
 }
 
 function registerCollapsibles() {
