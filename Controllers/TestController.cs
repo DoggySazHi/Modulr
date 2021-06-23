@@ -88,8 +88,7 @@ namespace Modulr.Controllers
             if (!await _captcha.VerifyCaptcha(input.CaptchaToken))
                 return Fail(403, "reCAPTCHA token invalid!");
 
-            var attempts = await _query.GetTimeOut(user.Subject);
-            if (_config.TimeoutAttempts >= 1 && attempts.TestsRemaining <= 0)
+            if (_config.TimeoutAttempts >= 1 && user.TestsRemaining <= 0)
                 return Fail(403, "You are on a cooldown!");
 
             var test = await _query.GetTest(input.TestID);
@@ -121,7 +120,7 @@ namespace Modulr.Controllers
             }
 
             var output = _java.DockerTest(path, input.ConnectionID, test.TesterFiles.ToArray());
-            await _query.DecrementAttempts(user.Subject);
+            await _query.DecrementAttempts(user.ID);
             return output;
         }
         

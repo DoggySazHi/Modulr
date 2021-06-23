@@ -152,21 +152,6 @@ namespace Modulr.Controllers
         }
         
         /// <summary>
-        /// Get the time left for the reset timer.
-        /// </summary>
-        /// <param name="googleID">The user's Google ID (NOT their Modulr ID).</param>
-        /// <returns></returns>
-        public async Task<UserTimeout> GetTimeOut(string googleID)
-        {
-            const string commandMySql = "SELECT tests_remaining, tests_timeout FROM Modulr.Users WHERE google_id = @GoogleID";
-            var results = await Connection.QuerySingleOrDefaultAsync<UserTimeout>(ConvertSql(commandMySql),
-                new {GoogleID = googleID});
-            if (results != null)
-                results.Milliseconds = (long) (results.TestsTimeout - DateTimeOffset.Now).TotalMilliseconds;
-            return results;
-        }
-
-        /// <summary>
         /// Reset the test attempts remaining for all users, if their timeouts have expired.
         /// </summary>
         private async Task ResetTestsRemaining()
@@ -206,15 +191,15 @@ namespace Modulr.Controllers
         /// <summary>
         /// Decrement the amount of attempts available for the user.
         /// </summary>
-        /// <param name="googleID">The user's Google ID (NOT their Modulr ID).</param>
-        public async Task DecrementAttempts(string googleID)
+        /// <param name="id">The user's Modulr ID.</param>
+        public async Task DecrementAttempts(int id)
         {
             if (_config.TimeoutAttempts < 1)
                 return;
             const string commandMySql =
-                "UPDATE Modulr.Users SET tests_timeout = ADDTIME(CURRENT_TIMESTAMP(), '00:30:00') WHERE google_id = @GoogleID AND tests_remaining = @MaxTests;" +
-                "UPDATE Modulr.Users SET tests_remaining = tests_remaining - 1 WHERE google_id = @GoogleID;";
-            await Connection.ExecuteAsync(ConvertSql(commandMySql), new { MaxTests = _config.TimeoutAttempts, GoogleID = googleID } );
+                "UPDATE Modulr.Users SET tests_timeout = ADDTIME(CURRENT_TIMESTAMP(), '00:30:00') WHERE id = @ID AND tests_remaining = @MaxTests;" +
+                "UPDATE Modulr.Users SET tests_remaining = tests_remaining - 1 WHERE id = @ID;";
+            await Connection.ExecuteAsync(ConvertSql(commandMySql), new { MaxTests = _config.TimeoutAttempts, ID = id } );
         }
         
         /// <summary>

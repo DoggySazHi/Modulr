@@ -1,6 +1,5 @@
 using System;
 using Microsoft.AspNetCore.Authentication.Cookies;
-using Microsoft.AspNetCore.Authentication.Google;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -27,16 +26,10 @@ namespace Modulr
             services.AddScoped<GoogleAuth>();
             services.AddHttpClient<Captcha>();
 
-            var tempConfig = new ModulrConfig(null, verify: false);
             services.AddAuthentication(o =>
             {
                 o.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
-                o.DefaultChallengeScheme = GoogleDefaults.AuthenticationScheme;
-            }).AddCookie().AddGoogle(o =>
-            {
-                o.ClientId = tempConfig.GoogleClientKey;
-                o.ClientSecret = tempConfig.GoogleSecret;
-            });
+            }).AddCookie();
 
             services.AddSignalR();
             services.AddSingleton<TestWorker>();

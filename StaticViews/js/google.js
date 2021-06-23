@@ -63,8 +63,6 @@ async function onSignIn(user)
         await signOut();
         
         return false;
-    } else {
-        document.getElementById("username").innerHTML = "Hello " + user.getBasicProfile().getName() + "!";
     }
     
     for (let f of onLoginEvent)

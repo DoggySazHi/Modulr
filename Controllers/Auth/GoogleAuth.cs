@@ -29,7 +29,7 @@ namespace Modulr.Controllers.Auth
             Success
         }
         
-        public async Task<(LoginStatus Status, GoogleJsonWebSignature.Payload User)> Verify(string token)
+        public async Task<(LoginStatus Status, User User)> Verify(string token)
         {
             if (token == null)
                 return (LoginStatus.Invalid, null);
@@ -61,8 +61,10 @@ namespace Modulr.Controllers.Auth
             var banStatus = await _query.GetRole(validation.Subject);
             if (banStatus.HasFlag(Role.Banned))
                 return (LoginStatus.Banned, null);
-            
-            return (LoginStatus.Success, validation);
+
+            var user = await _query.ResolveUser(validation.Subject);
+
+            return (LoginStatus.Success, user);
         }
     }
 }

@@ -2,12 +2,15 @@
 
 import { triggerPopup, triggerPopupButtons, disablePopup, registerCollapsibles, getUrl, handleErrors } from "./main.js"
 
-import { onGoogleReady, renderLogin, signOut as signOutGoogle } from "./google.js"
+import { onGoogleReady, onLoginEvent, renderLogin, signOut as signOutGoogle, getLoginToken } from "./google.js"
+
+import { bindCaptcha, resetCaptcha } from "./captcha.js"
 
 onInitLogin();
 
 function onInitLogin() {
-    onGoogleReady.push(createSignIn);
+    onGoogleReady.push(checkSignIn);
+    onLoginEvent.push(googleTrigger);
     console.info("Initialized login script!");
 }
 
@@ -20,10 +23,11 @@ function signInPopup() {
             <label for="login-password">Password</label>
             <input type="password" id="login-password" />
             <div class="row center">
-                <button class="default">Sign In</button>
-                <div> or use </div>
-                <div id="google-submit"></div>
+                <button class="normal">Sign In</button>
+                <button class="default">Reset Password</button>
             </div>
+            <div>(or use)</div>
+            <div id="google-submit"></div>
         </form>
     `;
     
@@ -36,6 +40,16 @@ function signInPopup() {
     triggerPopup("Welcome to Modulr!", output.innerHTML);
     
     renderLogin("google-submit");
+}
+
+function checkSignIn() {
+    if (getLoginToken() !== undefined) {
+        createSignOut();
+    }
+}
+
+function googleTrigger(user) {
+    document.getElementById("username").innerHTML = "Hello " + user.getBasicProfile().getName() + "!";
 }
 
 function createSignIn() {

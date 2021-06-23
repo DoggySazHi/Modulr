@@ -2,6 +2,7 @@
 {
     public class BasicAuth
     {
-        public string AuthToken { get; set; }
+        public int ModulrID { get; set; }
+        public string Cookie { get; set; }
     }
 }

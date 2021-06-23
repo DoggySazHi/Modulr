@@ -36,13 +36,19 @@ namespace Modulr.Controllers.Auth
             var user = await _query.GetUserLogin(id);
             if (!VerifyPassword(user, password))
                 return null;
+            
+            return await GenerateCookie(id);
+        }
 
+        public async Task<string> GenerateCookie(int id)
+        {
             var loginKey = GetAuthCode();
             await _query.UpdateUserLogin(id, new UserLogin
             {
                 LoginCookie = loginKey,
                 LoginExpiration = DateTimeOffset.Now.AddDays(14)
             });
+
             return loginKey;
         }
         
