@@ -70,8 +70,8 @@ namespace Modulr.Controllers.View
             catch (FileNotFoundException)
             {
                 Response.StatusCode = 404;
-                var found = Router.TryGetValue("staticviews/views/404.html", out var file);
-                return !found ? base.Content("Error 404!!") : base.Content(await Templater(file), GetMIME(file));
+                const string file404 = "StaticViews/views/error/404.html";
+                return System.IO.File.Exists(file404) ? base.Content(await Templater(file404), GetMIME(file404)) : base.Content("Error 404!!");
             }
         }
 

@@ -1,7 +1,5 @@
-﻿using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using Modulr.Controllers.Auth;
 using Modulr.Tester;
 
 namespace Modulr.Controllers.View

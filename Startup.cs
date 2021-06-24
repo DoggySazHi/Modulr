@@ -29,7 +29,10 @@ namespace Modulr
             services.AddAuthentication(o =>
             {
                 o.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
-            }).AddCookie();
+            }).AddCookie(o =>
+            {
+                o.LoginPath = "/?error=Login%20is%20required%20to%20be%20on%20that%20page!";
+            });
 
             services.AddSignalR();
             services.AddSingleton<TestWorker>();
