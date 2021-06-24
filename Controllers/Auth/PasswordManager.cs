@@ -18,11 +18,11 @@ namespace Modulr.Controllers.Auth
 
         /// <summary>
         /// Set the password for a user.
-        /// For security reasons, this should be left private; the admin should just generate a temporary password.
+        /// For security reasons, this should only be used for registration; admins should generate a random password.
         /// </summary>
         /// <param name="user">The Modulr ID of the user.</param>
         /// <param name="password">The new password for the user.</param>
-        private async Task SetPassword(int user, string password)
+        public async Task SetPassword(int user, string password)
         {
             var hash = new Rfc2898DeriveBytes(password, 32, 10000);
             var hashBytes = hash.GetBytes(48);

@@ -4,7 +4,7 @@
     fill: none;
     stroke-dasharray: 0 1000;
     
-    width: 25vw;
+    width: min(25vw, 25vh);
 }
 
 .st0 {

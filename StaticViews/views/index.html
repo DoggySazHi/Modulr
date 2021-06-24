@@ -1,6 +1,7 @@
 ﻿{{"include": "StaticViews/views/template/_header.html"}}
 
 <link rel="stylesheet" href="/css/modulr.css">
+<link rel="stylesheet" href="/css/index.css">
 
 {{"title": "Home ~ Modulr"}}
 {{"description": "A server-based Java stipulator written in C#. Because why not."}}
@@ -8,14 +9,50 @@
 <main>
     <div class="container">
         <header>Welcome to Modulr!</header>
-        {{"include": "StaticViews/img/modulr-stroke.svg"}}
-        <p>Please login using your GSuite account on the top right.</p>
-        
         <noscript>
             <h2 class="danger">
                 You appear to not have JavaScript enabled. Google logins will probably not work.
             </h2>
         </noscript>
+        <div class="row index-row">
+            <div class="row center one-third">
+                {{"include": "StaticViews/img/modulr-stroke.svg"}}
+            </div>
+            <div class="two-third">
+                <h2>Modulr is code stipulation utility written in .NET 5, primarily for Java.</h2>
+                <p>Using Docker and custom unit testers, Modulr is capable of safely testing code with minimal risk of host instability.</p>
+                <p>Compared to other utilities like Stipulator and Antistipulator, code can be safely tested on the internet without installation on the client-side.</p>
+                <p>This maks it suitable for students using Chromebooks or other devices with limited installation ability.</p>
+            </div>
+        </div>
+        <hr/>
+        <div class="row index-row">
+            <div class="row center one-third">
+                <img src="/img/modulr-admin.webp" alt="Modulr's admin control panel" />
+            </div>
+            <div class="two-third">
+                <h2>Modulr is configurable.</h2>
+                <p>Configuration files and web-based managers allow admins to configure safe compilation.</p>
+                <p>Files are associated with each test, making migration easy.</p>
+                <p>Modulr is compatible with MySQL and SQL Server, making it installable on many servers.</p>
+            </div>
+        </div>
+        <hr/>
+        <div class="row index-row">
+            <div class="two-third">
+                <h2>Modulr is open source.</h2>
+                <p>No secrets: password storage algorithms, Docker images, and unit-testing tools are on my GitHub to view.</p>
+                <p>Python support and SQLite storage are also planned in the future.</p>
+            </div>
+            <div class="row center one-third">
+                <img src="/img/open-source.webp" alt="Modulr's GitHub page" />
+            </div>
+        </div>
+        <hr/>
+        <div class="list index-row">
+            <h2 class="text-center">Try Modulr today!</h2>
+            <p class="text-center">Create an account or log in on the top-right for practice labs.</p>
+        </div>
     </div>
 </main>
 

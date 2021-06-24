@@ -24,8 +24,8 @@ nav {
 
 .nav-item {
     float: left;
-    margin-left: 5px;
-    margin-right: 5px;
+    margin-left: 10px;
+    margin-right: 10px;
 }
 
 .nav-item-right {
@@ -35,8 +35,10 @@ nav {
 }
 
 .nav-logo {
+    float: left;
     height: 32px;
     width: 32px;
+    margin-right: 5px;
     object-fit: contain;
 }
 
@@ -227,6 +229,13 @@ header {
     max-height: 40vh;
     overflow-wrap: break-word;
     background-color: rgb(114, 114, 114);
+}
+
+@media screen and (max-width: 600px) {
+    .blocker-message {
+        width: 90vw;
+        max-height: 90vh;
+    }
 }
 
 #blocker-message {
@@ -426,15 +435,6 @@ footer a {
     overflow: hidden;
     transition: max-height 0.3s ease-out;
     background-color: rgb(60, 60, 60);
-}
-
-.grecaptcha-badge {
-    visibility: hidden;
-}
-
-.captcha-message {
-    font-size: 10px;
-    margin: 4px;
 }
 
 .normal {

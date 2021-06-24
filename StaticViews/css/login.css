@@ -1,0 +1,48 @@
+﻿.grecaptcha-badge {
+    visibility: hidden;
+}
+
+.captcha-message {
+    font-size: 10px;
+    margin: 4px;
+}
+
+.login-divider {
+    margin: 10px;
+}
+
+:not(.register) .show-register {
+    display: none;
+}
+
+.register .show-register {
+    display: block;
+}
+
+:not(.register) .register-btn:after {
+    content: "Register";
+}
+
+.register .register-btn:after {
+    content: "Go Back";
+}
+
+:not(.register) .login-btn:after {
+    content: "Login";
+}
+
+.register .login-btn:after {
+    content: "Register";
+}
+
+.muted {
+    font-size: 12px;
+}
+
+.success-text {
+    color: rgb(52, 167, 35);
+}
+
+.danger-text {
+    color: rgb(214, 56, 56);
+}

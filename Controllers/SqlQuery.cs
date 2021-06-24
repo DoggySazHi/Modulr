@@ -122,20 +122,24 @@ namespace Modulr.Controllers
         /// <param name="email">The email of the user. Must be unique.</param>
         /// <param name="googleID">The user's Google ID. May be optional, especially if they're using Modulr login.</param>
         /// <param name="username">The username of the user. May be optional, however it shouldn't change.</param>
-        public async Task Register(string name, string email, string googleID = null, string username = null)
+        /// <returns>On insertion, returns the Modulr ID. On update, returns 0.</returns>
+        public async Task<int> Register(string name, string email, string googleID = null, string username = null)
         {
             username ??= name;
             const string commandUserInsertMySql =
-                "INSERT INTO Modulr.Users (google_id, name, username, email) VALUES (@GoogleID, @Name, @Username, @Email)";
+                "INSERT INTO Modulr.Users (google_id, name, username, email) VALUES (@GoogleID, @Name, @Username, @Email); SELECT LAST_INSERT_ID();";
             const string commandUserUpdateMySql =
                 "UPDATE Modulr.Users SET username = @Username, email = @Email WHERE google_id = @GoogleID";
+            var output = 0;
             if(await UserExists(email) == 0)
-                await Connection.ExecuteAsync(ConvertSql(commandUserInsertMySql),
-                    new {GoogleID = googleID, Name = name, Username = username, Email = email});
+                output = await Connection.ExecuteScalarAsync<int>(ConvertSql(commandUserInsertMySql),
+                    new {GoogleID = googleID, Name = name, Username = username, Email = email.ToLower()});
             else
                 await Connection.ExecuteAsync(ConvertSql(commandUserUpdateMySql),
-                    new {GoogleID = googleID, Name = name, Username = username, Email = email});
+                    new {GoogleID = googleID, Name = name, Username = username, Email = email.ToLower()});
             await ResetTestsRemaining();
+            
+            return output;
         }
 
         /// <summary>
@@ -147,7 +151,7 @@ namespace Modulr.Controllers
         {
             const string commandMySql = "SELECT id FROM Modulr.Users WHERE email = @Email;";
             var results = await Connection.QuerySingleOrDefaultAsync<int>(ConvertSql(commandMySql),
-                new { Email = email });
+                new { Email = email.ToLower() });
             return results;
         }
         
@@ -231,7 +235,7 @@ namespace Modulr.Controllers
         public async Task<User> ResolveUser(string id)
         {
             const string commandMySql = "SELECT * FROM Modulr.Users WHERE google_id = @Token OR login_cookie = @Token;";
-            return await Connection.QuerySingleAsync<User>(ConvertSql(commandMySql), new { Token = id });
+            return await Connection.QuerySingleOrDefaultAsync<User>(ConvertSql(commandMySql), new { Token = id });
         }
 
         /// <summary>

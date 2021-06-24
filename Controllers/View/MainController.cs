@@ -1,5 +1,7 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using System.Threading.Tasks;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using Modulr.Controllers.Auth;
 using Modulr.Tester;
 
 namespace Modulr.Controllers.View
@@ -22,13 +24,12 @@ namespace Modulr.Controllers.View
             // HTML Routes
             Router.Add("", "StaticViews/views/index.html");
             Router.Add("home", "StaticViews/views/index.html");
-            Router.Add("student-test", "StaticViews/views/student-test.html");
 
             // Holy crap icon stuff
             AddFolderToRouter("", "StaticViews/img");
 
             // All other files
-            AddFolderToRouter("", "StaticViews/views");
+            // Do not include StaticViews/views as that picks up student-test
             AddFolderToRouter("img", "StaticViews/img");
             AddFolderToRouter("js", "StaticViews/js");
             AddFolderToRouter("css", "StaticViews/css");

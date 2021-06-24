@@ -13,11 +13,13 @@ namespace Modulr.Controllers.Auth
     {
         private readonly SqlQuery _query;
         private readonly PasswordManager _manager;
+        private readonly Captcha _captcha;
 
-        public UserController(SqlQuery query, PasswordManager manager)
+        public UserController(SqlQuery query, PasswordManager manager, Captcha captcha)
         {
             _query = query;
             _manager = manager;
+            _captcha = captcha;
         }
 
         [HttpPost("GetTimeout")]
@@ -32,14 +34,22 @@ namespace Modulr.Controllers.Auth
             Response.StatusCode = 403;
             return null;
         }
+        
+        [HttpGet("GetCurrentUser")]
+        public async Task<User> GetCurrentUser()
+        {
+            var result = await _query.ResolveUser(this.GetLoginCookie());
+            return result;
+        }
 
         [HttpPost("LogOut")]
         public async Task Logout()
         {
+            await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
             if (await this.VerifySession(_manager))
             {
-                await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
                 await _query.LogoutUser(this.GetModulrID());
+                return;
             }
             Response.StatusCode = 403;
         }
@@ -47,7 +57,7 @@ namespace Modulr.Controllers.Auth
         [HttpPost("Login")]
         public async Task Login(LoginEvent login)
         {
-            if (!login.IsLikelyValid())
+            if (!await login.IsLikelyValid(_captcha))
             {
                 Response.StatusCode = 400;
                 return;
@@ -71,6 +81,28 @@ namespace Modulr.Controllers.Auth
 
             var user = await _query.ResolveUser(loginCookie);
             await this.LoginUser(user, loginCookie);
+        }
+        
+        [HttpPost("Register")]
+        public async Task<string> Register(RegisterUser register)
+        {
+            if (!await register.IsLikelyValid(_captcha))
+            {
+                Response.StatusCode = 400;
+                return "Invalid response!";
+            }
+
+            var modulrID = await _query.UserExists(register.Email);
+
+            if (modulrID != 0)
+            {
+                Response.StatusCode = 403;
+                return "Account is already registered!";
+            }
+
+            modulrID = await _query.Register(register.Name, register.Email);
+            await _manager.SetPassword(modulrID, register.Password);
+            return "";
         }
     }
 }

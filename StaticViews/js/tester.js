@@ -248,7 +248,8 @@ async function getAttemptsLeft() {
 function updateTimer() {
     // Oh no, timezones!
     let difference = resetTime - new Date();
-    let output = document.getElementById("time");
+    const output = document.getElementById("time");
+    
     if (difference < -5) { // Delay to compensate for server time.
         output.innerHTML = "";
         updateAttemptsVisual();
@@ -258,9 +259,12 @@ function updateTimer() {
     }
     if (difference < 0) { // Actually clear the box.
         output.innerHTML = "";
+        output.classList.add("hidden");
         updateAttemptsVisual();
         return;
     }
+    
+    output.classList.remove("hidden");
     output.innerHTML = "Reset in " + new Date(difference).toISOString().substr(11, 8);
 }
 
@@ -369,8 +373,14 @@ function generateList(tests) {
 }
 
 function updateAttemptsVisual() {
-    if (testsRemaining <= 0)
-        document.getElementById("attempts").innerHTML = "";
-    else
-        document.getElementById("attempts").innerHTML = "Attempts Left: " + testsRemaining;
+    const attempts = document.getElementById("attempts");
+    
+    if (testsRemaining <= 0) {
+        attempts.innerHTML = "";
+        attempts.classList.add("hidden");
+    }
+    else {
+        attempts.innerHTML = "Attempts Left: " + testsRemaining;
+        attempts.classList.remove("hidden");
+    }
 }

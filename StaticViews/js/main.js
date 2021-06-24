@@ -1,6 +1,6 @@
 ﻿"use strict";
 
-export { triggerPopup, triggerPopupButtons, disablePopup, registerCollapsibles, getUrl, handleErrors }
+export { triggerPopup, triggerPopupButtons, disablePopup, registerCollapsibles, getUrl, handleErrors, getErrorMessage }
 
 onInit();
 
@@ -114,12 +114,29 @@ function checkForCookieSupport() {
 }
 
 function handleErrors(statusCode, error) {
+    let httpError = getErrorMessage(statusCode);
+    if (httpError != null && error == null)
+        error = httpError;
+    if (error != null) {
+        console.error("We had an error... ", error);
+        triggerPopup("Mukyu~", error);
+    }
+}
+
+function getErrorMessage(statusCode) {
+    let error = null;
     switch (statusCode) {
+        case 400:
+            error = "Input was invalid!";
+            break;
         case 403:
-            error = "Login credentials failed, try logging out and logging back in!";
+            error = "Login credentials failed. Please try again.";
             break;
         case 404:
-            error = "Could not locate test, please try another one!";
+            error = "Could not locate whatever you were looking for, please try again!";
+            break;
+        case 413:
+            error = "File was too large!";
             break;
         case 500:
         case 502:
@@ -127,8 +144,6 @@ function handleErrors(statusCode, error) {
             error = "The server decided that it wanted to die. Ask William about what the heck you did to kill it.";
             break;
     }
-    if (error != null) {
-        console.error("We had an error... ", error);
-        triggerPopup("Mukyu~", error);
-    }
+    
+    return error;
 }

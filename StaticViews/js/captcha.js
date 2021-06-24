@@ -38,8 +38,21 @@ function bindCaptcha(button, callback) {
         "callback" : callback,
         "theme": "dark"
     });
+    
+    fixStyling();
 }
 
 function resetCaptcha() {
     grecaptcha.reset();
+    fixStyling();
+}
+
+function fixStyling() {
+    [".grecaptcha-logo iframe", ".grecaptcha-badge"].forEach((o) => {
+        const item = document.querySelector(o);
+        item.style.width = "0"; // Pichuun! We handle styling.
+        item.style.height = "0";
+        item.style.bottom = null;
+        item.style.right = null;
+    });
 }
