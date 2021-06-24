@@ -1,0 +1,42 @@
+﻿.index-row {
+    margin: 5vw 10vw;
+}
+
+.two-third {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    width: calc(200% / 3);
+    
+    align-items: flex-end;
+    text-align: right;
+
+    padding: 15px;
+}
+
+.one-third ~ .two-third {
+    align-items: flex-start;
+    text-align: left;
+}
+
+.one-third {
+    width: calc(100% / 3);
+    display: flex;
+    justify-content: center;
+
+    padding: 15px;
+}
+
+header {
+    text-align: center;
+}
+
+.text-center {
+    text-align: center;
+    width: 100%;
+}
+
+img {
+    max-width: 100%;
+    max-height: 100%;
+}
