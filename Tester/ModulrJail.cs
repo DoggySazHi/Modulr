@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Concurrent;
 using System.IO;
-using System.Net;
+using System.Net.Http;
 using System.Text;
 using Modulr.Hubs.Workers;
 
@@ -70,9 +70,11 @@ public abstract class ModulrJail : IDisposable
     {
         if (!Config.AutoUpdateDockerImage)
             return;
-            
-        using var client = new WebClient();
-        client.DownloadFile(MODULR_STIPULATOR_GITHUB, "Docker/Modulr.Stipulator.jar");
+
+        using var client = new HttpClient();
+        var response = client.GetAsync(MODULR_STIPULATOR_GITHUB).GetAwaiter().GetResult();
+        using var fs = new FileStream("Docker/Modulr.Stipulator.jar", FileMode.CreateNew);
+        response.Content.CopyToAsync(fs).GetAwaiter().GetResult();
     }
 
     /// <summary>

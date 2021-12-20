@@ -13,7 +13,7 @@ public class AdminController : HTMLController
     private readonly SqlQuery _query;
     private readonly PasswordManager _manager;
         
-    public AdminController(ILogger<HTMLController> logger, SqlQuery query, ModulrConfig config, PasswordManager manager) : base(logger, config)
+    public AdminController(ILogger<AdminController> logger, SqlQuery query, ModulrConfig config, PasswordManager manager) : base(logger, config)
     {
         _query = query;
         _manager = manager;

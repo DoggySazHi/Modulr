@@ -12,7 +12,7 @@ public class TesterController : HTMLController
 {
     private readonly PasswordManager _manager;
         
-    public TesterController(ILogger<HTMLController> logger, ModulrConfig config, PasswordManager manager) : base(logger, config)
+    public TesterController(ILogger<TesterController> logger, ModulrConfig config, PasswordManager manager) : base(logger, config)
     {
         _manager = manager;
     }

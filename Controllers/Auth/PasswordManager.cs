@@ -106,11 +106,8 @@ public class PasswordManager
     private static string GeneratePassword(int size)
     {            
         var data = new byte[4 * size];
-            
-        using (var crypto = new RNGCryptoServiceProvider())
-        {
-            crypto.GetBytes(data);
-        }
+
+        RandomNumberGenerator.Fill(data);
 
         var output = new char[size];
             
@@ -144,10 +141,7 @@ public class PasswordManager
     private static string GetAuthCode()
     {
         var data = new byte[48];
-        using(var crypto = new RNGCryptoServiceProvider())
-        {
-            crypto.GetBytes(data);
-        }
+        RandomNumberGenerator.Fill(data);
         return Convert.ToBase64String(data);
     }
 

@@ -124,8 +124,8 @@ public class ModulrConfig
         IsWindows = RuntimeInformation.IsOSPlatform(OSPlatform.Windows);
         if (UseDocker && (DockerPath == null || !File.Exists(DockerPath)))
         {
-            _logger.LogWarning($"Docker executable not set or found from config! Current value: {DockerPath}\n" +
-                               "Searching for a valid executable...");
+            _logger.LogWarning("Docker executable not set or found from config! Current value: {DockerPath}\n" +
+                               "Searching for a valid executable...", DockerPath);
             var dockerFound = false;
                 
             var dockerInstalls = IsWindows ? _dockerWinPath : _dockerLinPath;
@@ -134,13 +134,13 @@ public class ModulrConfig
                 {
                     DockerPath = path;
                     dockerFound = true;
-                    _logger.LogInformation($"Found Docker install at {DockerPath}");
+                    _logger.LogInformation("Found Docker install at {DockerPath}", DockerPath);
                     break;
                 }
                 
             if (!dockerFound)
             {
-                _logger.LogWarning("Docker executable not found! Falling back to local jails.");
+                _logger.LogWarning("Docker executable not found! Falling back to local jails~");
                 UseDocker = false;
             }
         }
@@ -151,8 +151,8 @@ public class ModulrConfig
         IsWindows = RuntimeInformation.IsOSPlatform(OSPlatform.Windows);
         if (!UseDocker && (JDKPath == null || !Directory.Exists(JDKPath)))
         {
-            _logger.LogWarning($"JDK home not set or found from config! Current value: {JDKPath}\n" +
-                               "Searching for a valid Java home...");
+            _logger.LogWarning("JDK home not set or found from config! Current value: {JdkPath}\n" +
+                               "Searching for a valid Java home...", JDKPath);
 
             var javaHomes = new List<(string version, string dir)>();
 
@@ -196,11 +196,11 @@ public class ModulrConfig
                 JDKPath = javaHomes.Aggregate(
                         (a, b) => CompareSemanticVersion(a.version, b.version) > 0 ? a : b)
                     .dir;
-                _logger.LogInformation($"Found JDK home at {JDKPath}");
+                _logger.LogInformation("Found JDK home at {JdkPath}", JDKPath);
             }
             else
             {
-                _logger.LogCritical("Java home not found! Modulr will probably not function properly.");
+                _logger.LogCritical("Java home not found! Modulr will probably not function properly~");
             }
         }
     }

@@ -8,7 +8,7 @@ namespace Modulr.Controllers.View;
 [Route("/{**page}")]
 public class MainController : HTMLController
 {
-    public MainController(ILogger<HTMLController> logger, ModulrConfig config) : base(logger, config)
+    public MainController(ILogger<MainController> logger, ModulrConfig config) : base(logger, config)
     {
             
     }
