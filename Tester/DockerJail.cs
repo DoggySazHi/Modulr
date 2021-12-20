@@ -83,7 +83,7 @@ public class DockerJail : ModulrJail
         logQueue.Dispose();
         logQueue = new BlockingCollection<string>();
             
-        if (output.Contains("Enterprise"))
+        if (output.Contains("Enterprise") || output.Contains("Mirantis"))
             _isEnterprise = true;
 
         if (!Directory.Exists("Docker")) {
