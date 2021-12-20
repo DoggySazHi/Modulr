@@ -7,87 +7,86 @@ using Modulr.Controllers.Auth;
 using Modulr.Models;
 using Modulr.Tester;
 
-namespace Modulr.Controllers.Admin
+namespace Modulr.Controllers.Admin;
+
+[ApiController]
+[Authorize]
+[Route("/Admin/System")]
+public class AdminSystemController : ControllerBase
 {
-    [ApiController]
-    [Authorize]
-    [Route("/Admin/System")]
-    public class AdminSystemController : ControllerBase
+    private readonly SqlQuery _query;
+    private readonly PasswordManager _manager;
+    private readonly IHostApplicationLifetime _app;
+        
+    public AdminSystemController(SqlQuery query, ModulrConfig config, PasswordManager manager, IHostApplicationLifetime app)
     {
-        private readonly SqlQuery _query;
-        private readonly PasswordManager _manager;
-        private readonly IHostApplicationLifetime _app;
+        _query = query;
+        ModulrJail.Config = config;
+        _manager = manager;
+        _app = app;
+    }
+
+    [HttpPost("RebuildContainer")]
+    public async Task<string> RebuildContainer()
+    {
+        if (!await this.VerifySession(_manager) || !await this.VerifyAdmin(_query))
+        {
+            Response.StatusCode = 403;
+            return null;
+        }
+
+        return ModulrJail.Initialize();
+    }
         
-        public AdminSystemController(SqlQuery query, ModulrConfig config, PasswordManager manager, IHostApplicationLifetime app)
+    [HttpPost("Shutdown")]
+    public async Task Shutdown()
+    {
+        if (!await this.VerifySession(_manager) || !await this.VerifyAdmin(_query))
         {
-            _query = query;
-            ModulrJail.Config = config;
-            _manager = manager;
-            _app = app;
+            Response.StatusCode = 403;
+            return;
         }
 
-        [HttpPost("RebuildContainer")]
-        public async Task<string> RebuildContainer()
+        _ = Task.Run(async () =>
         {
-            if (!await this.VerifySession(_manager) || !await this.VerifyAdmin(_query))
-            {
-                Response.StatusCode = 403;
-                return null;
-            }
-
-            return ModulrJail.Initialize();
-        }
+            await Task.Delay(1000);
+            _app.StopApplication();
+        });
+    }
         
-        [HttpPost("Shutdown")]
-        public async Task Shutdown()
+    [HttpPost("GetAllUsers")]
+    public async Task<IEnumerable<User>> GetAllUsers()
+    {
+        if (!await this.VerifySession(_manager) || !await this.VerifyAdmin(_query))
         {
-            if (!await this.VerifySession(_manager) || !await this.VerifyAdmin(_query))
-            {
-                Response.StatusCode = 403;
-                return;
-            }
-
-            _ = Task.Run(async () =>
-            {
-                await Task.Delay(1000);
-                _app.StopApplication();
-            });
+            Response.StatusCode = 403;
+            return null;
         }
+
+        return await _query.GetAllUsers();
+    }
         
-        [HttpPost("GetAllUsers")]
-        public async Task<IEnumerable<User>> GetAllUsers()
+    [HttpPost("UpdateUser")]
+    public async Task UpdateUser([FromBody] UpdateUser user)
+    {
+        if (!await this.VerifySession(_manager) || !await this.VerifyAdmin(_query))
         {
-            if (!await this.VerifySession(_manager) || !await this.VerifyAdmin(_query))
-            {
-                Response.StatusCode = 403;
-                return null;
-            }
-
-            return await _query.GetAllUsers();
+            Response.StatusCode = 403;
+            return;
         }
+
+        await _query.UpdateUser(user);
+    }
         
-        [HttpPost("UpdateUser")]
-        public async Task UpdateUser([FromBody] UpdateUser user)
+    [HttpPost("ResetUserTimeout")]
+    public async Task ResetUserTimeout([FromBody] UpdateUser user)
+    {
+        if (!await this.VerifySession(_manager) || !await this.VerifyAdmin(_query))
         {
-            if (!await this.VerifySession(_manager) || !await this.VerifyAdmin(_query))
-            {
-                Response.StatusCode = 403;
-                return;
-            }
-
-            await _query.UpdateUser(user);
+            Response.StatusCode = 403;
+            return;
         }
-        
-        [HttpPost("ResetUserTimeout")]
-        public async Task ResetUserTimeout([FromBody] UpdateUser user)
-        {
-            if (!await this.VerifySession(_manager) || !await this.VerifyAdmin(_query))
-            {
-                Response.StatusCode = 403;
-                return;
-            }
 
-            await _query.ResetTimeOut(user.ID);
-        }
+        await _query.ResetTimeOut(user.ID);
     }
 }

@@ -1,7 +1,6 @@
-﻿namespace Modulr.Models
+﻿namespace Modulr.Models;
+
+public class TestQuery
 {
-    public class TestQuery
-    {
-        public int TestID { get; set; }
-    }
+    public int TestID { get; set; }
 }

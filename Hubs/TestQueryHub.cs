@@ -2,15 +2,14 @@
 using Microsoft.AspNetCore.SignalR;
 using Modulr.Hubs.Models;
 
-namespace Modulr.Hubs
+namespace Modulr.Hubs;
+
+public class TestQueryHub : Hub<ITestClient>
 {
-    public class TestQueryHub : Hub<ITestClient>
+    public async Task Update(string output)
     {
-        public async Task Update(string output)
-        {
-            await Clients.Caller.ReceiveUpdate(output);
-        }
-        
-        public string GetConnectionId() => Context.ConnectionId;
+        await Clients.Caller.ReceiveUpdate(output);
     }
+        
+    public string GetConnectionId() => Context.ConnectionId;
 }

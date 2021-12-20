@@ -2,65 +2,64 @@
 using System.IO;
 using Modulr.Hubs.Workers;
 
-namespace Modulr.Tester
+namespace Modulr.Tester;
+
+public class JavaUtils
 {
-    public class JavaUtils
+    private readonly ModulrConfig _config;
+    private readonly Random _rng;
+        
+    public JavaUtils(ModulrConfig config, TestWorker worker)
     {
-        private readonly ModulrConfig _config;
-        private readonly Random _rng;
-        
-        public JavaUtils(ModulrConfig config, TestWorker worker)
-        {
-            ModulrJail.Config = config;
-            ModulrJail.WebSocket = worker;
-            _config = config;
-            _rng = new Random();
-            Clean();
-        }
+        ModulrJail.Config = config;
+        ModulrJail.WebSocket = worker;
+        _config = config;
+        _rng = new Random();
+        Clean();
+    }
 
-        private void Clean()
-        {
-            if (Directory.Exists(_config.SaveLocation))
-                Directory.Delete(_config.SaveLocation, true);
-            Directory.CreateDirectory(_config.SaveLocation);
-        }
+    private void Clean()
+    {
+        if (Directory.Exists(_config.SaveLocation))
+            Directory.Delete(_config.SaveLocation, true);
+        Directory.CreateDirectory(_config.SaveLocation);
+    }
 
-        public string DockerTest(string sourceFolder, string connectionID = null, params string[] files)
-        {
-            // We're going to make the assumption that sourceFolder is sanitized.
-            // Mainly because it's created within Modulr.
-            // Probably requires to be relative as well.
+    public string DockerTest(string sourceFolder, string connectionID = null, params string[] files)
+    {
+        // We're going to make the assumption that sourceFolder is sanitized.
+        // Mainly because it's created within Modulr.
+        // Probably requires to be relative as well.
             
-            var jail = ModulrJail.Build(sourceFolder, connectionID, files);
-            jail.Wait();
-            var output = jail.GetAllOutput();
-            jail.Dispose();
-            return output;
-        }
+        var jail = ModulrJail.Build(sourceFolder, connectionID, files);
+        jail.Wait();
+        var output = jail.GetAllOutput();
+        jail.Dispose();
+        return output;
+    }
 
-        private const int TempDirLength = 6;
+    private const int TempDirLength = 6;
         
-        public string GetDummyFolder()
+    public string GetDummyFolder()
+    {
+        string path;
+        do
         {
-            string path;
-            do
-            {
-                path = Path.Join(_config.SaveLocation, GetRandomString());
-            } while (Directory.Exists(path));
-            Directory.CreateDirectory(path);
-            return path;
-        }
+            path = Path.Join(_config.SaveLocation, GetRandomString());
+        } while (Directory.Exists(path));
+        Directory.CreateDirectory(path);
+        return path;
+    }
 
-        private const string RNGChars = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+    private const string RNGChars = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 
-        private string GetRandomString()
-        {
-            var output = new char[TempDirLength];
+    private string GetRandomString()
+    {
+        var output = new char[TempDirLength];
 
-            for (var i = 0; i < output.Length; i++)
-                output[i] = RNGChars[_rng.Next(RNGChars.Length)];
+        for (var i = 0; i < output.Length; i++)
+            output[i] = RNGChars[_rng.Next(RNGChars.Length)];
 
-            return new string(output);
-        }
+        return new string(output);
     }
 }

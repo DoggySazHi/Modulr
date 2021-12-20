@@ -1,7 +1,6 @@
-﻿namespace Modulr.Models
+﻿namespace Modulr.Models;
+
+public class UpdateUser : User
 {
-    public class UpdateUser : User
-    {
-        public string AuthToken { get; set; }
-    }
+    public string AuthToken { get; set; }
 }

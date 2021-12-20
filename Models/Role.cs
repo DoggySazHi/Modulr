@@ -1,12 +1,11 @@
 ﻿using System;
 
-namespace Modulr.Models
+namespace Modulr.Models;
+
+[Flags]
+public enum Role
 {
-    [Flags]
-    public enum Role
-    {
-        User = 0, // Redundant.
-        Admin = 1,
-        Banned = 2
-    }
+    User = 0, // Redundant.
+    Admin = 1,
+    Banned = 2
 }

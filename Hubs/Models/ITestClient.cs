@@ -1,9 +1,8 @@
 ﻿using System.Threading.Tasks;
 
-namespace Modulr.Hubs.Models
+namespace Modulr.Hubs.Models;
+
+public interface ITestClient
 {
-    public interface ITestClient
-    {
-        Task ReceiveUpdate(string output);
-    }
+    Task ReceiveUpdate(string output);
 }

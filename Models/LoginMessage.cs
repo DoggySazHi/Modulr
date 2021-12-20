@@ -1,8 +1,7 @@
-﻿namespace Modulr.Models
+﻿namespace Modulr.Models;
+
+public class LoginMessage
 {
-    public class LoginMessage
-    {
-        public bool Success { get; set; }
-        public string Error { get; set; }
-    }
+    public bool Success { get; set; }
+    public string Error { get; set; }
 }
