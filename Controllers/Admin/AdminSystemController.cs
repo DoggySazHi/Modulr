@@ -14,7 +14,7 @@ namespace Modulr.Controllers.Admin;
 [Route("/Admin/System")]
 public class AdminSystemController : ControllerBase
 {
-    private readonly SqlQuery _query;
+    private readonly SqlQuery _query;   
     private readonly PasswordManager _manager;
     private readonly IHostApplicationLifetime _app;
         
